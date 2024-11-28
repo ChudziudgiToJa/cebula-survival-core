@@ -17,13 +17,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.configuration.ConfigService;
-import pl.cebula.smp.configuration.implementation.DataBaseConfiguration;
 import pl.cebula.smp.configuration.implementation.MessagesConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
+import pl.cebula.smp.feature.job.JobCommand;
+import pl.cebula.smp.feature.job.JobController;
+import pl.cebula.smp.feature.job.JobInventory;
+import pl.cebula.smp.feature.shop.controller.ShopNpcController;
+import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
 import pl.cebula.smp.feature.top.TopManager;
 import pl.cebula.smp.feature.user.UserService;
@@ -33,6 +37,7 @@ import pl.cebula.smp.feature.user.task.UsersSaveTask;
 import pl.cebula.smp.listener.JoinQuitListener;
 
 import java.io.File;
+import java.util.Random;
 import java.util.stream.Stream;
 
 @Getter
@@ -46,11 +51,12 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final UserRepository userRepository = new UserRepository();
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
-    private DataBaseConfiguration dataBaseConfiguration;
     private MessagesConfiguration messagesConfiguration;
     private UserService userService;
     private ProtocolManager protocolManager;
     private TopManager topManager;
+
+    private final Random random = new Random();
 
 
     private LiteCommands<CommandSender> liteCommands;
@@ -92,6 +98,12 @@ public final class SurvivalPlugin extends JavaPlugin {
         // help menu
         HelpInventory helpInventory = new HelpInventory(this);
 
+        // shop Menu
+        ShopInventory shopInventory = new ShopInventory(this, userService);
+
+        // job Menu
+        JobInventory jobInventory = new JobInventory(this, this.userService);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -105,7 +117,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 .commands(
                         new HelpCommand(this, helpInventory),
                         new TrashCommand(this),
-                        new EconomyCommand(this.userService)
+                        new EconomyCommand(this.userService),
+                        new JobCommand(jobInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -115,7 +128,9 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         // load Listeners
         Stream.of(
-                new JoinQuitListener(this.userService)
+                new JoinQuitListener(this.userService),
+                new ShopNpcController(this.pluginConfiguration, shopInventory),
+                new JobController(this.userService, this.random)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

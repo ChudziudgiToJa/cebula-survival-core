@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
+import pl.cebula.smp.feature.job.JobType;
 
 import java.io.Serializable;
 
@@ -20,6 +21,8 @@ public class User implements Serializable, Identifiable<String> {
     private Integer spentTime;
     private Integer progress;
 
+    private JobType jobType;
+
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
         this.nickName = player.getName();
@@ -28,6 +31,8 @@ public class User implements Serializable, Identifiable<String> {
 
         this.spentTime = 0;
         this.progress = 0;
+
+        this.jobType = JobType.CLEAR;
     }
 
 
