@@ -1,18 +1,17 @@
 package pl.cebula.smp.feature.kit;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 
 @Getter
 public class KitData implements Serializable {
-    private final String kit;
+    private final String name;
     private final long time;
 
 
-    public KitData(String kit, long time) {
-        this.kit = kit;
+    public KitData(String name, long time) {
+        this.name = name;
         this.time = time;
     }
 }

@@ -65,18 +65,25 @@ public class KitPreviewInventory {
 
             if (event.getSlot() == 52) {
 
+                if (!player.hasPermission(kit.getPermission())) {
+                    MessageUtil.sendTitle(player, "", "&cNie posiadasz wymaganej rangi", 20, 50, 20);
+                    player.closeInventory();
+                    return;
+                }
+
                 for (KitData kitData : user.getKits()) {
-                    if (kitData.getKit().equals(kit.getName())) {
-                        if (kitData.getTime() <= System.currentTimeMillis()) {
-                            MessageUtil.sendTitle(player, "", "&cmożesz odebrać za: " + DurationUtil.getTimeFormat(kitData.getTime()- System.currentTimeMillis()), 20, 50, 20);
+                    if (kitData.getName().equals(kit.getName())) {
+                        if (kitData.getTime() > System.currentTimeMillis()) {
+                            MessageUtil.sendTitle(player, "", "&cmożesz odebrać za: " + DurationUtil.getTimeFormat(kitData.getTime() - System.currentTimeMillis()), 20, 50, 20);
                             player.closeInventory();
                             player.playSound(player, Sound.ENTITY_BEE_HURT, 5, 5);
                             return;
                         }
+                        user.getKits().remove(kitData);
+                        break;
                     }
-                    user.getKits().remove(kitData);
                 }
-
+                user.getKits().add(new KitData(kit.getName(), kit.getCoolDownTime() + System.currentTimeMillis()));
                 for (ItemStack itemStack : kit.getItemStackArrayList()) {
                     HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(itemStack);
                     leftover.values().forEach(remaining ->
@@ -85,7 +92,6 @@ public class KitPreviewInventory {
                 }
                 MessageUtil.sendTitle(player, "", "&aodebrano zestaw", 20, 50, 20);
                 player.closeInventory();
-                user.getKits().add(new KitData(kit.getName(), System.currentTimeMillis() + kit.getCoolDownTime()));
             }
         });
         player.openInventory(inventory);

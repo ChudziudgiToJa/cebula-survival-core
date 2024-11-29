@@ -1,6 +1,7 @@
 package pl.cebula.smp.configuration.implementation;
 
 import eu.okaeri.configs.OkaeriConfig;
+import eu.okaeri.configs.annotation.Comment;
 import org.bukkit.Material;
 import pl.cebula.smp.feature.kit.Kit;
 import pl.cebula.smp.feature.shop.object.ItemToInteract;
@@ -278,10 +279,11 @@ public class PluginConfiguration extends OkaeriConfig {
         );
     }
     public static class KitSettings extends OkaeriConfig {
+        @Comment("## czas podajemy w milisekundach bo to liczy na czasie aktualnym świata")
         public List<Kit> kitList = List.of(
                 new Kit(
                         "vip",
-                        120,
+                        86400000,
                         new ItemBuilder(Material.IRON_HELMET)
                                 .setTitle("&evip")
                                 .addLore(
@@ -289,41 +291,29 @@ public class PluginConfiguration extends OkaeriConfig {
                                         "&aKliknij aby otworzyć podgląd."
                                 )
                                 .build(),
+                        "cebulasmp.kit.vip",
                         List.of(
-                                new ItemBuilder(Material.DIAMOND_HELMET).build(),
-                                new ItemBuilder(Material.DIAMOND_CHESTPLATE).build(),
-                                new ItemBuilder(Material.DIAMOND_LEGGINGS).build(),
-                                new ItemBuilder(Material.DIAMOND_BOOTS).build(),
-                                new ItemBuilder(Material.DIAMOND_SWORD).build(),
-                                new ItemBuilder(Material.DIAMOND_PICKAXE).build(),
-                                new ItemBuilder(Material.DIAMOND_AXE).build(),
-                                new ItemBuilder(Material.DIAMOND_HOE).build()
+                                new ItemBuilder(Material.APPLE).build()
                         )
                 ),
                 new Kit(
                         "mvip",
-                        120,
+                        86400000,
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("&6")
+                                .setTitle("&6M&evip")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
                                 )
                                 .build(),
+                        "cebulasmp.kit.mvip",
                         List.of(
-                                new ItemBuilder(Material.DIAMOND_HELMET).build(),
-                                new ItemBuilder(Material.DIAMOND_CHESTPLATE).build(),
-                                new ItemBuilder(Material.DIAMOND_LEGGINGS).build(),
-                                new ItemBuilder(Material.DIAMOND_BOOTS).build(),
-                                new ItemBuilder(Material.DIAMOND_SWORD).build(),
-                                new ItemBuilder(Material.DIAMOND_PICKAXE).build(),
-                                new ItemBuilder(Material.DIAMOND_AXE).build(),
-                                new ItemBuilder(Material.DIAMOND_HOE).build()
+                                new ItemBuilder(Material.STONE).build()
                         )
                 ),
                 new Kit(
                         "cebulak",
-                        120,
+                        86400000,
                         new ItemBuilder(Material.NETHERITE_HELMET)
                                 .setTitle("&6cebulak")
                                 .addLore(
@@ -331,6 +321,7 @@ public class PluginConfiguration extends OkaeriConfig {
                                         "&aKliknij aby otworzyć podgląd."
                                 )
                                 .build(),
+                        "cebulasmp.kit.cebulak",
                         List.of(
                                 new ItemBuilder(Material.DIAMOND_HELMET).build(),
                                 new ItemBuilder(Material.DIAMOND_CHESTPLATE).build(),
