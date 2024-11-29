@@ -26,6 +26,9 @@ import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.job.JobCommand;
 import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
+import pl.cebula.smp.feature.kit.KitCommand;
+import pl.cebula.smp.feature.kit.KitInventory;
+import pl.cebula.smp.feature.kit.KitPreviewInventory;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
@@ -104,6 +107,10 @@ public final class SurvivalPlugin extends JavaPlugin {
         // job Menu
         JobInventory jobInventory = new JobInventory(this, this.userService);
 
+        // kit
+        KitPreviewInventory kitPreviewInventory = new KitPreviewInventory(this.userService, this);
+        KitInventory kitInventory = new KitInventory(this, this.pluginConfiguration, kitPreviewInventory);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -118,7 +125,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new HelpCommand(this, helpInventory),
                         new TrashCommand(this),
                         new EconomyCommand(this.userService),
-                        new JobCommand(jobInventory)
+                        new JobCommand(jobInventory),
+                        new KitCommand(kitInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

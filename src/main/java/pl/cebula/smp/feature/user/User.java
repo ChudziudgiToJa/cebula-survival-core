@@ -1,13 +1,20 @@
 package pl.cebula.smp.feature.user;
 
+import it.unimi.dsi.fastutil.Hash;
 import lombok.Getter;
 import lombok.Setter;
 
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
 import pl.cebula.smp.feature.job.JobType;
+import pl.cebula.smp.feature.kit.Kit;
+import pl.cebula.smp.feature.kit.KitData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Getter
@@ -23,6 +30,8 @@ public class User implements Serializable, Identifiable<String> {
 
     private JobType jobType;
 
+    private ArrayList<KitData> kits;
+
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
         this.nickName = player.getName();
@@ -33,6 +42,9 @@ public class User implements Serializable, Identifiable<String> {
         this.progress = 0;
 
         this.jobType = JobType.CLEAR;
+
+        this.kits = new ArrayList<>();
+
     }
 
 

@@ -24,7 +24,7 @@ public class ShopNpcController implements Listener {
     public void click(NPCRightClickEvent event) {
         Player player = event.getClicker();
 
-        for (Shop shop : this.pluginConfiguration.npcShop.shops) {
+        for (Shop shop : this.pluginConfiguration.npcShopSettings.shops) {
             if (event.getNPC().getId() == shop.getNpcId()) {
                 shopInventory.show(player, shop);
                 player.playSound(player, Sound.BLOCK_BARREL_OPEN, 5 ,5);

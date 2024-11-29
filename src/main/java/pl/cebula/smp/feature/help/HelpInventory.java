@@ -26,27 +26,11 @@ public class HelpInventory {
 
 
         Integer[] glassBlueSlots = new Integer[]{
-                1, 3, 5, 7, 9, 17, 27, 35, 47, 51
-        };
-        Integer[] glassBlackSlots = new Integer[]{
-                2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52
-        };
-        Integer[] glassWhiteSlots = new Integer[]{
-                0, 8, 45, 53
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.BLUE_STAINED_GLASS_PANE)
-                        .setName(" ")
-                        .toItemStack()));
-
-        Arrays.stream(glassBlackSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.BLACK_STAINED_GLASS_PANE)
-                        .setName(" ")
-                        .toItemStack()));
-
-        Arrays.stream(glassWhiteSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.WHITE_STAINED_GLASS_PANE)
+                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .toItemStack()));
 
@@ -62,7 +46,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &3/repair (ᴀʟʟ) (armor) &8- &fnapraw stwoje przedmioty"))
                 .addLore(MessageUtil.smallText("&8• &3/ec &8- &fotwiera enderchest"))
                 .addLore(MessageUtil.smallText("&8• &3/kosz &8- &fotwiera kosz"))
-                .addLore(MessageUtil.smallText("&8• &3/rangi &8- &fDostepne rangi na serwerze"))
+                .addLore(MessageUtil.smallText("&8• &3/vip /mvip /cebulak &8- &fDostepne rangi na serwerze"))
                 .addLore(MessageUtil.smallText("&8• &3/helpop (wiadomosc) &8- &fWysyla wiadomosc do administracji"))
                 .addLore(MessageUtil.smallText("&8• &3/msg (nick) (wiadomosc) &8- &fWysyla prywatna wiadomosc do gracza"))
                 .addLore(MessageUtil.smallText("&8• &3/r (wiadomosc) &8- &fOdpowiada na ostatnia prywatna wiadomosc"))
@@ -74,7 +58,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fFanpage: &bfb.paymc.pl"))
                 .addLore("");
 
-        inventory.setItem(12, helpItem.toItemStack());
+        inventory.setItem(13, helpItem.toItemStack());
 
         ItemStackBuilder vipItem = new ItemStackBuilder(Material.GOLDEN_CHESTPLATE, 1)
                 .setName(" ")
@@ -96,7 +80,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &3/portfel"))
                 .addLore("");
 
-        inventory.setItem(31, vipItem.toItemStack());
+        inventory.setItem(30, vipItem.toItemStack());
 
         ItemStackBuilder svipItem = new ItemStackBuilder(Material.IRON_CHESTPLATE, 1)
                 .setName(" ")
@@ -120,7 +104,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &3/portfel"))
                 .addLore("");
 
-        inventory.setItem(32, svipItem.toItemStack());
+        inventory.setItem(31, svipItem.toItemStack());
 
         ItemStackBuilder sponsorItem = new ItemStackBuilder(Material.DIAMOND_CHESTPLATE, 1)
                 .setName(" ")
@@ -147,7 +131,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &3/portfel"))
                 .addLore("");
 
-        inventory.setItem(33, sponsorItem.toItemStack());
+        inventory.setItem(32, sponsorItem.toItemStack());
 
         inventory.setItem(49, new ItemBuilder(Material.BARRIER)
                 .setTitle(MessageUtil.smallText("&czamknij"))
