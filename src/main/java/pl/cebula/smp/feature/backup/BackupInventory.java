@@ -1,0 +1,154 @@
+package pl.cebula.smp.feature.backup;
+
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.feature.user.User;
+import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+public class BackupInventory {
+
+    private final SurvivalPlugin survivalPlugin;
+    private final UserService userService;
+
+    public BackupInventory(SurvivalPlugin survivalPlugin, UserService userService) {
+        this.survivalPlugin = survivalPlugin;
+        this.userService = userService;
+    }
+
+
+    public void show(final Player player, final Player target) {
+        SimpleInventory simpleInventory = new SimpleInventory(
+                this.survivalPlugin,
+                9 * 6,
+                MessageUtil.smallTextToColor("&fBackupy: " + target.getName())
+        );
+        Inventory inventory = simpleInventory.getInventory();
+
+        User user = this.userService.findUserByNickName(target.getName());
+        if (user == null) {
+            player.sendMessage(MessageUtil.smallTextToColor("&cNie znaleziono użytkownika!"));
+            return;
+        }
+        if (user.getBackups().isEmpty()) {
+            player.sendMessage(MessageUtil.smallTextToColor("&cGracz nie posiada backapów"));
+            return;
+        }
+
+        Integer[] glassBlueSlots = {
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
+        };
+
+        Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
+                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                        .setName(" ")
+                        .toItemStack()
+        ));
+
+        user.getBackups().forEach(backup -> {
+            inventory.addItem(
+                    new ItemBuilder(Material.BOOK)
+                            .setTitle(backup.getInstantFormat())
+                            .addLore("", "&aKliknij, aby otworzyć podgląd.")
+                            .build()
+            );
+        });
+
+        simpleInventory.click(event -> {
+            event.setCancelled(true);
+
+            ItemStack currentItem = event.getCurrentItem();
+            if (currentItem == null || !currentItem.hasItemMeta() || !currentItem.getItemMeta().hasDisplayName()) {
+                return;
+            }
+
+            String clickedName = currentItem.getItemMeta().getDisplayName();
+            for (Backup backup : user.getBackups()) {
+                if (clickedName.equals(backup.getInstantFormat())) {
+                    showPreview(player, target, backup);
+                    return;
+                }
+            }
+        });
+
+        player.openInventory(inventory);
+    }
+
+
+    public void showPreview(final Player player, final Player target, final Backup backup) {
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fBackap z: " + backup.getInstantFormat()));
+        Inventory inventory = simpleInventory.getInventory();
+        ItemStack[] itemStackArrayList = ItemStackSerializable.read(backup.getItemStackArrayList());
+
+        Integer[] glassBlueSlots = new Integer[]{
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
+        };
+
+        Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
+                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                        .setName(" ")
+                        .toItemStack()));
+
+        for (ItemStack itemStack : itemStackArrayList) {
+            inventory.addItem(itemStack);
+        }
+
+        inventory.setItem(45,
+                new ItemBuilder(Material.RED_DYE)
+                        .setTitle("&acofnij")
+                        .build()
+        );
+
+        inventory.setItem(49,
+                new ItemBuilder(Material.PAPER)
+                        .setTitle("&aInformacje poboczne")
+                        .addLore(
+                                "&7lvl: &7" + backup.getLvl(),
+                                "&7exp: &7" + backup.getExp())
+                        .build()
+        );
+
+        inventory.setItem(53,
+                new ItemBuilder(Material.GREEN_DYE)
+                        .setTitle("&aNadaj zestaw")
+                        .addLore(
+                                "",
+                                "&aKliknij aby nadać graczu backup")
+                        .build()
+        );
+
+        simpleInventory.click(event -> {
+            event.setCancelled(true);
+
+            if (event.getSlot() == 45) {
+                show(player, target);
+            }
+
+            if (event.getSlot() == 53) {
+                if (target == null) {
+                    MessageUtil.sendTitle(player, "", "&cgracz nie jest online", 20,50,20);
+                    player.closeInventory();
+                    return;
+                }
+
+                for (ItemStack itemStack : itemStackArrayList) {
+                    HashMap<Integer, ItemStack> leftover = target.getInventory().addItem(itemStack);
+                    leftover.values().forEach(remaining ->
+                            target.getWorld().dropItemNaturally(target.getLocation(), remaining)
+                    );
+                }
+                MessageUtil.sendTitle(player, "", "&abackup dla " + target.getName() + " z dnia: &f" + backup.getInstantFormat(), 20, 50, 20);
+                MessageUtil.sendTitle(target, "", "&aotrzymałeś/aś backup z dnia: &f" + backup.getInstantFormat(), 20,50,20);
+            }
+        });
+
+        player.openInventory(inventory);
+    }
+}

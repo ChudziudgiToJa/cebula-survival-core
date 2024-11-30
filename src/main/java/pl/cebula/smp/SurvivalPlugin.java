@@ -14,6 +14,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.cebula.smp.feature.backup.BackupCommand;
+import pl.cebula.smp.feature.backup.BackupController;
+import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.configuration.ConfigService;
@@ -111,6 +114,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         KitPreviewInventory kitPreviewInventory = new KitPreviewInventory(this.userService, this);
         KitInventory kitInventory = new KitInventory(this, this.pluginConfiguration, kitPreviewInventory);
 
+        // backup
+        BackupInventory backupInventory = new BackupInventory(this, this.userService);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -126,7 +132,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new TrashCommand(this),
                         new EconomyCommand(this.userService),
                         new JobCommand(jobInventory),
-                        new KitCommand(kitInventory)
+                        new KitCommand(kitInventory),
+                        new BackupCommand(backupInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -138,7 +145,8 @@ public final class SurvivalPlugin extends JavaPlugin {
         Stream.of(
                 new JoinQuitListener(this.userService),
                 new ShopNpcController(this.pluginConfiguration, shopInventory),
-                new JobController(this.userService, this.random)
+                new JobController(this.userService, this.random),
+                new BackupController(this.userService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

@@ -143,4 +143,8 @@ public final class ItemStackBuilder {
         enchantments.forEach(this::addEnchant);
         return this;
     }
+
+    public ItemStackBuilder addLore(String s, String s1) {
+        return null;
+    }
 }

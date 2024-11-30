@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
+import pl.cebula.smp.feature.backup.Backup;
 import pl.cebula.smp.feature.job.JobType;
 import pl.cebula.smp.feature.kit.Kit;
 import pl.cebula.smp.feature.kit.KitData;
@@ -32,6 +33,8 @@ public class User implements Serializable, Identifiable<String> {
 
     private ArrayList<KitData> kits;
 
+    private ArrayList<Backup> backups;
+
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
         this.nickName = player.getName();
@@ -45,6 +48,7 @@ public class User implements Serializable, Identifiable<String> {
 
         this.kits = new ArrayList<>();
 
+        this.backups = new ArrayList<>();
     }
 
 
