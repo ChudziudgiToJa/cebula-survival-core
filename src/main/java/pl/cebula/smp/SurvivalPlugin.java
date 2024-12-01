@@ -27,6 +27,10 @@ import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
+import pl.cebula.smp.feature.itemshop.ItemShopCommand;
+import pl.cebula.smp.feature.itemshop.ItemShopInventory;
+import pl.cebula.smp.feature.itemshop.ItemShopManager;
+import pl.cebula.smp.feature.itemshop.VplnCommand;
 import pl.cebula.smp.feature.job.JobCommand;
 import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
@@ -55,6 +59,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     public static final Gson GSON = GsonHolder.GSON;
     private final MongoDatabaseService mongoDatabaseService = new MongoDatabaseService();
     private final UserRepository userRepository = new UserRepository();
+    private final ItemShopManager itemShopManager = new ItemShopManager();
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
     private MessagesConfiguration messagesConfiguration;
@@ -116,6 +121,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         // backup
         BackupInventory backupInventory = new BackupInventory(this, this.userService);
 
+        // ItemShop
+        ItemShopInventory itemShopInventory = new ItemShopInventory(this, this.pluginConfiguration, this.itemShopManager, this.userService);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -132,7 +140,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new EconomyCommand(this.userService),
                         new JobCommand(jobInventory),
                         new KitCommand(kitInventory),
-                        new BackupCommand(backupInventory)
+                        new BackupCommand(backupInventory),
+                        new VplnCommand(this.userService),
+                        new ItemShopCommand(itemShopInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

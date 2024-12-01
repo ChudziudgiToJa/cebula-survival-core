@@ -3,6 +3,7 @@ package pl.cebula.smp.configuration.implementation;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import org.bukkit.Material;
+import pl.cebula.smp.feature.itemshop.ItemShop;
 import pl.cebula.smp.feature.kit.Kit;
 import pl.cebula.smp.feature.shop.object.ItemToInteract;
 import pl.cebula.smp.feature.shop.object.Shop;
@@ -12,10 +13,55 @@ import java.util.List;
 
 public class PluginConfiguration extends OkaeriConfig {
 
+
     public NpcShopSettings npcShopSettings = new NpcShopSettings();
     public KitSettings kitSettings = new KitSettings();
-
     public BlockerSettings BlockerSettings = new BlockerSettings();
+    public ItemShopSettings itemShopSettings = new ItemShopSettings();
+
+    public static class ItemShopSettings extends OkaeriConfig {
+        public List<ItemShop> shops = List.of(
+                new ItemShop(
+                        new ItemBuilder(Material.IRON_HELMET)
+                                .setTitle("&e&lvip &8(&f30dni&8)")
+                                .addLore(
+                                        "",
+                                        "&7Cena&8: &f4.99 &avpln",
+                                        "",
+                                        "&aKliknij aby kupić usługę."
+                                )
+                                .build(),
+                        4.99,
+                        "lp user {PLAYER} parent addtemp vip 30d"
+                ),
+                new ItemShop(
+                        new ItemBuilder(Material.DIAMOND_HELMET)
+                                .setTitle("&6&lm&e&lvip &8(&f30dni&8)")
+                                .addLore(
+                                        "",
+                                        "&7Cena&8: &f9.99 &avpln",
+                                        "",
+                                        "&aKliknij aby kupić usługę."
+                                )
+                                .build(),
+                        9.99,
+                        "lp user {PLAYER} parent addtemp mvip 30d"
+                ),
+                new ItemShop(
+                        new ItemBuilder(Material.DIAMOND_HELMET)
+                                .setTitle("&6&lcebulak &8(&f30dni&8)")
+                                .addLore(
+                                        "",
+                                        "&7Cena&8: &f14.99 &avpln",
+                                        "",
+                                        "&aKliknij aby kupić usługę."
+                                )
+                                .build(),
+                        14.99,
+                        "lp user {PLAYER} parent addtemp cebulak 30d"
+                )
+        );
+    }
 
     public static class BlockerSettings extends OkaeriConfig {
         @Comment("Lista zablokowanych przedmiotów do craftingów  interackjci")

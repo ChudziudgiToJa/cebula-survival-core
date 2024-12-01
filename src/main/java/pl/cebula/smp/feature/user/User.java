@@ -24,6 +24,9 @@ public class User implements Serializable, Identifiable<String> {
 
     private String uuid;
     private String nickName;
+
+    private double vpln;
+
     private Double money;
 
     private Integer spentTime;
@@ -38,6 +41,8 @@ public class User implements Serializable, Identifiable<String> {
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
         this.nickName = player.getName();
+
+        this.vpln = 0.0;
 
         this.money = 0.0;
 
