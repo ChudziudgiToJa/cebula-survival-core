@@ -9,12 +9,21 @@ import pl.cebula.smp.feature.shop.object.Shop;
 import pl.cebula.smp.util.ItemBuilder;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PluginConfiguration extends OkaeriConfig {
 
     public NpcShopSettings npcShopSettings = new NpcShopSettings();
     public KitSettings kitSettings = new KitSettings();
+
+    public BlockerSettings BlockerSettings = new BlockerSettings();
+
+    public static class BlockerSettings extends OkaeriConfig {
+        @Comment("Lista zablokowanych przedmiotów do craftingów  interackjci")
+        public List<Material> materials = List.of(
+                Material.WRITABLE_BOOK,
+                Material.ARMOR_STAND
+        );
+    }
 
     public static class NpcShopSettings extends OkaeriConfig {
         public List<Shop> shops = List.of(
@@ -278,6 +287,7 @@ public class PluginConfiguration extends OkaeriConfig {
                 )
         );
     }
+
     public static class KitSettings extends OkaeriConfig {
         @Comment("## czas podajemy w milisekundach bo to liczy na czasie aktualnym świata")
         public List<Kit> kitList = List.of(

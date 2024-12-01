@@ -146,6 +146,7 @@ public class BackupInventory {
                 }
                 MessageUtil.sendTitle(player, "", "&abackup dla " + target.getName() + " z dnia: &f" + backup.getInstantFormat(), 20, 50, 20);
                 MessageUtil.sendTitle(target, "", "&aotrzymałeś/aś backup z dnia: &f" + backup.getInstantFormat(), 20,50,20);
+                player.closeInventory();
             }
         });
 

@@ -26,7 +26,7 @@ public class BackupController implements Listener {
         User user = this.userService.findUserByNickName(player.getName());
 
         if (user.getBackups().size() >= 21) {
-            user.getBackups().remove(user.getBackups().size());
+            user.getBackups().removeLast();
         }
 
         ItemStack[] inventory = player.getInventory().getContents();

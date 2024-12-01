@@ -17,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
+import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.configuration.ConfigService;
@@ -31,7 +32,6 @@ import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
-import pl.cebula.smp.feature.kit.KitPreviewInventory;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
@@ -111,8 +111,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         JobInventory jobInventory = new JobInventory(this, this.userService);
 
         // kit
-        KitPreviewInventory kitPreviewInventory = new KitPreviewInventory(this.userService, this);
-        KitInventory kitInventory = new KitInventory(this, this.pluginConfiguration, kitPreviewInventory);
+        KitInventory kitInventory = new KitInventory(this, this.pluginConfiguration, this.userService);
 
         // backup
         BackupInventory backupInventory = new BackupInventory(this, this.userService);
@@ -146,7 +145,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new JoinQuitListener(this.userService),
                 new ShopNpcController(this.pluginConfiguration, shopInventory),
                 new JobController(this.userService, this.random),
-                new BackupController(this.userService)
+                new BackupController(this.userService),
+                new BlockerController(this.pluginConfiguration)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
