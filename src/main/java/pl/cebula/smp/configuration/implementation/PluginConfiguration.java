@@ -19,6 +19,9 @@ public class PluginConfiguration extends OkaeriConfig {
     public BlockerSettings BlockerSettings = new BlockerSettings();
     public ItemShopSettings itemShopSettings = new ItemShopSettings();
 
+    public int freePlnNpcID =16;
+
+
     public static class ItemShopSettings extends OkaeriConfig {
         public List<ItemShop> shops = List.of(
                 new ItemShop(

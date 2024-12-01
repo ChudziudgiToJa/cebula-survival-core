@@ -50,12 +50,9 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &3/helpop (wiadomosc) &8- &fWysyla wiadomosc do administracji"))
                 .addLore(MessageUtil.smallText("&8• &3/msg (nick) (wiadomosc) &8- &fWysyla prywatna wiadomosc do gracza"))
                 .addLore(MessageUtil.smallText("&8• &3/r (wiadomosc) &8- &fOdpowiada na ostatnia prywatna wiadomosc"))
-                .addLore(MessageUtil.smallText("&8• &3/wymiana (nick) &8- &fWysyla prosbe o wymiane do innego gracza"))
-                .addLore(MessageUtil.smallText("&8• &3/portfel &8- &fOtwiera ItemShop serwera"))
-                .addLore("")
-                .addLore(MessageUtil.smallText("&8• &fStrona: &bwww.paymc.pl"))
-                .addLore(MessageUtil.smallText("&8• &fDiscord: &bdc.paymc.pl"))
-                .addLore(MessageUtil.smallText("&8• &fFanpage: &bfb.paymc.pl"))
+                .addLore(MessageUtil.smallText("&8• &3/itemshop &8- &fOtwiera ItemShop serwera"))
+                .addLore(MessageUtil.smallText("&8• &3/sethome /home &8- &fsystem domów"))
+
                 .addLore("");
 
         inventory.setItem(13, helpItem.toItemStack());
@@ -65,6 +62,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&9&lRANGA &e&lVIP"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
+                .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.05 do 0.10"))
                 .addLore(MessageUtil.smallText("&8• &3/kit vip &8- &fDostep do kit vip"))
                 .addLore(MessageUtil.smallText("&8• &3/repair &8- &fDostep do repair"))
                 .addLore(MessageUtil.smallText("&8• &3/feed &8- &fDostep do feed"))
@@ -72,7 +70,6 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &3/hat &8- &fMozliwosc zalozenia itemku na glowe"))
                 .addLore(MessageUtil.smallText("&8• &3/ec &8- &fDostep do enderchesta"))
                 .addLore(MessageUtil.smallText("&8• &3/wb &8- &fDostep do craftingu"))
-                .addLore(MessageUtil.smallText("&8• &3/sethome &8- &fDostep do ustawienia domu"))
                 .addLore(MessageUtil.smallText("&8"))
                 .addLore(MessageUtil.smallText("&8• &fmozliwosc ustawienia 2 domow"))
                 .addLore(MessageUtil.smallText("&8• &fUnikalny prefix na czacie i tabliscie"))
@@ -87,6 +84,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&9&lRANGA &6&lM&e&lVIP"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
+                .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.10 do 0.30"))
                 .addLore(MessageUtil.smallText("&8• &3/kit mvip &8- &fDostep do kit mvip"))
                 .addLore(MessageUtil.smallText("&8• &3/kit vip &8- &fDostep do kit vip"))
                 .addLore(MessageUtil.smallText("&8• &3/repair &8- &fDostep do repair"))
@@ -111,6 +109,7 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&9&lRANGA &6&lCEBULAK"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
+                .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.30 do 0.60"))
                 .addLore(MessageUtil.smallText("&8• &3/kit cebulak &8- &fDostep do kit sponsor"))
                 .addLore(MessageUtil.smallText("&8• &3/kit mvip &8- &fDostep do kit mvip"))
                 .addLore(MessageUtil.smallText("&8• &3/kit vip &8- &fDostep do kit vip"))

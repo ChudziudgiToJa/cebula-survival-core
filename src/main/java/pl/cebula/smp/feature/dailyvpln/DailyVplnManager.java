@@ -1,0 +1,32 @@
+package pl.cebula.smp.feature.dailyvpln;
+
+import org.bukkit.entity.Player;
+import pl.cebula.smp.feature.user.User;
+import pl.cebula.smp.feature.user.UserService;
+
+import java.util.Random;
+
+public class DailyVplnManager {
+
+    private final Random random;
+
+    public DailyVplnManager(Random random) {
+        this.random = random;
+    }
+
+
+    public double getRandomValueForPlayer(Player player) {
+        if (player.hasPermission("cebulasmp.freepln.vip")) {
+            return getRandomDouble(0.05, 0.10);
+        } else if (player.hasPermission("cebulasmp.freepln.mvip")) {
+            return getRandomDouble(0.10, 0.30);
+        } else if (player.hasPermission("cebulasmp.freepln.cebulak")) {
+            return getRandomDouble(0.30, 0.60);
+        }
+        return getRandomDouble(0.1, 0.5);
+    }
+
+    private double getRandomDouble(double min, double max) {
+        return min + (max - min) * random.nextDouble();
+    }
+}

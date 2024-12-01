@@ -18,6 +18,8 @@ import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
+import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.configuration.ConfigService;
@@ -68,6 +70,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private TopManager topManager;
 
     private final Random random = new Random();
+    private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
 
 
     private LiteCommands<CommandSender> liteCommands;
@@ -156,7 +159,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ShopNpcController(this.pluginConfiguration, shopInventory),
                 new JobController(this.userService, this.random),
                 new BackupController(this.userService),
-                new BlockerController(this.pluginConfiguration)
+                new BlockerController(this.pluginConfiguration),
+                new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

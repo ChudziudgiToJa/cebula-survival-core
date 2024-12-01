@@ -34,8 +34,9 @@ public class User implements Serializable, Identifiable<String> {
 
     private JobType jobType;
 
-    private ArrayList<KitData> kits;
+    private long dailyFreeVpln;
 
+    private ArrayList<KitData> kits;
     private ArrayList<Backup> backups;
 
     public User(Player player) {
@@ -50,6 +51,8 @@ public class User implements Serializable, Identifiable<String> {
         this.progress = 0;
 
         this.jobType = JobType.CLEAR;
+
+        this.dailyFreeVpln = 0;
 
         this.kits = new ArrayList<>();
 
