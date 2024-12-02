@@ -82,7 +82,7 @@ public class KitInventory {
         );
 
         inventory.setItem(52,
-                new ItemBuilder(Material.GREEN_DYE)
+                new ItemBuilder(Material.LIME_DYE)
                         .setTitle("kliknij aby odebrac zestaw")
                         .build()
         );

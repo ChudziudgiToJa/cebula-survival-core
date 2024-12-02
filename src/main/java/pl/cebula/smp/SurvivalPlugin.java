@@ -38,6 +38,9 @@ import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
+import pl.cebula.smp.feature.lootcase.LootCaseCommand;
+import pl.cebula.smp.feature.lootcase.LootCaseController;
+import pl.cebula.smp.feature.lootcase.LootCaseInventory;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
@@ -127,6 +130,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         // ItemShop
         ItemShopInventory itemShopInventory = new ItemShopInventory(this, this.pluginConfiguration, this.itemShopManager, this.userService);
 
+        // lootCase
+        LootCaseInventory lootCaseInventory = new LootCaseInventory(this);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -145,7 +151,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new KitCommand(kitInventory),
                         new BackupCommand(backupInventory),
                         new VplnCommand(this.userService),
-                        new ItemShopCommand(itemShopInventory)
+                        new ItemShopCommand(itemShopInventory),
+                        new LootCaseCommand(this.pluginConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -160,7 +167,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new JobController(this.userService, this.random),
                 new BackupController(this.userService),
                 new BlockerController(this.pluginConfiguration),
-                new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager)
+                new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),
+                new LootCaseController(this.pluginConfiguration, lootCaseInventory)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

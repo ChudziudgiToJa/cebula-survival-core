@@ -2,9 +2,15 @@ package pl.cebula.smp.configuration.implementation;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.feature.itemshop.ItemShop;
 import pl.cebula.smp.feature.kit.Kit;
+import pl.cebula.smp.feature.lootcase.LootCase;
+import pl.cebula.smp.feature.lootcase.LootCaseChance;
 import pl.cebula.smp.feature.shop.object.ItemToInteract;
 import pl.cebula.smp.feature.shop.object.Shop;
 import pl.cebula.smp.util.ItemBuilder;
@@ -18,9 +24,37 @@ public class PluginConfiguration extends OkaeriConfig {
     public KitSettings kitSettings = new KitSettings();
     public BlockerSettings BlockerSettings = new BlockerSettings();
     public ItemShopSettings itemShopSettings = new ItemShopSettings();
+    public LootCaseSettings lootCaseSettings = new LootCaseSettings();
 
     public int freePlnNpcID =16;
+    public ItemStack itemStackToCfg;
 
+    public static class LootCaseSettings extends OkaeriConfig {
+        public List<LootCase> lootCases = List.of(
+                new LootCase(
+                        "zwyczajna",
+                        new Location(Bukkit.getWorlds().getFirst(),19,71,27),
+                        new ItemBuilder(Material.TRIAL_KEY)
+                                .setTitle("&dklucz do skrzyni zwyczajnej")
+                                .setGlow(true)
+                                .build(),
+                        List.of(
+                                new LootCaseChance(
+                                 new ItemBuilder(Material.DIAMOND_SWORD).build(),
+                                 10
+                                ),
+                                new LootCaseChance(
+                                        new ItemBuilder(Material.MAGMA_CREAM).build(),
+                                        22
+                                ),
+                                new LootCaseChance(
+                                        new ItemBuilder(Material.STONE_SWORD).build(),
+                                        33
+                                )
+                        )
+                )
+        );
+    }
 
     public static class ItemShopSettings extends OkaeriConfig {
         public List<ItemShop> shops = List.of(
@@ -341,6 +375,25 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment("## czas podajemy w milisekundach bo to liczy na czasie aktualnym świata")
         public List<Kit> kitList = List.of(
                 new Kit(
+                        "gracz",
+                        900000,
+                        new ItemBuilder(Material.LEATHER_HELMET)
+                                .setTitle("&7gracz")
+                                .addLore(
+                                        "",
+                                        "&aKliknij aby otworzyć podgląd."
+                                )
+                                .build(),
+                        "",
+                        List.of(
+                                new ItemBuilder(Material.STONE_AXE).build(),
+                                new ItemBuilder(Material.STONE_PICKAXE).build(),
+                                new ItemBuilder(Material.LEATHER_CHESTPLATE).build(),
+                                new ItemBuilder(Material.LEATHER_LEGGINGS).build(),
+                                new ItemBuilder(Material.COOKED_BEEF, 16).build()
+                        )
+                ),
+                new Kit(
                         "vip",
                         86400000,
                         new ItemBuilder(Material.IRON_HELMET)
@@ -352,7 +405,22 @@ public class PluginConfiguration extends OkaeriConfig {
                                 .build(),
                         "cebulasmp.kit.vip",
                         List.of(
-                                new ItemBuilder(Material.APPLE).build()
+                                new ItemBuilder(Material.IRON_AXE)
+                                        .addEnchant(Enchantment.UNBREAKING, 1)
+                                        .build(),
+                                new ItemBuilder(Material.IRON_PICKAXE)
+                                        .addEnchant(Enchantment.UNBREAKING, 2)
+                                        .build(),
+                                new ItemBuilder(Material.SHEARS)
+                                        .addEnchant(Enchantment.UNBREAKING, 2)
+                                        .build(),
+                                new ItemBuilder(Material.COOKED_BEEF, 32).build(),
+                                new ItemBuilder(Material.GOLDEN_APPLE, 2).build(),
+                                new ItemBuilder(Material.CHAINMAIL_CHESTPLATE)
+                                        .build(),
+                                new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
+                                        .build()
+
                         )
                 ),
                 new Kit(
@@ -367,7 +435,24 @@ public class PluginConfiguration extends OkaeriConfig {
                                 .build(),
                         "cebulasmp.kit.mvip",
                         List.of(
-                                new ItemBuilder(Material.STONE).build()
+                                new ItemBuilder(Material.IRON_AXE)
+                                        .addEnchant(Enchantment.UNBREAKING, 1)
+                                        .build(),
+                                new ItemBuilder(Material.IRON_PICKAXE)
+                                        .addEnchant(Enchantment.UNBREAKING, 2)
+                                        .build(),
+                                new ItemBuilder(Material.SHEARS)
+                                        .addEnchant(Enchantment.UNBREAKING, 2)
+                                        .build(),
+                                new ItemBuilder(Material.COOKED_BEEF, 32).build(),
+                                new ItemBuilder(Material.GOLDEN_APPLE, 2).build(),
+                                new ItemBuilder(Material.IRON_CHESTPLATE)
+                                        .addEnchant(Enchantment.PROTECTION, 1)
+                                        .build(),
+                                new ItemBuilder(Material.IRON_LEGGINGS)
+                                        .addEnchant(Enchantment.PROTECTION, 1)
+                                        .build()
+
                         )
                 ),
                 new Kit(
@@ -382,14 +467,24 @@ public class PluginConfiguration extends OkaeriConfig {
                                 .build(),
                         "cebulasmp.kit.cebulak",
                         List.of(
-                                new ItemBuilder(Material.DIAMOND_HELMET).build(),
-                                new ItemBuilder(Material.DIAMOND_CHESTPLATE).build(),
-                                new ItemBuilder(Material.DIAMOND_LEGGINGS).build(),
-                                new ItemBuilder(Material.DIAMOND_BOOTS).build(),
-                                new ItemBuilder(Material.DIAMOND_SWORD).build(),
-                                new ItemBuilder(Material.DIAMOND_PICKAXE).build(),
-                                new ItemBuilder(Material.DIAMOND_AXE).build(),
-                                new ItemBuilder(Material.DIAMOND_HOE).build()
+                                new ItemBuilder(Material.IRON_AXE)
+                                        .addEnchant(Enchantment.EFFICIENCY, 1)
+                                        .addEnchant(Enchantment.UNBREAKING, 2)
+                                        .build(),
+                                new ItemBuilder(Material.DIAMOND_PICKAXE)
+                                        .addEnchant(Enchantment.UNBREAKING, 3)
+                                        .build(),
+                                new ItemBuilder(Material.SHEARS)
+                                        .addEnchant(Enchantment.UNBREAKING, 3)
+                                        .build(),
+                                new ItemBuilder(Material.COOKED_BEEF, 32).build(),
+                                new ItemBuilder(Material.GOLDEN_APPLE, 3).build(),
+                                new ItemBuilder(Material.IRON_CHESTPLATE)
+                                        .addEnchant(Enchantment.PROTECTION, 2)
+                                        .build(),
+                                new ItemBuilder(Material.IRON_LEGGINGS)
+                                        .addEnchant(Enchantment.PROTECTION, 2)
+                                        .build()
                         )
                 )
         );
