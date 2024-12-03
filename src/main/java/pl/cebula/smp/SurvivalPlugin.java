@@ -18,6 +18,7 @@ import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.command.ItemTiConfig;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
@@ -152,7 +153,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new BackupCommand(backupInventory),
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
-                        new LootCaseCommand(this.pluginConfiguration)
+                        new LootCaseCommand(this.pluginConfiguration),
+                        new ItemTiConfig(this.pluginConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

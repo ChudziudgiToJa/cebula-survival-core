@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.cebula-survival-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.cebula-survival-core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IdeaProjects.cebula-survival-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/IdeaProjects.cebula-survival-core.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cebula-survival-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cebula-survival-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cebula-survival-core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/cebula-survival-core.test.iml" />
     </modules>
