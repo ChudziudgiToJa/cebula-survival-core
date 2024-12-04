@@ -6,14 +6,18 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.ItemStackBuilder;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class LootCaseInventory {
 
@@ -24,7 +28,7 @@ public class LootCaseInventory {
     }
 
     public void showPrewiew(final Player player, final LootCase lootCase) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fpodgląd skrzyni: " + lootCase.getName()));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor(lootCase.getString()));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassBlueSlots = new Integer[]{
@@ -45,8 +49,16 @@ public class LootCaseInventory {
                         .setName("&akliknij aby otworzyć")
                         .toItemStack()));
 
-        for (LootCaseChance itemStack : lootCase.getDropItems()) {
-            inventory.addItem(itemStack.getItemStack());
+        for (LootCaseChance lootCaseChance : lootCase.getDropItems()) {
+            ItemStack lootItemStack = ItemStackSerializable.readItemStack(lootCaseChance.getItemStackInString());
+            ItemMeta itemMeta = lootItemStack.getItemMeta();
+            itemMeta.setLore(List.of(
+                    " ",
+                    MessageUtil.smallTextToColor("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"),
+                    ""
+            ));
+            lootItemStack.setItemMeta(itemMeta);
+            inventory.addItem(lootItemStack);
         }
 
 
@@ -59,9 +71,22 @@ public class LootCaseInventory {
                     player.closeInventory();
                     return;
                 }
-                player.getInventory().remove(lootCase.getKeyItemStack());
 
-                ItemStack lootedItemStack = LootCaseManager.pickRandomItem(lootCase.getDropItems()).getItemStack();
+//                for (ItemStack item : player.getInventory().getContents()) {
+//                    if (item != null && item.isSimilar(lootCase.getKeyItemStack())) {
+//                        if (item.getAmount() > 1) {
+//                            item.setAmount(item.getAmount() - 1);
+//                        } else {
+//                            player.getInventory().remove(item);
+//                        }
+//                        break;
+//                    }
+//                }
+
+                ItemStack lootedItemStack = ItemStackSerializable.readItemStack(LootCaseManager.pickRandomItem(lootCase.getDropItems()).getItemStackInString());
+
+                if (lootedItemStack == null) return;
+
                 HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(lootedItemStack);
                 leftover.values().forEach(remaining ->
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)

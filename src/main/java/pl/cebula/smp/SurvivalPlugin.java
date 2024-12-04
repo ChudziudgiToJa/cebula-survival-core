@@ -14,11 +14,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.cebula.smp.feature.abyss.AbyssTask;
 import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
-import pl.cebula.smp.feature.command.ItemTiConfig;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
@@ -39,9 +39,7 @@ import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
-import pl.cebula.smp.feature.lootcase.LootCaseCommand;
-import pl.cebula.smp.feature.lootcase.LootCaseController;
-import pl.cebula.smp.feature.lootcase.LootCaseInventory;
+import pl.cebula.smp.feature.lootcase.*;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
@@ -133,6 +131,8 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         // lootCase
         LootCaseInventory lootCaseInventory = new LootCaseInventory(this);
+        LootCaseHandler lootCaseHandler = new LootCaseHandler(this.pluginConfiguration);
+        lootCaseHandler.createLootCaseHolograms();
 
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -149,12 +149,11 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new TrashCommand(this),
                         new EconomyCommand(this.userService),
                         new JobCommand(jobInventory),
-                        new KitCommand(kitInventory),
+                        new KitCommand(kitInventory, this.pluginConfiguration, this.userService),
                         new BackupCommand(backupInventory),
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
-                        new LootCaseCommand(this.pluginConfiguration),
-                        new ItemTiConfig(this.pluginConfiguration)
+                        new LootCaseCommand(this.pluginConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -177,6 +176,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new UsersSaveTask(this,this.userService);
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);
+        new AbyssTask(this);
     }
 
     @Override

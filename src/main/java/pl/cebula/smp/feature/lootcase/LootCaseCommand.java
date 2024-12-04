@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 
 @Command(name = "case")
@@ -69,5 +70,16 @@ public class LootCaseCommand {
         if (!found) {
             MessageUtil.sendMessage(player, "Nie znaleziono skrzyni o nazwie: " + string);
         }
+    }
+
+    @Permission("cebula.case.additem.admin")
+    @Execute(name = "additem")
+    void execute(@Context Player sender, @Arg String lootCasename,@Arg double chance) {
+        this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
+            if (lootCase.getName().equals(lootCasename)) {
+                lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
+                this.pluginConfiguration.save();
+            }
+        });
     }
 }

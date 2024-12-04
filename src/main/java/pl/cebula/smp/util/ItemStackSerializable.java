@@ -26,7 +26,30 @@ public class ItemStackSerializable {
         }
     }
 
-    public static ItemStack[] read(String source) {
+
+    public static String write(ItemStack item) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+            dataOutput.writeObject(item);
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+
+        } catch (Exception ignored) {
+            return "";
+        }
+    }
+
+    public static ItemStack readItemStack(String data) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
+            return (ItemStack) dataInput.readObject();
+
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+
+    public static ItemStack[] readItemStackList(String source) {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(source));
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
 

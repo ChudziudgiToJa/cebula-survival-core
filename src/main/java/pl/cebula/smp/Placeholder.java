@@ -43,6 +43,9 @@ public class Placeholder extends PlaceholderExpansion {
         if(params.startsWith("czas")) {
             return DurationUtil.format(Duration.ofSeconds(user.getSpentTime()));
         }
+        if(params.startsWith("vpln")) {
+            return DecimalUtil.getFormat(user.getVpln());
+        }
         return "";
     }
 

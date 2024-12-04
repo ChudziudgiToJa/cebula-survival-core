@@ -85,7 +85,8 @@ public class BackupInventory {
     public void showPreview(final Player player, final Player target, final Backup backup) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fBackap z: " + backup.getInstantFormat()));
         Inventory inventory = simpleInventory.getInventory();
-        ItemStack[] itemStackArrayList = ItemStackSerializable.read(backup.getItemStackArrayList());
+        ItemStack[] itemStackArrayList = ItemStackSerializable.readItemStackList(backup.getItemStackArrayList());
+        User user = this.userService.findUserByNickName(target.getName());
 
         Integer[] glassBlueSlots = new Integer[]{
                 1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
@@ -132,18 +133,14 @@ public class BackupInventory {
             }
 
             if (event.getSlot() == 53) {
-                if (target == null) {
-                    MessageUtil.sendTitle(player, "", "&cgracz nie jest online", 20,50,20);
-                    player.closeInventory();
-                    return;
-                }
-
                 for (ItemStack itemStack : itemStackArrayList) {
                     HashMap<Integer, ItemStack> leftover = target.getInventory().addItem(itemStack);
                     leftover.values().forEach(remaining ->
                             target.getWorld().dropItemNaturally(target.getLocation(), remaining)
                     );
                 }
+
+                user.getBackups().remove(backup);
                 MessageUtil.sendTitle(player, "", "&abackup dla " + target.getName() + " z dnia: &f" + backup.getInstantFormat(), 20, 50, 20);
                 MessageUtil.sendTitle(target, "", "&aotrzymałeś/aś backup z dnia: &f" + backup.getInstantFormat(), 20,50,20);
                 player.closeInventory();

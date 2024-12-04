@@ -59,7 +59,7 @@ public class HelpInventory {
 
         ItemStackBuilder vipItem = new ItemStackBuilder(Material.GOLDEN_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore(MessageUtil.smallText("&9&lRANGA &e&lVIP"))
+                .addLore(MessageUtil.smallText("&9&lRANGA ꑅ"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
                 .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.05 do 0.10"))
@@ -81,7 +81,7 @@ public class HelpInventory {
 
         ItemStackBuilder svipItem = new ItemStackBuilder(Material.IRON_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore(MessageUtil.smallText("&9&lRANGA &6&lM&e&lVIP"))
+                .addLore(MessageUtil.smallText("&9&lRANGA ꑇ"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
                 .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.10 do 0.30"))
@@ -106,7 +106,7 @@ public class HelpInventory {
 
         ItemStackBuilder sponsorItem = new ItemStackBuilder(Material.DIAMOND_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore(MessageUtil.smallText("&9&lRANGA &6&lCEBULAK"))
+                .addLore(MessageUtil.smallText("&9&lRANGA ꑍ"))
                 .addLore("")
                 .addLore(MessageUtil.smallText("&8• &fUprawnienia:"))
                 .addLore(MessageUtil.smallText("&8• &3codzienne vpn &8- &fdrop od 0.30 do 0.60"))

@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 @Getter
 public class LootCaseChance implements Serializable {
-    private final ItemStack itemStack;
+    private final String itemStackInString;
     private final double chance;
 
-    public LootCaseChance(ItemStack itemStack, double chance) {
-        this.itemStack = itemStack;
+    public LootCaseChance(String itemStackInString, double chance) {
+        this.itemStackInString = itemStackInString;
         this.chance = chance;
     }
 }

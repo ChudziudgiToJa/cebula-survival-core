@@ -1,10 +1,12 @@
 package pl.cebula.smp.configuration.implementation;
 
+import com.comphenix.protocol.wrappers.EnumWrappers;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.feature.itemshop.ItemShop;
@@ -27,30 +29,71 @@ public class PluginConfiguration extends OkaeriConfig {
     public LootCaseSettings lootCaseSettings = new LootCaseSettings();
 
     public int freePlnNpcID =16;
-    public ItemStack itemStackToCfg;
 
     public static class LootCaseSettings extends OkaeriConfig {
         public List<LootCase> lootCases = List.of(
                 new LootCase(
-                        "zwyczajna",
-                        new Location(Bukkit.getWorlds().getFirst(),19,71,27),
+                        "afk",
+                        "skrzynia afk &8[&e⭐&7⭐⭐⭐⭐&8]",
+                        new Location(Bukkit.getWorlds().getFirst(),30,72,28),
                         new ItemBuilder(Material.TRIAL_KEY)
-                                .setTitle("&dklucz do skrzyni zwyczajnej")
+                                .setTitle("klucz do skrzyni afk &8[&e⭐&7⭐⭐⭐⭐&8]")
+                                .addLore(
+                                        "",
+                                        "&7znajdziesz skrzynie pod &8(/warp)"
+                                )
                                 .setGlow(true)
                                 .build(),
+                        Particle.HEART,
                         List.of(
-                                new LootCaseChance(
-                                 new ItemBuilder(Material.DIAMOND_SWORD).build(),
-                                 10
-                                ),
-                                new LootCaseChance(
-                                        new ItemBuilder(Material.MAGMA_CREAM).build(),
-                                        22
-                                ),
-                                new LootCaseChance(
-                                        new ItemBuilder(Material.STONE_SWORD).build(),
-                                        33
+                        )
+                ),
+                new LootCase(
+                        "wedrowca",
+                        "skrzynia wędrowca &8[&e⭐⭐&7⭐⭐⭐&8]",
+                        new Location(Bukkit.getWorlds().getFirst(),26,72,25),
+                        new ItemBuilder(Material.TRIAL_KEY)
+                                .setTitle("&dklucz do skrzyni wedrowca &8[&e⭐⭐&7⭐⭐⭐&8]")
+                                .addLore(
+                                        "",
+                                        "&7znajdziesz skrzyni pod &8(/warp)"
                                 )
+                                .setGlow(true)
+                                .build(),
+                        Particle.NOTE,
+                        List.of(
+                        )
+                ),
+                new LootCase(
+                        "smoka",
+                        "skrzynia smoka &8[&e⭐⭐⭐&7⭐⭐&8]",
+                        new Location(Bukkit.getWorlds().getFirst(),25,72,17),
+                        new ItemBuilder(Material.TRIAL_KEY)
+                                .setTitle("&dklucz do skrzyni smoka &8[&e⭐⭐⭐&7⭐⭐&8]")
+                                .addLore(
+                                        "",
+                                        "&7znajdziesz skrzyni pod &8(/warp)"
+                                )
+                                .setGlow(true)
+                                .build(),
+                        Particle.SCULK_SOUL,
+                        List.of(
+                        )
+                ),
+                new LootCase(
+                        "piekiel",
+                        "skrzynia piekieł &8[&e⭐⭐⭐⭐⭐&8]",
+                        new Location(Bukkit.getWorlds().getFirst(),29,72,13),
+                        new ItemBuilder(Material.TRIAL_KEY)
+                                .setTitle("&dklucz do skrzyni piekieł &8[&e⭐⭐⭐⭐⭐&8]")
+                                .addLore(
+                                        "",
+                                        "&7znajdziesz skrzyni pod &8(/warp)"
+                                )
+                                .setGlow(true)
+                                .build(),
+                        Particle.SMOKE,
+                        List.of(
                         )
                 )
         );
@@ -60,7 +103,7 @@ public class PluginConfiguration extends OkaeriConfig {
         public List<ItemShop> shops = List.of(
                 new ItemShop(
                         new ItemBuilder(Material.IRON_HELMET)
-                                .setTitle("&e&lvip &8(&f30dni&8)")
+                                .setTitle("ꑅ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f4.99 &avpln",
@@ -73,7 +116,7 @@ public class PluginConfiguration extends OkaeriConfig {
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("&6&lm&e&lvip &8(&f30dni&8)")
+                                .setTitle("ꑇ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f9.99 &avpln",
@@ -86,7 +129,7 @@ public class PluginConfiguration extends OkaeriConfig {
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("&6&lcebulak &8(&f30dni&8)")
+                                .setTitle("ꑍ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f14.99 &avpln",
@@ -397,7 +440,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "vip",
                         86400000,
                         new ItemBuilder(Material.IRON_HELMET)
-                                .setTitle("&evip")
+                                .setTitle("ꑅ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
@@ -427,7 +470,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "mvip",
                         86400000,
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("&6M&evip")
+                                .setTitle("ꑇ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
@@ -459,7 +502,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "cebulak",
                         86400000,
                         new ItemBuilder(Material.NETHERITE_HELMET)
-                                .setTitle("&6cebulak")
+                                .setTitle("ꑍ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
