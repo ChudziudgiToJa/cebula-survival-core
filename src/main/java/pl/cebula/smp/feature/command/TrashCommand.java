@@ -22,7 +22,7 @@ public class TrashCommand {
 
     @Execute
     void execute(@Context Player sender) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin,9 * 6, MessageUtil.smallText(MessageUtil.smallTextToColor("&3&lkosz")));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin,9 * 6, MessageUtil.smallText(MessageUtil.smallTextToColor("&e&lkosz")));
         Inventory inventory = simpleInventory.getInventory();
         sender.openInventory(inventory);
     }

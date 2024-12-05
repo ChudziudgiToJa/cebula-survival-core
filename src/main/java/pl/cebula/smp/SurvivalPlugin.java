@@ -30,6 +30,7 @@ import pl.cebula.smp.configuration.implementation.MessagesConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.command.TrashCommand;
+import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
@@ -157,7 +158,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new BackupCommand(backupInventory),
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
-                        new LootCaseCommand(this.pluginConfiguration)
+                        new LootCaseCommand(this.pluginConfiguration),
+                        new MoneyCommand(this.userService)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
