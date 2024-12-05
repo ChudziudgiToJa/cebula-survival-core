@@ -36,7 +36,8 @@ public class LootCaseCommand {
         boolean found = false;
         for (LootCase lootCase : this.pluginConfiguration.lootCaseSettings.lootCases) {
             if (lootCase.getName().equalsIgnoreCase(string)) {
-                ItemStack itemStack = lootCase.getKeyItemStack();
+                ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
+                if (itemStack == null) return;
                 itemStack.setAmount(i);
                 player.getInventory().addItem(itemStack);
                 MessageUtil.sendMessage(player, "Dodano " + i + " kluczy dla skrzyni: " + lootCase.getName());
@@ -59,7 +60,8 @@ public class LootCaseCommand {
         boolean found = false;
         for (LootCase lootCase : this.pluginConfiguration.lootCaseSettings.lootCases) {
             if (lootCase.getName().equalsIgnoreCase(string)) {
-                ItemStack itemStack = lootCase.getKeyItemStack();
+                ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
+                if (itemStack == null) return;
                 itemStack.setAmount(i);
                 Bukkit.getOnlinePlayers().forEach(player1 -> player1.getInventory().addItem(itemStack));
                 MessageUtil.sendMessage(player, "Dodano " + i + " kluczy dla skrzyni: " + lootCase.getName() + " wszystkim graczom.");
@@ -78,6 +80,17 @@ public class LootCaseCommand {
         this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
             if (lootCase.getName().equals(lootCasename)) {
                 lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
+                this.pluginConfiguration.save();
+            }
+        });
+    }
+
+    @Permission("cebula.case.additem.admin")
+    @Execute(name = "setkey")
+    void execute(@Context Player sender, @Arg String lootCasename) {
+        this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
+            if (lootCase.getName().equals(lootCasename)) {
+                lootCase.setKeyItemStack(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
                 this.pluginConfiguration.save();
             }
         });

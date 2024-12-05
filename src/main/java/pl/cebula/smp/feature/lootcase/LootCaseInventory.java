@@ -8,7 +8,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.ItemStackBuilder;
 import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
@@ -17,7 +16,6 @@ import pl.cebula.smp.util.SimpleInventory;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class LootCaseInventory {
 
@@ -65,23 +63,27 @@ public class LootCaseInventory {
         simpleInventory.click(event -> {
             event.setCancelled(true);
 
+            if (lootCase.getDropItems().isEmpty()) return;
+
             if (Arrays.asList(openCaseItem).contains(event.getSlot())) {
-                if (!player.getInventory().contains(lootCase.getKeyItemStack())) {
+                if (!player.getInventory().contains(ItemStackSerializable.readItemStack(lootCase.getKeyItemStack()))) {
                     MessageUtil.sendTitle(player, "", "&cNie posiadasz klucza zakup pod &7/itemshop", 20, 50, 20);
                     player.closeInventory();
                     return;
                 }
 
-//                for (ItemStack item : player.getInventory().getContents()) {
-//                    if (item != null && item.isSimilar(lootCase.getKeyItemStack())) {
-//                        if (item.getAmount() > 1) {
-//                            item.setAmount(item.getAmount() - 1);
-//                        } else {
-//                            player.getInventory().remove(item);
-//                        }
-//                        break;
-//                    }
-//                }
+
+                for (int i = 0; i < player.getInventory().getSize(); i++) {
+                    ItemStack slotItem = player.getInventory().getItem(i);
+                    if (slotItem != null && slotItem.isSimilar(ItemStackSerializable.readItemStack(lootCase.getKeyItemStack()))) {
+                        if (slotItem.getAmount() > 1) {
+                            slotItem.setAmount(slotItem.getAmount() - 1);
+                        } else {
+                            player.getInventory().setItem(i, null);
+                        }
+                        break;
+                    }
+                }
 
                 ItemStack lootedItemStack = ItemStackSerializable.readItemStack(LootCaseManager.pickRandomItem(lootCase.getDropItems()).getItemStackInString());
 
@@ -92,7 +94,7 @@ public class LootCaseInventory {
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );
                 Bukkit.getOnlinePlayers().forEach(player1 -> {
-                    MessageUtil.sendMessage(player1, player.getName() + " &aotworzył &2" + lootCase.getName() +  "&a skrzyie &8| &b" + lootedItemStack.getType());
+                    MessageUtil.sendMessage(player1, player.getName() + " &aotworzył &2" + lootCase.getName() + "&a skrzyie &8| &b" + lootedItemStack.getType());
                     player1.playSound(player1, Sound.ENTITY_CAT_HISS, 5, 5);
                 });
             }

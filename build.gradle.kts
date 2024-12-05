@@ -8,6 +8,7 @@ repositories {
     mavenCentral()
     mavenLocal()
 
+    maven("https://maven.enginehub.org/repo/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
@@ -48,6 +49,9 @@ dependencies {
     implementation("eu.okaeri:okaeri-configs-serdes-commons:${okaeriConfigsVersion}")
     implementation("eu.okaeri:okaeri-configs-serdes-bukkit:${okaeriConfigsVersion}")
 
+
+    // worldguard
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.10")
 
     //NPC
     compileOnly("net.citizensnpcs:citizens-main:2.0.33-SNAPSHOT") {

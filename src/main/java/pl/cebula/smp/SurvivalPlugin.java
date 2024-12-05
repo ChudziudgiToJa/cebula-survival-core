@@ -15,6 +15,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.cebula.smp.feature.abyss.AbyssTask;
+import pl.cebula.smp.feature.afkzone.AfkZoneManager;
+import pl.cebula.smp.feature.afkzone.AfkZoneTask;
 import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
@@ -40,6 +42,7 @@ import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
 import pl.cebula.smp.feature.lootcase.*;
+import pl.cebula.smp.feature.npcpush.NpcPushTask;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
@@ -70,6 +73,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private UserService userService;
     private ProtocolManager protocolManager;
     private TopManager topManager;
+    private final AfkZoneManager afkZoneManager = new AfkZoneManager();
 
     private final Random random = new Random();
     private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
@@ -177,6 +181,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
+        new AfkZoneTask(this, afkZoneManager, this.pluginConfiguration, userService);
+        new LootCaseTask(this, this.pluginConfiguration);
+        new NpcPushTask(this, this.pluginConfiguration);
     }
 
     @Override

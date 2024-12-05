@@ -36,14 +36,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "afk",
                         "skrzynia afk &8[&e⭐&7⭐⭐⭐⭐&8]",
                         new Location(Bukkit.getWorlds().getFirst(),30,72,28),
-                        new ItemBuilder(Material.TRIAL_KEY)
-                                .setTitle("klucz do skrzyni afk &8[&e⭐&7⭐⭐⭐⭐&8]")
-                                .addLore(
-                                        "",
-                                        "&7znajdziesz skrzynie pod &8(/warp)"
-                                )
-                                .setGlow(true)
-                                .build(),
+                        "",
                         Particle.HEART,
                         List.of(
                         )
@@ -52,14 +45,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "wedrowca",
                         "skrzynia wędrowca &8[&e⭐⭐&7⭐⭐⭐&8]",
                         new Location(Bukkit.getWorlds().getFirst(),26,72,25),
-                        new ItemBuilder(Material.TRIAL_KEY)
-                                .setTitle("&dklucz do skrzyni wedrowca &8[&e⭐⭐&7⭐⭐⭐&8]")
-                                .addLore(
-                                        "",
-                                        "&7znajdziesz skrzyni pod &8(/warp)"
-                                )
-                                .setGlow(true)
-                                .build(),
+                        "",
                         Particle.NOTE,
                         List.of(
                         )
@@ -68,14 +54,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "smoka",
                         "skrzynia smoka &8[&e⭐⭐⭐&7⭐⭐&8]",
                         new Location(Bukkit.getWorlds().getFirst(),25,72,17),
-                        new ItemBuilder(Material.TRIAL_KEY)
-                                .setTitle("&dklucz do skrzyni smoka &8[&e⭐⭐⭐&7⭐⭐&8]")
-                                .addLore(
-                                        "",
-                                        "&7znajdziesz skrzyni pod &8(/warp)"
-                                )
-                                .setGlow(true)
-                                .build(),
+                        "",
                         Particle.SCULK_SOUL,
                         List.of(
                         )
@@ -84,14 +63,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "piekiel",
                         "skrzynia piekieł &8[&e⭐⭐⭐⭐⭐&8]",
                         new Location(Bukkit.getWorlds().getFirst(),29,72,13),
-                        new ItemBuilder(Material.TRIAL_KEY)
-                                .setTitle("&dklucz do skrzyni piekieł &8[&e⭐⭐⭐⭐⭐&8]")
-                                .addLore(
-                                        "",
-                                        "&7znajdziesz skrzyni pod &8(/warp)"
-                                )
-                                .setGlow(true)
-                                .build(),
+                        "",
                         Particle.SMOKE,
                         List.of(
                         )
