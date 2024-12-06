@@ -39,6 +39,12 @@ public class User implements Serializable, Identifiable<String> {
     private ArrayList<KitData> kits;
     private ArrayList<Backup> backups;
 
+    private int dead;
+    private int kill;
+    private int breakBlock;
+    private int placeBlock;
+
+
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
         this.nickName = player.getName();
@@ -53,6 +59,11 @@ public class User implements Serializable, Identifiable<String> {
         this.jobType = JobType.CLEAR;
 
         this.dailyFreeVpln = 0;
+
+        this.dead = 0;
+        this.kill = 0;
+        this.breakBlock = 0;
+        this.placeBlock = 0;
 
         this.kits = new ArrayList<>();
 

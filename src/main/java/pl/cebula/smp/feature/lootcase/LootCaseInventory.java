@@ -66,11 +66,12 @@ public class LootCaseInventory {
             if (lootCase.getDropItems().isEmpty()) return;
 
             if (Arrays.asList(openCaseItem).contains(event.getSlot())) {
-                if (!player.getInventory().contains(ItemStackSerializable.readItemStack(lootCase.getKeyItemStack()))) {
+                if (!player.getInventory().containsAtLeast(ItemStackSerializable.readItemStack(lootCase.getKeyItemStack()), 1)) {
                     MessageUtil.sendTitle(player, "", "&cNie posiadasz klucza zakup pod &7/itemshop", 20, 50, 20);
                     player.closeInventory();
                     return;
                 }
+
 
 
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
@@ -94,7 +95,7 @@ public class LootCaseInventory {
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );
                 Bukkit.getOnlinePlayers().forEach(player1 -> {
-                    MessageUtil.sendMessage(player1, player.getName() + " &aotworzył &2" + lootCase.getName() + "&a skrzyie &8| &b" + lootedItemStack.getType());
+                    MessageUtil.sendMessage(player1, player.getName() + " &aotworzył &2" + lootCase.getName() + "&a skrzyie &8| &b" + lootedItemStack.getItemMeta().getDisplayName());
                     player1.playSound(player1, Sound.ENTITY_CAT_HISS, 5, 5);
                 });
             }

@@ -8,6 +8,7 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.DataUtil;
 import pl.cebula.smp.util.DecimalUtil;
 import pl.cebula.smp.util.DurationUtil;
+import pl.cebula.smp.util.MessageUtil;
 
 import java.time.Duration;
 
@@ -45,6 +46,25 @@ public class Placeholder extends PlaceholderExpansion {
         }
         if(params.startsWith("vpln")) {
             return DecimalUtil.getFormat(user.getVpln());
+        }
+        if(params.startsWith("kills")) {
+            return "" + user.getKill();
+        }
+        if(params.startsWith("deaths")) {
+            return "" + user.getDead();
+        }
+        if(params.startsWith("place_block")) {
+            return "" + user.getPlaceBlock();
+        }
+        if(params.startsWith("break_block")) {
+            return "" + user.getBreakBlock();
+        }
+        if(params.startsWith("kd")) {
+            if (user.getDead() == 0) {
+                return "0.0";
+            }
+            return String.valueOf((double) user.getKill() / user.getDead());
+
         }
         return "";
     }

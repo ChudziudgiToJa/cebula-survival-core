@@ -46,6 +46,9 @@ import pl.cebula.smp.feature.lootcase.*;
 import pl.cebula.smp.feature.npcpush.NpcPushTask;
 import pl.cebula.smp.feature.shop.controller.ShopNpcController;
 import pl.cebula.smp.feature.shop.inventory.ShopInventory;
+import pl.cebula.smp.feature.statistic.StatisticCommand;
+import pl.cebula.smp.feature.statistic.StatisticController;
+import pl.cebula.smp.feature.statistic.StatisticInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
 import pl.cebula.smp.feature.top.TopManager;
 import pl.cebula.smp.feature.user.UserService;
@@ -139,6 +142,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         LootCaseHandler lootCaseHandler = new LootCaseHandler(this.pluginConfiguration);
         lootCaseHandler.createLootCaseHolograms();
 
+        // Statistic
+        StatisticInventory statisticInventory = new StatisticInventory(this, this.userService);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
 
@@ -159,7 +165,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
                         new LootCaseCommand(this.pluginConfiguration),
-                        new MoneyCommand(this.userService)
+                        new MoneyCommand(this.userService),
+                        new StatisticCommand(statisticInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -175,7 +182,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new BackupController(this.userService),
                 new BlockerController(this.pluginConfiguration),
                 new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),
-                new LootCaseController(this.pluginConfiguration, lootCaseInventory)
+                new LootCaseController(this.pluginConfiguration, lootCaseInventory),
+                new StatisticController(this.userService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

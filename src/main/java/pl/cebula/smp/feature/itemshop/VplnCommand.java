@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.economy.EconomyCommandType;
 import pl.cebula.smp.feature.user.User;
@@ -22,7 +23,7 @@ public class VplnCommand {
     }
 
     @Execute
-    void execute(@Context Player player, @Arg String s, @Arg EconomyCommandType economyCommandType, @Arg Double amount) {
+    void execute(@Context CommandSender player, @Arg String s, @Arg EconomyCommandType economyCommandType, @Arg Double amount) {
         User user = this.userService.findUserByNickName(s);
 
         if (user == null) {

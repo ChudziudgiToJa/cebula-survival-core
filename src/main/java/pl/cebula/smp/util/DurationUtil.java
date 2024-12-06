@@ -79,19 +79,19 @@ public final class DurationUtil {
         StringBuilder formattedDuration = new StringBuilder();
 
         if (days > 0) {
-            formattedDuration.append(days).append("d ");
+            formattedDuration.append(days).append(MessageUtil.smallText("d "));
         }
         if (hours > 0) {
-            formattedDuration.append(hours).append("h ");
+            formattedDuration.append(hours).append(MessageUtil.smallText("g "));
         }
         if (minutes > 0) {
-            formattedDuration.append(minutes).append("m ");
+            formattedDuration.append(minutes).append(MessageUtil.smallText("m "));
         }
-        if (seconds > 0 || formattedDuration.length() == 0) {
-            formattedDuration.append(seconds).append("s");
+        if (seconds > 0 || formattedDuration.isEmpty()) {
+            formattedDuration.append(seconds).append(MessageUtil.smallText("s"));
         }
         if (seconds == 0 && millis > 0) {
-            formattedDuration.append(" ").append(millis).append("ms");
+            formattedDuration.append(" ").append(millis).append(MessageUtil.smallText("ms"));
         }
 
         return formattedDuration.toString().trim();
