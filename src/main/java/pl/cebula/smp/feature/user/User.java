@@ -8,14 +8,10 @@ import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
 import pl.cebula.smp.feature.backup.Backup;
 import pl.cebula.smp.feature.job.JobType;
-import pl.cebula.smp.feature.kit.Kit;
 import pl.cebula.smp.feature.kit.KitData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @Getter
