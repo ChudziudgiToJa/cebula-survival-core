@@ -22,6 +22,7 @@ import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
+import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.inventory.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanInviteService;
@@ -217,6 +218,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new AfkZoneTask(this, afkZoneManager, this.pluginConfiguration, userService);
         new LootCaseTask(this, this.pluginConfiguration);
         new NpcPushTask(this, this.pluginConfiguration);
+        new ClanArmorTask(this, this.clanService);
     }
 
     @Override
