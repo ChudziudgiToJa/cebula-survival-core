@@ -21,6 +21,12 @@ import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.clan.command.ClanCommand;
+import pl.cebula.smp.feature.clan.inventory.ClanDeleteInventory;
+import pl.cebula.smp.feature.clan.repository.ClanRepository;
+import pl.cebula.smp.feature.clan.service.ClanInviteService;
+import pl.cebula.smp.feature.clan.service.ClanService;
+import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
@@ -71,11 +77,15 @@ public final class SurvivalPlugin extends JavaPlugin {
     public static final Gson GSON = GsonHolder.GSON;
     private final MongoDatabaseService mongoDatabaseService = new MongoDatabaseService();
     private final UserRepository userRepository = new UserRepository();
+    private final ClanRepository clanRepository = new ClanRepository();
     private final ItemShopManager itemShopManager = new ItemShopManager();
+    private final ClanInviteService clanInviteService = new ClanInviteService(this);
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
     private MessagesConfiguration messagesConfiguration;
     private UserService userService;
+
+    private ClanService clanService;
     private ProtocolManager protocolManager;
     private TopManager topManager;
     private final AfkZoneManager afkZoneManager = new AfkZoneManager();
@@ -89,6 +99,9 @@ public final class SurvivalPlugin extends JavaPlugin {
     public void onLoad() {
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.userService = new UserService(this.userRepository);
+        this.clanService = new ClanService(this.clanRepository);
+
+
 
         Bukkit.getServicesManager().register(Economy.class, new EconomyHolder(this.userService), this, ServicePriority.Highest);
 
@@ -109,7 +122,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         instance = this;
 
         //load placeholderApi
-        new Placeholder(this.userService).register();
+        new Placeholder(this.userService, this.clanService).register();
 
         //load configs files
         ConfigService configService = new ConfigService();
@@ -146,8 +159,12 @@ public final class SurvivalPlugin extends JavaPlugin {
         // Statistic
         StatisticInventory statisticInventory = new StatisticInventory(this, this.userService);
 
+        //Clan
+        ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
+
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
+        this.clanRepository.findAll().forEach(this.clanService::addClan);
 
         // load commands
         this.liteCommands = LiteCommandsBukkit.builder()
@@ -168,7 +185,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new LootCaseCommand(this.pluginConfiguration),
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
-                        new PayCommand(this.userService)
+                        new PayCommand(this.userService),
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -190,6 +208,9 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         // load Tasks
         new UsersSaveTask(this,this.userService);
+        new ClanSaveTask(this, this.clanService);
+
+
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);

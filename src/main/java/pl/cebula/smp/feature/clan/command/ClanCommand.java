@@ -1,0 +1,148 @@
+package pl.cebula.smp.feature.clan.command;
+
+import dev.rollczi.litecommands.annotations.argument.Arg;
+import dev.rollczi.litecommands.annotations.command.Command;
+import dev.rollczi.litecommands.annotations.context.Context;
+import dev.rollczi.litecommands.annotations.execute.Execute;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.inventory.ClanDeleteInventory;
+import pl.cebula.smp.feature.clan.service.ClanInviteService;
+import pl.cebula.smp.feature.clan.service.ClanService;
+import pl.cebula.smp.feature.user.User;
+import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.util.MessageUtil;
+
+@Command(name = "klan")
+public class ClanCommand {
+
+    private final UserService userService;
+    private final ClanService clanService;
+    private final ClanDeleteInventory clanDeleteInventory;
+    private final ClanInviteService clanInviteService;
+
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService) {
+        this.userService = userService;
+        this.clanService = clanService;
+        this.clanDeleteInventory = clanDeleteInventory;
+        this.clanInviteService = clanInviteService;
+    }
+
+    @Execute(name = "stwórz")
+    void create(@Context Player player, @Arg String tag) {
+        Clan clan = this.clanService.findClanByOwner(player.getName());
+
+        if (clan != null) {
+            MessageUtil.sendMessage(player, "&cPosiadasz juz klan.");
+            return;
+        }
+
+        if (!(tag.length() == 4)) {
+            MessageUtil.sendMessage(player, "&ctag klanu musi mieć 5 znaków");
+            return;
+        }
+
+        if (!tag.matches("[a-zA-Z]+")) {
+            MessageUtil.sendMessage(player, "&cTag klanu może zawierać tylko litery alfabetu (bez cyfr i znaków specjalnych)");
+            return;
+        }
+        User user = this.userService.findUserByUUID(player.getUniqueId());
+
+        if (user.getMoney() < 3500) {
+            MessageUtil.sendMessage(player, "&cNie stać cię! kosz klanu to &43500 &cmonet");
+            return;
+        }
+        user.setMoney(user.getMoney() - 3500);
+        this.clanService.createClan(new Clan(player, tag));
+        Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
+    }
+
+    @Execute(name = "usuń")
+    void delete(@Context Player player) {
+        Clan clan = this.clanService.findClanByOwner(player.getName());
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu.");
+            return;
+        }
+        this.clanDeleteInventory.showDeleteInventory(player, clan);
+    }
+
+    @Execute(name = "zaproś")
+    void invinteMember(@Context Player player, @Arg Player target) {
+        Clan clan = this.clanService.findClanByOwner(player.getName());
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu lub nie jesteś liderem.");
+            return;
+        }
+
+        if (target == null) {
+            MessageUtil.sendMessage(player, "&cGracz nie jest aktywny");
+            return;
+        }
+
+        Clan targetClan = this.clanService.findClanByMember(target.getName());
+
+        if (targetClan != null) {
+            MessageUtil.sendMessage(player, "&cGracz posiada już klan");
+            return;
+        }
+        this.clanInviteService.inviteToClan(clan, target.getName());
+        MessageUtil.sendMessage(player, "&aZaproszono do klanu: &f" + target.getName());
+        MessageUtil.sendMessage(target, "&aOtrzymałeś/aś zaproszenie do klanu: " + clan.getTag());
+    }
+
+    @Execute(name = "akceptuj")
+    void acceptClanInvite(@Context Player player, @Arg String targetClan) {
+        Clan playerClan = this.clanService.findClanByOwner(player.getName());
+        if (playerClan != null) {
+            MessageUtil.sendMessage(player, "&cPosiadasz już klan.");
+            return;
+        }
+        Clan clan = this.clanService.findClanByTag(targetClan.toUpperCase());
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cTaki klan nie istnieje.");
+            return;
+        }
+        if (!this.clanInviteService.clanInviteConcurrentHashMap.containsKey(clan) ||
+                !this.clanInviteService.clanInviteConcurrentHashMap.get(clan).equals(player.getName())) {
+            MessageUtil.sendMessage(player, "&cNie masz zaproszenia do tego klanu.");
+            return;
+        }
+        clan.getMemberArrayList().add(player.getName());
+        this.clanInviteService.clanInviteConcurrentHashMap.remove(clan, player.getName());
+        MessageUtil.sendMessage(player, "&aPomyślnie dołączyłeś do klanu " + clan.getTag() + ".");
+        clan.getMemberArrayList().forEach(s -> {
+            Player clanMember = Bukkit.getPlayer(s);
+            if (clanMember ==  null) return;
+            MessageUtil.sendMessage(clanMember, "&f" + player.getName() + " &adołączył do klanu.");
+        });
+    }
+
+
+
+    @Execute(name = "wyrzuć")
+    void removeMember(@Context Player player, @Arg String target) {
+        Clan clan = this.clanService.findClanByOwner(player.getName());
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu lub nie jesteś liderem.");
+            return;
+        }
+        Clan targetClan = this.clanService.findClanByMember(target);
+        if (targetClan == null) {
+            MessageUtil.sendMessage(player, "&cGracz nie posiada klan");
+            return;
+        }
+
+        if (!clan.getMemberArrayList().contains(target)) {
+            MessageUtil.sendMessage(player, "&cgracz nie jest w twoim klanie.");
+            return;
+        }
+
+        clan.getMemberArrayList().remove(target);
+        MessageUtil.sendMessage(player, "&awyrzucono z klanu: " + target);
+    }
+}

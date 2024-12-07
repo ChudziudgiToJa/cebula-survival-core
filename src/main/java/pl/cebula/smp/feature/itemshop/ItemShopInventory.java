@@ -66,7 +66,7 @@ public class ItemShopInventory {
 
 
     public void showAreYouSure(final Player player, final ItemShop shop) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lITEMSHOP &7czy napewno?"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lITEMSHOP &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 

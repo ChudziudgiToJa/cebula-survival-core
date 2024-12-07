@@ -1,34 +1,31 @@
-package pl.cebula.smp.feature.statistic;
+package pl.cebula.smp.feature.clan.inventory;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.itemshop.ItemShop;
-import pl.cebula.smp.feature.user.User;
-import pl.cebula.smp.feature.user.UserService;
-import pl.cebula.smp.util.ItemBuilder;
+import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemStackBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
 import java.util.Arrays;
 
-public class StatisticInventory {
+public class ClanDeleteInventory {
 
     private final SurvivalPlugin survivalPlugin;
-    private final UserService userService;
+    private final ClanService clanService;
 
-    public StatisticInventory(SurvivalPlugin survivalPlugin, UserService userService) {
+    public ClanDeleteInventory(SurvivalPlugin survivalPlugin, ClanService clanService) {
         this.survivalPlugin = survivalPlugin;
-        this.userService = userService;
+        this.clanService = clanService;
     }
 
-    public void showAreYouSure(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lSTATYSTYKI &7czy na pewno?"));
+    public void showDeleteInventory(final Player player, final Clan clan) {
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lKLAN &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
-        User user = this.userService.findUserByNickName(player.getName());
 
         Integer[] glassGreenSlots = new Integer[]{
                 1,2,0,
@@ -47,11 +44,6 @@ public class StatisticInventory {
                         .setName("&a&lTAK")
                         .toItemStack()));
 
-        inventory.setItem(13, new ItemBuilder(Material.GOLD_INGOT)
-                        .setTitle("&fcena resetu statystyk&7: &a" + 1000 + " &fmonet")
-                .build()
-        );
-
         Arrays.stream(glassRedSlots).forEach(slot -> inventory.setItem(slot,
                 new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
                         .setName("&4&lNIE")
@@ -69,20 +61,9 @@ public class StatisticInventory {
             }
 
             if (Arrays.asList(glassGreenSlots).contains(event.getSlot())) {
-
-                if (user.getMoney() >= 1000) {
-                    user.setMoney(user.getMoney() - 1000);
-                    user.setBreakBlock(0);
-                    user.setPlaceBlock(0);
-                    user.setDead(0);
-                    user.setKill(0);
-                    player.closeInventory();
-                    MessageUtil.sendTitle(player, "", "&atwoje statystyki zostały zresetowane.",20,50,20);
-                    return;
-                } else {
-                    MessageUtil.sendTitle(player, "", "&cNie posiadasz tylu monet.",20,50,20);
-                    player.closeInventory();
-                }
+                this.clanService.removeClan(clan);
+                player.closeInventory();
+                MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20,50,20);
             }
         });
 

@@ -3,6 +3,8 @@ package pl.cebula.smp;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.DataUtil;
@@ -15,9 +17,11 @@ import java.time.Duration;
 public class Placeholder extends PlaceholderExpansion {
 
     private final UserService userService;
+    private final ClanService clanService;
 
-    public Placeholder(UserService userService) {
+    public Placeholder(UserService userService, ClanService clanService) {
         this.userService = userService;
+        this.clanService = clanService;
     }
 
     @Override
@@ -38,6 +42,9 @@ public class Placeholder extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, @NotNull String params) {
         User user = userService.findUserByNickName(player.getName());
+        Clan clanOwner = this.clanService.findClanByOwner(player.getName());
+        Clan clanMember = this.clanService.findClanByMember(player.getName());
+
         if(params.startsWith("monety")) {
             return DecimalUtil.getFormat(user.getMoney());
         }
@@ -65,6 +72,21 @@ public class Placeholder extends PlaceholderExpansion {
             }
             return String.valueOf((double) user.getKill() / user.getDead());
 
+        }
+        if(params.startsWith("lider")) {
+            if (clanOwner != null) {
+                return "&6anga lider do oraxena &8|";
+            }
+        }
+        if(params.startsWith("clan")) {
+            if (clanMember != null) {
+                if (clanMember.getMemberArrayList().contains(player.getName()) || clanMember.getOwnerName().equals(player.getName())) {
+                    return " &a" + clanMember.getTag().toUpperCase();
+                } else {
+                    return " &4" + clanMember.getTag().toUpperCase();
+                }
+            }
+            return "";
         }
         return "";
     }

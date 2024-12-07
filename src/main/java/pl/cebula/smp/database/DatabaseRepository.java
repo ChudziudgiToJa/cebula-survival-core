@@ -39,6 +39,7 @@ public class DatabaseRepository<ID, T extends Identifiable<ID>> implements CrudR
         this.gson = gson;
     }
 
+
     @Override
     public void update(T object, ID field, UpdateType updateType) {
         if (updateType.equals(UpdateType.CREATE)) {
