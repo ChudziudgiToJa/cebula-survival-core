@@ -3,6 +3,8 @@ package pl.cebula.smp;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import pl.cebula.smp.feature.abyss.AbyssManager;
+import pl.cebula.smp.feature.abyss.AbyssTask;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
@@ -65,6 +67,9 @@ public class Placeholder extends PlaceholderExpansion {
         }
         if(params.startsWith("break_block")) {
             return "" + user.getBreakBlock();
+        }
+        if(params.startsWith("kosz")) {
+            return MessageUtil.smallText(DurationUtil.convertLong(AbyssManager.time));
         }
         if(params.startsWith("kd")) {
             if (user.getDead() == 0) {
