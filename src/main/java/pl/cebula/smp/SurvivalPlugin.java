@@ -14,6 +14,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.cebula.smp.configuration.ConfigService;
+import pl.cebula.smp.configuration.implementation.MessagesConfiguration;
+import pl.cebula.smp.configuration.implementation.PluginConfiguration;
+import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.abyss.AbyssTask;
 import pl.cebula.smp.feature.afkzone.AfkZoneManager;
 import pl.cebula.smp.feature.afkzone.AfkZoneTask;
@@ -23,20 +27,18 @@ import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
-import pl.cebula.smp.feature.clan.inventory.ClanDeleteInventory;
+import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
+import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
+import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpController;
+import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
-import pl.cebula.smp.feature.clan.service.ClanInviteService;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
+import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
-import pl.cebula.smp.configuration.ConfigService;
-import pl.cebula.smp.configuration.implementation.MessagesConfiguration;
-import pl.cebula.smp.configuration.implementation.PluginConfiguration;
-import pl.cebula.smp.database.MongoDatabaseService;
-import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.economy.PayCommand;
 import pl.cebula.smp.feature.help.HelpCommand;
@@ -72,36 +74,30 @@ import java.util.stream.Stream;
 @Getter
 public final class SurvivalPlugin extends JavaPlugin {
 
+    public static final Gson GSON = GsonHolder.GSON;
     @Getter
     public static SurvivalPlugin instance;
-
-    public static final Gson GSON = GsonHolder.GSON;
     private final MongoDatabaseService mongoDatabaseService = new MongoDatabaseService();
     private final UserRepository userRepository = new UserRepository();
     private final ClanRepository clanRepository = new ClanRepository();
     private final ItemShopManager itemShopManager = new ItemShopManager();
     private final ClanInviteService clanInviteService = new ClanInviteService(this);
+    private final AfkZoneManager afkZoneManager = new AfkZoneManager();
+    private final Random random = new Random();
+    private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
     private MessagesConfiguration messagesConfiguration;
     private UserService userService;
-
     private ClanService clanService;
     private ProtocolManager protocolManager;
     private TopManager topManager;
-    private final AfkZoneManager afkZoneManager = new AfkZoneManager();
-
-    private final Random random = new Random();
-    private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
-
-
     private LiteCommands<CommandSender> liteCommands;
 
     public void onLoad() {
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.userService = new UserService(this.userRepository);
         this.clanService = new ClanService(this.clanRepository);
-
 
 
         Bukkit.getServicesManager().register(Economy.class, new EconomyHolder(this.userService), this, ServicePriority.Highest);
@@ -162,6 +158,7 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         //Clan
         ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
+        ClanPvpInventory clanPvpInventory = new ClanPvpInventory(this, this.clanService);
 
         // load users
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -187,7 +184,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
-                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService)
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService, clanPvpInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -204,11 +201,12 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new BlockerController(this.pluginConfiguration),
                 new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),
                 new LootCaseController(this.pluginConfiguration, lootCaseInventory),
-                new StatisticController(this.userService)
+                new StatisticController(this.userService),
+                new ClanPvpController(this.clanService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
-        new UsersSaveTask(this,this.userService);
+        new UsersSaveTask(this, this.userService);
         new ClanSaveTask(this, this.clanService);
 
 

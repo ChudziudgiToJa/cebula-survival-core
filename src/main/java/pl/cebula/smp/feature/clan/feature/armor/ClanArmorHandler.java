@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClanArmorUtil {
+public class ClanArmorHandler {
 
     public static void sendArmorPacket(final Player player, final Player target) {
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();

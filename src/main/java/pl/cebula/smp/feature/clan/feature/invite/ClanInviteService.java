@@ -1,10 +1,9 @@
-package pl.cebula.smp.feature.clan.service;
+package pl.cebula.smp.feature.clan.feature.invite;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

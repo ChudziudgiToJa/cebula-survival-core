@@ -29,6 +29,7 @@ public class PluginConfiguration extends OkaeriConfig {
     public LootCaseSettings lootCaseSettings = new LootCaseSettings();
 
     public int freePlnNpcID =16;
+    public String incognitoPlayerNickSkin = "Khris0126";
 
     public static class LootCaseSettings extends OkaeriConfig {
         public List<LootCase> lootCases = List.of(
@@ -100,7 +101,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "lp user {PLAYER} parent addtemp mvip 30d"
                 ),
                 new ItemShop(
-                        new ItemBuilder(Material.DIAMOND_HELMET)
+                        new ItemBuilder(Material.NETHERITE_HELMET)
                                 .setTitle("ꑍ &8(&f30dni&8)")
                                 .addLore(
                                         "",

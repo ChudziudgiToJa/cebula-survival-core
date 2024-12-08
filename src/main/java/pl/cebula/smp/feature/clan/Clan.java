@@ -23,12 +23,16 @@ public class Clan implements Serializable, Identifiable<String> {
 
     private ArrayList<String> memberArrayList;
 
+    private boolean pvp;
+
     public Clan(Player player, String tag) {
         this.uuid = player.getUniqueId().toString();
         this.ownerName = player.getName();
         this.tag = tag.toUpperCase();
 
         this.memberArrayList = new ArrayList<>();
+
+        this.pvp = false;
     }
 
 

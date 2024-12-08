@@ -7,8 +7,9 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.inventory.ClanDeleteInventory;
-import pl.cebula.smp.feature.clan.service.ClanInviteService;
+import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
+import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
+import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -21,13 +22,28 @@ public class ClanCommand {
     private final ClanService clanService;
     private final ClanDeleteInventory clanDeleteInventory;
     private final ClanInviteService clanInviteService;
+    private final ClanPvpInventory clanPvpInventory;
 
-    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService) {
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ClanPvpInventory clanPvpInventory) {
         this.userService = userService;
         this.clanService = clanService;
         this.clanDeleteInventory = clanDeleteInventory;
         this.clanInviteService = clanInviteService;
+        this.clanPvpInventory = clanPvpInventory;
     }
+
+    @Execute()
+    void help(@Context Player player) {
+        MessageUtil.sendMessage(player, "&7Lista dostępnych komend klanowych:");
+        MessageUtil.sendMessage(player, "&a/klan stwórz <tag> &7- Tworzy nowy klan z podanym tagiem. Koszt: 3500 monet.");
+        MessageUtil.sendMessage(player, "&a/klan usuń &7- Usuwa twój klan (jeśli jesteś właścicielem).");
+        MessageUtil.sendMessage(player, "&a/klan zaproś <gracz> &7- Zaprasza podanego gracza do twojego klanu.");
+        MessageUtil.sendMessage(player, "&a/klan dołącz <tag> &7- Akceptuje zaproszenie do klanu o podanym tagu.");
+        MessageUtil.sendMessage(player, "&a/klan opuść &7- Opuszcza obecny klan (jeśli nie jesteś właścicielem).");
+        MessageUtil.sendMessage(player, "&a/klan wyrzuć <gracz> &7- Wyrzuca gracza z twojego klanu.");
+        MessageUtil.sendMessage(player, "&a/klan pvp &7- Otwiera menu zmiany ustawień PvP klanu.");
+    }
+
 
     @Execute(name = "stwórz")
     void create(@Context Player player, @Arg String tag) {
@@ -92,16 +108,17 @@ public class ClanCommand {
         this.clanInviteService.inviteToClan(clan, target.getName());
         MessageUtil.sendMessage(player, "&aZaproszono do klanu: &f" + target.getName());
         MessageUtil.sendMessage(target, "&aOtrzymałeś/aś zaproszenie do klanu: " + clan.getTag());
+        MessageUtil.sendMessage(target, "      &7&npo 15s zaprosenie wygasa!");
     }
 
-    @Execute(name = "akceptuj")
+    @Execute(name = "dołącz")
     void acceptClanInvite(@Context Player player, @Arg String targetClan) {
         Clan playerClan = this.clanService.findClanByOwner(player.getName());
         if (playerClan != null) {
             MessageUtil.sendMessage(player, "&cPosiadasz już klan.");
             return;
         }
-        Clan clan = this.clanService.findClanByTag(targetClan.toUpperCase());
+        Clan clan = this.clanService.findClanByTag(targetClan);
         if (clan == null) {
             MessageUtil.sendMessage(player, "&cTaki klan nie istnieje.");
             return;
@@ -122,6 +139,23 @@ public class ClanCommand {
     }
 
 
+    @Execute(name = "opuść")
+    void quitClan(@Context Player player) {
+        Clan clan = this.clanService.findClanByMember(player.getName());
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu.");
+            return;
+        }
+
+        if (clan.getOwnerName().equals(player.getName())) {
+            MessageUtil.sendMessage(player, "&cNie możesz opuścić swojego klanu &8(&7&8)");
+            return;
+        }
+
+        clan.getMemberArrayList().remove(player.getName());
+        MessageUtil.sendMessage(player, "&aopuszczono klan: &f" + clan.getTag());
+    }
 
     @Execute(name = "wyrzuć")
     void removeMember(@Context Player player, @Arg String target) {
@@ -131,6 +165,7 @@ public class ClanCommand {
             MessageUtil.sendMessage(player, "&cNie masz klanu lub nie jesteś liderem.");
             return;
         }
+
         Clan targetClan = this.clanService.findClanByMember(target);
         if (targetClan == null) {
             MessageUtil.sendMessage(player, "&cGracz nie posiada klan");
@@ -144,5 +179,21 @@ public class ClanCommand {
 
         clan.getMemberArrayList().remove(target);
         MessageUtil.sendMessage(player, "&awyrzucono z klanu: " + target);
+    }
+
+    @Execute(name = "pvp")
+    void changePvp(@Context Player player) {
+        Clan clan = this.clanService.findClanByOwner(player.getName());
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu.");
+            return;
+        }
+
+        if (!clan.getOwnerName().equals(player.getName())) {
+            MessageUtil.sendMessage(player, "&cnie jesteś liderem klanu.");
+            return;
+        }
+        this.clanPvpInventory.showChangePvp(player, clan);
     }
 }

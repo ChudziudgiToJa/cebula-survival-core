@@ -1,7 +1,7 @@
-package pl.cebula.smp.feature.clan.inventory;
+package pl.cebula.smp.feature.clan.feature.pvp;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
@@ -13,30 +13,28 @@ import pl.cebula.smp.util.SimpleInventory;
 
 import java.util.Arrays;
 
-public class ClanDeleteInventory {
+public class ClanPvpInventory {
 
     private final SurvivalPlugin survivalPlugin;
-    private final ClanService clanService;
 
-    public ClanDeleteInventory(SurvivalPlugin survivalPlugin, ClanService clanService) {
+    public ClanPvpInventory(SurvivalPlugin survivalPlugin, ClanService clanService) {
         this.survivalPlugin = survivalPlugin;
-        this.clanService = clanService;
     }
 
-    public void showDeleteInventory(final Player player, final Clan clan) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lKLAN &7czy na pewno?"));
+    public void showChangePvp(final Player player, final Clan clan) {
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&7aktualny status pvp: " + (clan.isPvp() ? "&awłączony" : "&cWyczłaczony")));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassGreenSlots = new Integer[]{
-                1,2,0,
-                9,10,11,
-                18,19,20
+                1, 2, 0,
+                9, 10, 11,
+                18, 19, 20
         };
 
         Integer[] glassRedSlots = new Integer[]{
-                6,7,8,
-                15,16,17,
-                24,25,26
+                6, 7, 8,
+                15, 16, 17,
+                24, 25, 26
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
@@ -55,18 +53,28 @@ public class ClanDeleteInventory {
             if (event.getCurrentItem() == null) return;
 
             if (Arrays.asList(glassRedSlots).contains(event.getSlot())) {
+                clan.setPvp(true);
+                clan.getMemberArrayList().forEach(s -> {
+                    Player member = Bukkit.getPlayer(s);
+                    if (member == null) return;
+                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &cwyłączony", 20, 50, 20);
+                });
+                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &cwyłączony", 20, 50, 20);
                 player.closeInventory();
-                player.playSound(player, Sound.BLOCK_BARREL_CLOSE, 5 ,5);
                 return;
             }
 
             if (Arrays.asList(glassGreenSlots).contains(event.getSlot())) {
-                this.clanService.removeClan(clan);
+                clan.setPvp(false);
+                clan.getMemberArrayList().forEach(s -> {
+                    Player member = Bukkit.getPlayer(s);
+                    if (member == null) return;
+                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &awyczłaczony", 20, 50, 20);
+                });
+                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &awyczłaczony", 20, 50, 20);
                 player.closeInventory();
-                MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20,50,20);
             }
         });
-
         player.openInventory(inventory);
     }
 }

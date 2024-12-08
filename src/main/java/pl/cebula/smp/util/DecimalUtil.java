@@ -20,6 +20,6 @@ public final class DecimalUtil {
         DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
         String symbol = SYMBOLS[index].toUpperCase();
 
-        return decimalFormat.format(amount) + symbol;
+        return decimalFormat.format(amount) + MessageUtil.smallText(symbol);
     }
 }

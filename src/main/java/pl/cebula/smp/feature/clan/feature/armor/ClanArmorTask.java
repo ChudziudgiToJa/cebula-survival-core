@@ -13,7 +13,7 @@ public class ClanArmorTask extends BukkitRunnable {
 
     public ClanArmorTask(final SurvivalPlugin survivalPlugin, ClanService clanService) {
         this.clanService = clanService;
-        this.runTaskTimerAsynchronously(survivalPlugin, 20, 20);
+        this.runTaskTimerAsynchronously(survivalPlugin, 40, 40);
     }
 
 
@@ -29,7 +29,7 @@ public class ClanArmorTask extends BukkitRunnable {
                         if (clan.getMemberArrayList().contains(nearbyPlayer.getName()) ||
                                 clan.getMemberArrayList().contains(player.getName()) ||
                                 clan.getOwnerName().equals(player.getName())) {
-                            ClanArmorUtil.sendArmorPacket(player, nearbyPlayer);
+                            ClanArmorHandler.sendArmorPacket(player, nearbyPlayer);
                         }
                     });
         });

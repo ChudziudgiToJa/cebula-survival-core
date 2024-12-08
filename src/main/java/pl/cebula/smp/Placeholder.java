@@ -81,9 +81,9 @@ public class Placeholder extends PlaceholderExpansion {
         if(params.startsWith("clan")) {
             if (clanMember != null) {
                 if (clanMember.getMemberArrayList().contains(player.getName()) || clanMember.getOwnerName().equals(player.getName())) {
-                    return " &a" + clanMember.getTag().toUpperCase();
+                    return " &a&l" + MessageUtil.smallText(clanMember.getTag().toUpperCase());
                 } else {
-                    return " &4" + clanMember.getTag().toUpperCase();
+                    return " &4&l" + MessageUtil.smallText(clanMember.getTag().toUpperCase());
                 }
             }
             return "";
