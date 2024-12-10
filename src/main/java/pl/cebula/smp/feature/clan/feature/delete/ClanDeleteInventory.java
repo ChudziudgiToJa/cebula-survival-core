@@ -1,11 +1,13 @@
 package pl.cebula.smp.feature.clan.feature.delete;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
@@ -62,6 +64,10 @@ public class ClanDeleteInventory {
 
             if (Arrays.asList(glassGreenSlots).contains(event.getSlot())) {
                 this.clanService.removeClan(clan);
+                Bukkit.getOnlinePlayers().forEach(player1 -> {
+                    ClanArmorHandler.refreshArmorPacket(player, player1);
+                    ClanArmorHandler.refreshArmorPacket(player1, player);
+                });
                 player.closeInventory();
                 MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20,50,20);
             }

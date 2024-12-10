@@ -47,7 +47,7 @@ public final class MessageUtil {
             }
         }
 
-        return formattedText.toString();
+        return colored(formattedText.toString());
     }
 
 

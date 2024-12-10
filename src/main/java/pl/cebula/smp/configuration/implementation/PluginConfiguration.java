@@ -82,7 +82,7 @@ public class PluginConfiguration extends OkaeriConfig {
                                 )
                                 .build(),
                         4.99,
-                        "lp user {PLAYER} parent addtemp vip 30d"
+                        List.of("lp user {PLAYER} parent addtemp vip 30d")
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.DIAMOND_HELMET)
@@ -95,7 +95,7 @@ public class PluginConfiguration extends OkaeriConfig {
                                 )
                                 .build(),
                         9.99,
-                        "lp user {PLAYER} parent addtemp mvip 30d"
+                        List.of("lp user {PLAYER} parent addtemp mvip 30d")
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.NETHERITE_HELMET)
@@ -108,7 +108,7 @@ public class PluginConfiguration extends OkaeriConfig {
                                 )
                                 .build(),
                         14.99,
-                        "lp user {PLAYER} parent addtemp cebulak 30d"
+                        List.of("lp user {PLAYER} parent addtemp cebulak 30d")
                 )
         );
     }

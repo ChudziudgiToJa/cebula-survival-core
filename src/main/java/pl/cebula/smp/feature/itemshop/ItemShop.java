@@ -4,17 +4,18 @@ import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 public class ItemShop implements Serializable {
 
     private final ItemStack itemStack;
     private final double price;
-    private final String command;
+    private final List<String> commandList;
 
-    public ItemShop(ItemStack itemStack, double price, String command) {
+    public ItemShop(ItemStack itemStack, double price, List<String> commandList) {
         this.itemStack = itemStack;
         this.price = price;
-        this.command = command;
+        this.commandList = commandList;
     }
 }

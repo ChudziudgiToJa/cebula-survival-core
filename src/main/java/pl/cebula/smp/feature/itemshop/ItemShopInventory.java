@@ -8,6 +8,7 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.util.DecimalUtil;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
@@ -30,16 +31,22 @@ public class ItemShopInventory {
     public void show(final Player player) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&6&lITEMSHOP"));
         Inventory inventory = simpleInventory.getInventory();
+        User user = this.userService.findUserByNickName(player.getName());
+
 
 
         Integer[] glassBlueSlots = new Integer[]{
-                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
                 new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .build()));
+
+        inventory.setItem(49, new ItemBuilder(Material.GOLD_INGOT)
+                        .setName("&fTwoje saldo&8: &a" + DecimalUtil.getFormat(user.getVpln()))
+                .build());
 
         for (ItemShop itemShop : this.pluginConfiguration.itemShopSettings.shops) {
             inventory.addItem(itemShop.getItemStack());
@@ -52,7 +59,7 @@ public class ItemShopInventory {
 
             for (ItemShop itemShop : this.pluginConfiguration.itemShopSettings.shops) {
                 if (event.getCurrentItem() != null && event.getCurrentItem().equals(itemShop.getItemStack())) {
-                    showAreYouSure(player, itemShop);
+                    showAreYouSure(player, itemShop, user);
                     player.playSound(player, Sound.BLOCK_LEVER_CLICK, 5, 5);
                     break;
                 }
@@ -63,10 +70,9 @@ public class ItemShopInventory {
     }
 
 
-    public void showAreYouSure(final Player player, final ItemShop shop) {
+    public void showAreYouSure(final Player player, final ItemShop shop, User user) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&6&lITEMSHOP &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
-        User user = this.userService.findUserByNickName(player.getName());
 
         Integer[] glassGreenSlots = new Integer[]{
                 1,2,0,

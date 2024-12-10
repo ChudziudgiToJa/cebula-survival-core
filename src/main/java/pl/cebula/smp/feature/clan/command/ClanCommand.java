@@ -8,9 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
-import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
+import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -84,9 +84,6 @@ public class ClanCommand {
             return;
         }
         this.clanDeleteInventory.showDeleteInventory(player, clan);
-        Bukkit.getOnlinePlayers().forEach(player1 -> {
-            ClanArmorHandler.refreshArmorPacket(player, player1);
-        });
     }
 
     @Execute(name = "zaproś")
@@ -137,7 +134,7 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&aPomyślnie dołączyłeś do klanu " + clan.getTag() + ".");
         clan.getMemberArrayList().forEach(s -> {
             Player clanMember = Bukkit.getPlayer(s);
-            if (clanMember ==  null) return;
+            if (clanMember == null) return;
             MessageUtil.sendMessage(clanMember, "&f" + player.getName() + " &adołączył do klanu.");
         });
     }
@@ -153,13 +150,14 @@ public class ClanCommand {
         }
 
         if (clan.getOwnerName().equals(player.getName())) {
-            MessageUtil.sendMessage(player, "&cNie możesz opuścić swojego klanu &8(&7&8)");
+            MessageUtil.sendMessage(player, "&cNie możesz opuścić swojego klanu");
             return;
         }
 
         clan.getMemberArrayList().remove(player.getName());
         Bukkit.getOnlinePlayers().forEach(player1 -> {
             ClanArmorHandler.refreshArmorPacket(player, player1);
+            ClanArmorHandler.refreshArmorPacket(player1, player);
         });
         MessageUtil.sendMessage(player, "&aopuszczono klan: &f" + clan.getTag());
     }
@@ -185,9 +183,13 @@ public class ClanCommand {
         }
 
         clan.getMemberArrayList().remove(target);
-        Bukkit.getOnlinePlayers().forEach(player1 -> {
-            ClanArmorHandler.refreshArmorPacket(player, player1);
-        });
+        Player targetPlayer = Bukkit.getPlayer(target);
+        if (targetPlayer != null) {
+            Bukkit.getOnlinePlayers().forEach(player1 -> {
+                ClanArmorHandler.refreshArmorPacket(player, player1);
+                ClanArmorHandler.refreshArmorPacket(player1, player);
+            });
+        }
         MessageUtil.sendMessage(player, "&awyrzucono z klanu: " + target);
     }
 
