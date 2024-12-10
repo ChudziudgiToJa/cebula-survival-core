@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 public final class DecimalUtil {
 
-    private static final String[] SYMBOLS = {"", "k", "m", "mld", "b", "bld", "tld"};
+    private static final String[] SYMBOLS = {"", "tys.", "mln", "mld", "bln", "blrd", "trln"};
 
     private DecimalUtil() {
     }

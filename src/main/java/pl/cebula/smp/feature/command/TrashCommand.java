@@ -9,8 +9,6 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
-import java.util.Objects;
-
 @Command(name = "kosz")
 public class TrashCommand {
 
@@ -22,7 +20,7 @@ public class TrashCommand {
 
     @Execute
     void execute(@Context Player sender) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin,9 * 6, MessageUtil.smallText(MessageUtil.smallTextToColor("&e&lkosz")));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin,9 * 6, MessageUtil.smallText(MessageUtil.smallText("&e&lkosz")));
         Inventory inventory = simpleInventory.getInventory();
         sender.openInventory(inventory);
     }

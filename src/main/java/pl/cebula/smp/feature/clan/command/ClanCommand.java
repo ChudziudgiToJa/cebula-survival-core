@@ -7,6 +7,7 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
@@ -83,6 +84,9 @@ public class ClanCommand {
             return;
         }
         this.clanDeleteInventory.showDeleteInventory(player, clan);
+        Bukkit.getOnlinePlayers().forEach(player1 -> {
+            ClanArmorHandler.refreshArmorPacket(player, player1);
+        });
     }
 
     @Execute(name = "zaproś")
@@ -154,6 +158,9 @@ public class ClanCommand {
         }
 
         clan.getMemberArrayList().remove(player.getName());
+        Bukkit.getOnlinePlayers().forEach(player1 -> {
+            ClanArmorHandler.refreshArmorPacket(player, player1);
+        });
         MessageUtil.sendMessage(player, "&aopuszczono klan: &f" + clan.getTag());
     }
 
@@ -178,6 +185,9 @@ public class ClanCommand {
         }
 
         clan.getMemberArrayList().remove(target);
+        Bukkit.getOnlinePlayers().forEach(player1 -> {
+            ClanArmorHandler.refreshArmorPacket(player, player1);
+        });
         MessageUtil.sendMessage(player, "&awyrzucono z klanu: " + target);
     }
 

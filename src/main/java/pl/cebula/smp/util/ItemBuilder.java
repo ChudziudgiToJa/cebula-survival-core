@@ -9,7 +9,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class ItemBuilder {
 
@@ -53,9 +52,9 @@ public class ItemBuilder {
         return itemStack;
     }
 
-    public ItemBuilder setTitle(final String title) {
+    public ItemBuilder setName(final String title) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(MessageUtil.smallTextToColor(title));
+        itemMeta.setDisplayName(MessageUtil.smallText(title));
         itemStack.setItemMeta(itemMeta);
         return this;
     }

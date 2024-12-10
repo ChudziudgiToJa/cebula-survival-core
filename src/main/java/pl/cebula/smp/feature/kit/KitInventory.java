@@ -28,7 +28,7 @@ public class KitInventory {
 
 
     public void show(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fzestawy:"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&fzestawy:"));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassBlueSlots = new Integer[]{
@@ -36,9 +36,9 @@ public class KitInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         for (Kit kit : this.pluginConfiguration.kitSettings.kitList) {
             inventory.addItem(kit.getIcon());
@@ -62,7 +62,7 @@ public class KitInventory {
     }
 
     public void showPrewiew(final Player player, final Kit kit) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fpodgląd zestawu: " + kit.getName()));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&fpodgląd zestawu: " + kit.getName()));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -71,19 +71,19 @@ public class KitInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         inventory.setItem(51,
                 new ItemBuilder(Material.RED_DYE)
-                        .setTitle("kliknij aby cofnąć")
+                        .setName("&ckliknij aby cofnąć")
                         .build()
         );
 
         inventory.setItem(52,
                 new ItemBuilder(Material.LIME_DYE)
-                        .setTitle("kliknij aby odebrac zestaw")
+                        .setName("&akliknij aby odebrac zestaw")
                         .build()
         );
 

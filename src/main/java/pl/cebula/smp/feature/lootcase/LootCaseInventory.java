@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.util.ItemStackBuilder;
+import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
@@ -26,7 +26,7 @@ public class LootCaseInventory {
     }
 
     public void showPrewiew(final Player player, final LootCase lootCase) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor(lootCase.getString()));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText(lootCase.getString()));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassBlueSlots = new Integer[]{
@@ -34,25 +34,25 @@ public class LootCaseInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         Integer[] openCaseItem = new Integer[]{
                 48, 49, 50,
         };
 
         Arrays.stream(openCaseItem).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.LIME_DYE)
+                new ItemBuilder(Material.LIME_DYE)
                         .setName("&akliknij aby otworzyć")
-                        .toItemStack()));
+                        .build()));
 
         for (LootCaseChance lootCaseChance : lootCase.getDropItems()) {
             ItemStack lootItemStack = ItemStackSerializable.readItemStack(lootCaseChance.getItemStackInString());
             ItemMeta itemMeta = lootItemStack.getItemMeta();
             itemMeta.setLore(List.of(
                     " ",
-                    MessageUtil.smallTextToColor("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"),
+                    MessageUtil.smallText("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"),
                     ""
             ));
             lootItemStack.setItemMeta(itemMeta);

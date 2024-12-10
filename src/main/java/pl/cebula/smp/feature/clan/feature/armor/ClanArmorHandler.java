@@ -52,4 +52,26 @@ public class ClanArmorHandler {
         packet.getSlotStackPairLists().write(0, list);
         protocolManager.sendServerPacket(target, packet);
     }
+
+    public static void refreshArmorPacket(final Player player, final Player target) {
+        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+        PacketContainer packet = protocolManager.createPacket(PacketType.Play.Server.ENTITY_EQUIPMENT);
+        packet.getIntegers().write(0, player.getEntityId());
+
+        List<Pair<EnumWrappers.ItemSlot, ItemStack>> list = new ArrayList<>();
+
+        ItemStack helmet = player.getInventory().getHelmet();
+        ItemStack chestplate = player.getInventory().getChestplate();
+        ItemStack leggings = player.getInventory().getLeggings();
+        ItemStack boots = player.getInventory().getBoots();
+
+        if (helmet != null) list.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, helmet));
+        if (chestplate != null) list.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, chestplate));
+        if (leggings != null) list.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, leggings));
+        if (boots != null) list.add(new Pair<>(EnumWrappers.ItemSlot.FEET, boots));
+
+        packet.getSlotStackPairLists().write(0, list);
+        protocolManager.sendServerPacket(target, packet);
+    }
+
 }

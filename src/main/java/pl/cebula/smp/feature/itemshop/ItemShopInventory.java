@@ -6,11 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
-import pl.cebula.smp.feature.kit.Kit;
-import pl.cebula.smp.feature.shop.object.Shop;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
-import pl.cebula.smp.util.ItemStackBuilder;
+import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -30,7 +28,7 @@ public class ItemShopInventory {
     }
 
     public void show(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&6&lITEMSHOP"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&6&lITEMSHOP"));
         Inventory inventory = simpleInventory.getInventory();
 
 
@@ -39,9 +37,9 @@ public class ItemShopInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         for (ItemShop itemShop : this.pluginConfiguration.itemShopSettings.shops) {
             inventory.addItem(itemShop.getItemStack());
@@ -66,7 +64,7 @@ public class ItemShopInventory {
 
 
     public void showAreYouSure(final Player player, final ItemShop shop) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lITEMSHOP &7czy na pewno?"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&6&lITEMSHOP &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -83,14 +81,14 @@ public class ItemShopInventory {
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.LIME_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                         .setName("&a&lTAK")
-                        .toItemStack()));
+                        .build()));
 
         Arrays.stream(glassRedSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                         .setName("&4&lNIE")
-                        .toItemStack()));
+                        .build()));
 
         inventory.setItem(13, shop.getItemStack());
 

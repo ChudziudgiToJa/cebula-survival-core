@@ -5,11 +5,9 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.itemshop.ItemShop;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.ItemBuilder;
-import pl.cebula.smp.util.ItemStackBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -26,7 +24,7 @@ public class StatisticInventory {
     }
 
     public void showAreYouSure(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lSTATYSTYKI &7czy na pewno?"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&6&lSTATYSTYKI &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -43,19 +41,19 @@ public class StatisticInventory {
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.LIME_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                         .setName("&a&lTAK")
-                        .toItemStack()));
+                        .build()));
 
         inventory.setItem(13, new ItemBuilder(Material.GOLD_INGOT)
-                        .setTitle("&fcena resetu statystyk&7: &a" + 1000 + " &fmonet")
+                        .setName("&fcena resetu statystyk&7: &a" + 1000 + " &fmonet")
                 .build()
         );
 
         Arrays.stream(glassRedSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                         .setName("&4&lNIE")
-                        .toItemStack()));
+                        .build()));
 
 
         simpleInventory.click(event -> {

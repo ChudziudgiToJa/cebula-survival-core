@@ -26,7 +26,7 @@ public class ShopInventory {
     }
 
     public void show(final Player player, final Shop shop) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallTextToColor("&fsklep: " + shop.getName()));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallText("&fsklep: " + shop.getName()));
         Inventory inventory = simpleInventory.getInventory();
         User user = userService.findUserByNickName(player.getName());
 
@@ -36,14 +36,14 @@ public class ShopInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         for (ItemToInteract itemToInteract : shop.getItemToInteracts()) {
 
             ItemStack itemBuilder = new ItemBuilder(itemToInteract.getItemStack().getType())
-                    .setTitle("&l&f" + itemToInteract.getItemStack().getType())
+                    .setName("&l&f" + itemToInteract.getItemStack().getType())
                     .addLore(
                             " ",
                             "&6&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",

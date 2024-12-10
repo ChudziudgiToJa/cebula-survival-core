@@ -9,7 +9,6 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.ItemBuilder;
-import pl.cebula.smp.util.ItemStackBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -26,7 +25,7 @@ public class JobInventory {
     }
 
     public void show(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9*6, MessageUtil.smallTextToColor("&fprace:"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9*6, MessageUtil.smallText("&fprace:"));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -35,9 +34,9 @@ public class JobInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         inventory.addItem(itemStack(user, JobType.KILLER, Material.NETHERITE_SWORD));
         inventory.addItem(itemStack(user, JobType.LUMBERJACK, Material.STONE_AXE));
@@ -83,7 +82,7 @@ public class JobInventory {
 
     public ItemStack itemStack(User user, JobType jobType, Material material) {
         ItemBuilder itemBuilder = new ItemBuilder(material)
-                .setTitle("&f&l" + jobType.getPolishName());
+                .setName("&f&l" + jobType.getPolishName());
 
         if (user.getJobType().equals(jobType)) {
             itemBuilder.addLore(

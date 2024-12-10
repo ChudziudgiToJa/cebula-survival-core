@@ -5,12 +5,12 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
-@Command(name =  "eco")
+@Command(name = "eco")
 @Permission("cebulasmp.command.eco")
 public class EconomyCommand {
 
@@ -21,7 +21,7 @@ public class EconomyCommand {
     }
 
     @Execute
-    void execute(@Context Player player, @Arg String s, @Arg EconomyCommandType economyCommandType, @Arg Double amount) {
+    void execute(@Context CommandSender player, @Arg String s, @Arg EconomyCommandType economyCommandType, @Arg Double amount) {
         User user = this.userService.findUserByNickName(s);
 
         if (user == null) {

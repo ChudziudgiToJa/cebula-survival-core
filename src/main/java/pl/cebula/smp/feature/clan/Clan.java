@@ -2,9 +2,11 @@ package pl.cebula.smp.feature.clan;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
 import pl.cebula.smp.feature.backup.Backup;
+import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.job.JobType;
 import pl.cebula.smp.feature.kit.KitData;
 
@@ -40,5 +42,4 @@ public class Clan implements Serializable, Identifiable<String> {
     public String getId() {
         return this.uuid;
     }
-
 }

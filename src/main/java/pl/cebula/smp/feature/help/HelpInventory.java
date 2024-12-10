@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.util.ItemBuilder;
-import pl.cebula.smp.util.ItemStackBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -21,7 +20,7 @@ public class HelpInventory {
     }
 
     public void show(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallTextToColor("&6&lPOMOC"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallText("&6&lPOMOC"));
         Inventory inventory = simpleInventory.getInventory();
 
 
@@ -30,12 +29,12 @@ public class HelpInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
 
-        ItemStackBuilder helpItem = new ItemStackBuilder(Material.PAPER, 1)
+        ItemBuilder helpItem = new ItemBuilder(Material.PAPER, 1)
                 .setName(" ")
                 .addLore(MessageUtil.smallText("&2&lKOMENDY POMOC"))
                 .addLore("")
@@ -55,9 +54,9 @@ public class HelpInventory {
 
                 .addLore("");
 
-        inventory.setItem(13, helpItem.toItemStack());
+        inventory.setItem(13, helpItem.build());
 
-        ItemStackBuilder vipItem = new ItemStackBuilder(Material.GOLDEN_CHESTPLATE, 1)
+        ItemBuilder vipItem = new ItemBuilder(Material.GOLDEN_CHESTPLATE, 1)
                 .setName(" ")
                 .addLore(MessageUtil.smallText("&2&lRANGA &fꑅ"))
                 .addLore("")
@@ -78,9 +77,9 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &e/itemshop"))
                 .addLore("");
 
-        inventory.setItem(30, vipItem.toItemStack());
+        inventory.setItem(30, vipItem.build());
 
-        ItemStackBuilder svipItem = new ItemStackBuilder(Material.IRON_CHESTPLATE, 1)
+        ItemBuilder svipItem = new ItemBuilder(Material.IRON_CHESTPLATE, 1)
                 .setName(" ")
                 .addLore(MessageUtil.smallText("&2&lRANGA &fꑇ"))
                 .addLore("")
@@ -104,9 +103,9 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &e/itemshop"))
                 .addLore("");
 
-        inventory.setItem(31, svipItem.toItemStack());
+        inventory.setItem(31, svipItem.build());
 
-        ItemStackBuilder sponsorItem = new ItemStackBuilder(Material.DIAMOND_CHESTPLATE, 1)
+        ItemBuilder sponsorItem = new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1)
                 .setName(" ")
                 .addLore(MessageUtil.smallText("&2&lRANGA &fꑍ"))
                 .addLore("")
@@ -133,10 +132,10 @@ public class HelpInventory {
                 .addLore(MessageUtil.smallText("&8• &fRangę zakupisz pod &e/itemshop"))
                 .addLore("");
 
-        inventory.setItem(32, sponsorItem.toItemStack());
+        inventory.setItem(32, sponsorItem.build());
 
         inventory.setItem(49, new ItemBuilder(Material.BARRIER)
-                .setTitle(MessageUtil.smallText("&czamknij"))
+                .setName(MessageUtil.smallText("&czamknij"))
                 .build());
 
         simpleInventory.click(event -> {

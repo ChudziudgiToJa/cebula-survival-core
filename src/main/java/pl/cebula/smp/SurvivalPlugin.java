@@ -15,7 +15,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.cebula.smp.configuration.ConfigService;
-import pl.cebula.smp.configuration.implementation.MessagesConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.abyss.AbyssTask;
@@ -65,7 +64,7 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 import pl.cebula.smp.feature.user.task.SpentTimeTask;
 import pl.cebula.smp.feature.user.task.UsersSaveTask;
-import pl.cebula.smp.listener.JoinQuitListener;
+import pl.cebula.smp.feature.user.controller.JoinQuitListener;
 
 import java.io.File;
 import java.util.Random;
@@ -87,7 +86,6 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
-    private MessagesConfiguration messagesConfiguration;
     private UserService userService;
     private ClanService clanService;
     private ProtocolManager protocolManager;
@@ -99,9 +97,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.userService = new UserService(this.userRepository);
         this.clanService = new ClanService(this.clanRepository);
 
-
         Bukkit.getServicesManager().register(Economy.class, new EconomyHolder(this.userService), this, ServicePriority.Highest);
-
 
         RegisteredServiceProvider<Economy> rsp = this.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
@@ -125,7 +121,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         ConfigService configService = new ConfigService();
         File dataFolder = this.getDataFolder();
         this.pluginConfiguration = configService.create(PluginConfiguration.class, new File(dataFolder, "config.yml"));
-        this.messagesConfiguration = configService.create(MessagesConfiguration.class, new File(dataFolder, "messages.yml"));
 
         // topki
         this.topManager = new TopManager(this.userService);
@@ -160,7 +155,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
         ClanPvpInventory clanPvpInventory = new ClanPvpInventory(this, this.clanService);
 
-        // load users
+        // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
         this.clanRepository.findAll().forEach(this.clanService::addClan);
 

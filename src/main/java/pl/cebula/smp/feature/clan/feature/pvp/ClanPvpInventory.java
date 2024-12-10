@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
-import pl.cebula.smp.util.ItemStackBuilder;
+import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -22,7 +22,7 @@ public class ClanPvpInventory {
     }
 
     public void showChangePvp(final Player player, final Clan clan) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&7aktualny status pvp: " + (clan.isPvp() ? "&awłączony" : "&cWyczłaczony")));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&7aktualny status pvp: " + (clan.isPvp() ? "&awłączony" : "&cWyczłaczony")));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassGreenSlots = new Integer[]{
@@ -38,14 +38,14 @@ public class ClanPvpInventory {
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.LIME_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                         .setName("&a&lTAK")
-                        .toItemStack()));
+                        .build()));
 
         Arrays.stream(glassRedSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                         .setName("&4&lNIE")
-                        .toItemStack()));
+                        .build()));
 
 
         simpleInventory.click(event -> {

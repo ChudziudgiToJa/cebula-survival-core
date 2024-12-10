@@ -9,7 +9,6 @@ import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,17 +27,17 @@ public class BackupInventory {
         SimpleInventory simpleInventory = new SimpleInventory(
                 this.survivalPlugin,
                 9 * 6,
-                MessageUtil.smallTextToColor("&fBackupy: " + target.getName())
+                MessageUtil.smallText("&fBackupy: " + target.getName())
         );
         Inventory inventory = simpleInventory.getInventory();
 
         User user = this.userService.findUserByNickName(target.getName());
         if (user == null) {
-            player.sendMessage(MessageUtil.smallTextToColor("&cNie znaleziono użytkownika!"));
+            player.sendMessage(MessageUtil.smallText("&cNie znaleziono użytkownika!"));
             return;
         }
         if (user.getBackups().isEmpty()) {
-            player.sendMessage(MessageUtil.smallTextToColor("&cGracz nie posiada backapów"));
+            player.sendMessage(MessageUtil.smallText("&cGracz nie posiada backapów"));
             return;
         }
 
@@ -47,15 +46,15 @@ public class BackupInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()
+                        .build()
         ));
 
         user.getBackups().forEach(backup -> {
             inventory.addItem(
                     new ItemBuilder(Material.BOOK)
-                            .setTitle(backup.getInstantFormat())
+                            .setName(backup.getInstantFormat())
                             .addLore("", "&aKliknij, aby otworzyć podgląd.")
                             .build()
             );
@@ -83,7 +82,7 @@ public class BackupInventory {
 
 
     public void showPreview(final Player player, final Player target, final Backup backup) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallTextToColor("&fBackap z: " + backup.getInstantFormat()));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&fBackap z: " + backup.getInstantFormat()));
         Inventory inventory = simpleInventory.getInventory();
         ItemStack[] itemStackArrayList = ItemStackSerializable.readItemStackList(backup.getItemStackArrayList());
         User user = this.userService.findUserByNickName(target.getName());
@@ -93,9 +92,9 @@ public class BackupInventory {
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
-                        .toItemStack()));
+                        .build()));
 
         for (ItemStack itemStack : itemStackArrayList) {
             inventory.addItem(itemStack);
@@ -103,13 +102,13 @@ public class BackupInventory {
 
         inventory.setItem(45,
                 new ItemBuilder(Material.RED_DYE)
-                        .setTitle("&acofnij")
+                        .setName("&acofnij")
                         .build()
         );
 
         inventory.setItem(49,
                 new ItemBuilder(Material.PAPER)
-                        .setTitle("&aInformacje poboczne")
+                        .setName("&aInformacje poboczne")
                         .addLore(
                                 "&7lvl: &7" + backup.getLvl(),
                                 "&7exp: &7" + backup.getExp())
@@ -118,7 +117,7 @@ public class BackupInventory {
 
         inventory.setItem(53,
                 new ItemBuilder(Material.GREEN_DYE)
-                        .setTitle("&aNadaj zestaw")
+                        .setName("&aNadaj zestaw")
                         .addLore(
                                 "",
                                 "&aKliknij aby nadać graczu backup")

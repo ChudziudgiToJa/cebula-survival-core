@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
-import pl.cebula.smp.util.ItemStackBuilder;
+import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
@@ -24,7 +24,7 @@ public class ClanDeleteInventory {
     }
 
     public void showDeleteInventory(final Player player, final Clan clan) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallTextToColor("&6&lKLAN &7czy na pewno?"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&6&lKLAN &7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassGreenSlots = new Integer[]{
@@ -40,14 +40,14 @@ public class ClanDeleteInventory {
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.LIME_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.LIME_STAINED_GLASS_PANE)
                         .setName("&a&lTAK")
-                        .toItemStack()));
+                        .build()));
 
         Arrays.stream(glassRedSlots).forEach(slot -> inventory.setItem(slot,
-                new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
                         .setName("&4&lNIE")
-                        .toItemStack()));
+                        .build()));
 
 
         simpleInventory.click(event -> {

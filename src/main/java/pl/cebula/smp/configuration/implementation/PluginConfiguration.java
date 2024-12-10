@@ -1,6 +1,5 @@
 package pl.cebula.smp.configuration.implementation;
 
-import com.comphenix.protocol.wrappers.EnumWrappers;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
 import org.bukkit.Bukkit;
@@ -8,11 +7,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.feature.itemshop.ItemShop;
 import pl.cebula.smp.feature.kit.Kit;
 import pl.cebula.smp.feature.lootcase.LootCase;
-import pl.cebula.smp.feature.lootcase.LootCaseChance;
 import pl.cebula.smp.feature.shop.object.ItemToInteract;
 import pl.cebula.smp.feature.shop.object.Shop;
 import pl.cebula.smp.util.ItemBuilder;
@@ -76,7 +73,7 @@ public class PluginConfiguration extends OkaeriConfig {
         public List<ItemShop> shops = List.of(
                 new ItemShop(
                         new ItemBuilder(Material.IRON_HELMET)
-                                .setTitle("ꑅ &8(&f30dni&8)")
+                                .setName("ꑅ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f4.99 &avpln",
@@ -89,7 +86,7 @@ public class PluginConfiguration extends OkaeriConfig {
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("ꑇ &8(&f30dni&8)")
+                                .setName("ꑇ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f9.99 &avpln",
@@ -102,7 +99,7 @@ public class PluginConfiguration extends OkaeriConfig {
                 ),
                 new ItemShop(
                         new ItemBuilder(Material.NETHERITE_HELMET)
-                                .setTitle("ꑍ &8(&f30dni&8)")
+                                .setName("ꑍ &8(&f30dni&8)")
                                 .addLore(
                                         "",
                                         "&7Cena&8: &f14.99 &avpln",
@@ -394,7 +391,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "gracz",
                         900000,
                         new ItemBuilder(Material.LEATHER_HELMET)
-                                .setTitle("&7gracz")
+                                .setName("&7gracz")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
@@ -413,7 +410,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "vip",
                         86400000,
                         new ItemBuilder(Material.IRON_HELMET)
-                                .setTitle("ꑅ")
+                                .setName("ꑅ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
@@ -443,7 +440,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "mvip",
                         86400000,
                         new ItemBuilder(Material.DIAMOND_HELMET)
-                                .setTitle("ꑇ")
+                                .setName("ꑇ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."
@@ -475,7 +472,7 @@ public class PluginConfiguration extends OkaeriConfig {
                         "cebulak",
                         86400000,
                         new ItemBuilder(Material.NETHERITE_HELMET)
-                                .setTitle("ꑍ")
+                                .setName("ꑍ")
                                 .addLore(
                                         "",
                                         "&aKliknij aby otworzyć podgląd."

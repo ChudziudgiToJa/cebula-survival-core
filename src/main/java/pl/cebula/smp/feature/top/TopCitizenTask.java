@@ -7,7 +7,6 @@ import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.user.User;
-import pl.cebula.smp.util.DataUtil;
 import pl.cebula.smp.util.DecimalUtil;
 import pl.cebula.smp.util.DurationUtil;
 import pl.cebula.smp.util.MessageUtil;
@@ -40,12 +39,12 @@ public class TopCitizenTask implements Runnable {
     private void updateTopNPCs(List<User> entries, int startingNPCId, int operationIndex) {
         List<String> symbols = List.of("➊", "➋", "➌");
         List<String> labelsTitle = List.of(
-                MessageUtil.smallTextToColor("&lczasu"),
-                MessageUtil.smallTextToColor("&lmonet")
+                MessageUtil.smallText("&lczasu"),
+                MessageUtil.smallText("&lmonet")
         );
         List<String> labelSubtitles = List.of(
-                MessageUtil.smallTextToColor(" &2czasu"),
-                MessageUtil.smallTextToColor(" &2monet")
+                MessageUtil.smallText(" &2czasu"),
+                MessageUtil.smallText(" &2monet")
         );
 
         for (int i = 0; i < 3; i++) {
