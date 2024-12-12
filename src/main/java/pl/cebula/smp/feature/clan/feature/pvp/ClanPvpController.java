@@ -22,7 +22,7 @@ public class ClanPvpController implements Listener {
             Player player = (Player) event.getEntity();
             Player damager = (Player) event.getDamager();
             Clan clan = this.clanService.findClanByMember(damager.getName());
-            if (!clan.isPvp()) {
+            if (clan.isPvp()) {
                 if (clan.getMemberArrayList().contains(player.getName()) || clan.getOwnerName().equals(player.getName())) {
                     event.setCancelled(true);
                 }

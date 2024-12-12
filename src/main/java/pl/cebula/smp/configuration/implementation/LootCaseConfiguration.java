@@ -3,7 +3,6 @@ package pl.cebula.smp.configuration.implementation;
 import eu.okaeri.configs.OkaeriConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import pl.cebula.smp.feature.lootcase.LootCase;
 
 import java.util.List;

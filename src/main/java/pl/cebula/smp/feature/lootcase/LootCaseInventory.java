@@ -94,10 +94,6 @@ public class LootCaseInventory {
                 leftover.values().forEach(remaining ->
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );
-                Bukkit.getOnlinePlayers().forEach(player1 -> {
-                    MessageUtil.sendMessage(player1, player.getName() + " &aotworzył &2" + lootCase.getName() + "&a skrzyie &8| &b" + lootedItemStack.getItemMeta().getDisplayName());
-                    player1.playSound(player1, Sound.ENTITY_CAT_HISS, 5, 5);
-                });
             }
             player.closeInventory();
         });

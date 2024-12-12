@@ -195,7 +195,7 @@ public class ClanCommand {
 
     @Execute(name = "pvp")
     void changePvp(@Context Player player) {
-        Clan clan = this.clanService.findClanByOwner(player.getName());
+        Clan clan = this.clanService.findClanByMember(player.getName());
 
         if (clan == null) {
             MessageUtil.sendMessage(player, "&cNie masz klanu.");

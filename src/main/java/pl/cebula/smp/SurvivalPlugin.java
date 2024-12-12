@@ -127,7 +127,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.pluginConfiguration = configService.create(PluginConfiguration.class, new File(dataFolder, "config.yml"));
         this.lootCaseConfiguration = configService.create(LootCaseConfiguration.class, new File(dataFolder, "lootcase.yml"));
         this.kitConfiguration = configService.create(KitConfiguration.class, new File(dataFolder, "kit.yml"));
-        this.npcShopConfiguration = configService.create(NpcShopConfiguration.class, new File(dataFolder, "lootcase.yml"));
+        this.npcShopConfiguration = configService.create(NpcShopConfiguration.class, new File(dataFolder, "npcShop.yml"));
         this.itemShopConfiguration = configService.create(ItemShopConfiguration.class, new File(dataFolder, "itemshop.yml"));
 
 

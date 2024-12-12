@@ -17,7 +17,7 @@ public class KitConfiguration extends OkaeriConfig {
                     "gracz",
                     900000,
                     new ItemBuilder(Material.LEATHER_HELMET)
-                            .setName("&7gracz")
+                            .setName("⚙")
                             .addLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."

@@ -35,13 +35,14 @@ public class ItemBuilder {
         itemStack = new ItemStack(m, 1, data);
     }
 
-    public ItemBuilder addLore(final String... lores) {
-        List<String> formattedLore = new ArrayList<>();
-        for (String lore : lores) {
-            formattedLore.add(MessageUtil.smallText(lore));
-        }
+
+    public ItemBuilder addLore(final String... list) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(formattedLore);
+        ArrayList<String> loreList = new ArrayList<>();
+        for (String text : list) {
+            loreList.add(MessageUtil.smallTextToColor(text));
+        }
+        itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);
         return this;
     }

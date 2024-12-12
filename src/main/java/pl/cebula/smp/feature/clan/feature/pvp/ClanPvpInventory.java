@@ -57,9 +57,9 @@ public class ClanPvpInventory {
                 clan.getMemberArrayList().forEach(s -> {
                     Player member = Bukkit.getPlayer(s);
                     if (member == null) return;
-                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &cwyłączony", 20, 50, 20);
+                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &awłączony", 20, 50, 20);
                 });
-                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &cwyłączony", 20, 50, 20);
+                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &awłączony", 20, 50, 20);
                 player.closeInventory();
                 return;
             }
@@ -69,9 +69,9 @@ public class ClanPvpInventory {
                 clan.getMemberArrayList().forEach(s -> {
                     Player member = Bukkit.getPlayer(s);
                     if (member == null) return;
-                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &awyczłaczony", 20, 50, 20);
+                    MessageUtil.sendTitle(member, "", "&2Lider &azmienił status &cpvp&2 na &cwyłączony", 20, 50, 20);
                 });
-                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &awyczłaczony", 20, 50, 20);
+                MessageUtil.sendTitle(player, "", "&7zmieniono status pvp na &cwyłączony", 20, 50, 20);
                 player.closeInventory();
             }
         });
