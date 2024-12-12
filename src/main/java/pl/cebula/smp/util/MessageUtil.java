@@ -1,11 +1,13 @@
 package pl.cebula.smp.util;
 
+import com.google.common.collect.ImmutableMap;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,13 @@ import java.util.stream.Collectors;
 public final class MessageUtil {
 
     private static final Map<Character, Character> charMap = createCharMap();
+
+    private static final Map<String, String> PLACEHOLDERS = new ImmutableMap.Builder<String, String>()
+            .put("<<", "«")
+            .build();
+
+    private MessageUtil() {
+    }
 
     private static Map<Character, Character> createCharMap() {
         Map<Character, Character> map = new HashMap<>();
@@ -47,19 +56,87 @@ public final class MessageUtil {
             }
         }
 
+        return formattedText.toString();
+    }
+
+    public static String smallTextToColor(String text) {
+        StringBuilder formattedText = new StringBuilder();
+        boolean insideVariable = false;
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            if (c == '{') {
+                insideVariable = true;
+                formattedText.append(c);
+                continue;
+            }
+
+            if (c == '}') {
+                insideVariable = false;
+                formattedText.append(c);
+                continue;
+            }
+
+            if (insideVariable) {
+                formattedText.append(c);
+                continue;
+            }
+
+            if (c == '&' && i + 1 < text.length() && "0123456789abcdefklmnor".indexOf(Character.toLowerCase(text.charAt(i + 1))) != -1) {
+                formattedText.append(c);
+                formattedText.append(text.charAt(i + 1));
+                i++;
+                continue;
+            }
+
+            if (charMap.containsKey(Character.toLowerCase(c))) {
+                formattedText.append(charMap.get(Character.toLowerCase(c)));
+            } else {
+                formattedText.append(c);
+            }
+        }
+
         return colored(formattedText.toString());
     }
 
 
+    public static String fixColor(String text) {
+        String[] texts = text.split(String.format("((?<=%1$s)|(?=%1$s))", "&"));
+        StringBuilder finalText = new StringBuilder();
+
+        for (int i = 0; i < texts.length; ++i) {
+            if (texts[i].equalsIgnoreCase("&")) {
+                ++i;
+                if (texts[i].charAt(0) == '#') {
+                    net.md_5.bungee.api.ChatColor var10001 = net.md_5.bungee.api.ChatColor.of(texts[i].substring(0, 7));
+                    finalText.append(var10001).append(texts[i].substring(7));
+                } else {
+                    finalText.append(org.bukkit.ChatColor.translateAlternateColorCodes('&', "&" + texts[i]).replace(">>", "»"));
+                }
+            } else {
+                finalText.append(texts[i]);
+            }
+        }
+
+        return finalText.toString();
+    }
+
+    public static String colored(String text) {
+        return apply(text);
+    }
+
     public static List<String> colored(List<String> text) {
         return text.stream()
-                .map(MessageUtil::colored)
+                .map(MessageUtil::apply)
                 .collect(Collectors.toList());
     }
 
-    public static String colored(String entity) {
-        return ChatColor.translateAlternateColorCodes('&', entity);
+    static String apply(String entity) {
+        return ChatColor.translateAlternateColorCodes('&', PLACEHOLDERS.entrySet().stream()
+                .reduce(entity, (string, entry) -> string.replace(entry.getKey(), entry.getValue()), (a, b) -> a));
     }
+
 
     public static void sendMessage(Player player, String message) {
         player.sendMessage(smallText(message));

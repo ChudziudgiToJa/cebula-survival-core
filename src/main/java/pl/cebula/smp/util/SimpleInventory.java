@@ -25,7 +25,7 @@ public final class SimpleInventory implements Listener {
 
     public SimpleInventory(SurvivalPlugin survivalPlugin, int slot, String title) {
         this.survivalPlugin = survivalPlugin;
-        this.inventory = Bukkit.createInventory(null, slot, title);
+        this.inventory = Bukkit.createInventory(null, slot, MessageUtil.smallText(title));
         register(survivalPlugin);
 
         INVENTORIES.add(this);
@@ -33,7 +33,7 @@ public final class SimpleInventory implements Listener {
 
     public SimpleInventory(SurvivalPlugin survivalPlugin, InventoryType inventoryType, String title) {
         this.survivalPlugin = survivalPlugin;
-        this.inventory = Bukkit.createInventory(null, inventoryType, title);
+        this.inventory = Bukkit.createInventory(null, inventoryType, MessageUtil.smallText(title));
         register(survivalPlugin);
 
         INVENTORIES.add(this);

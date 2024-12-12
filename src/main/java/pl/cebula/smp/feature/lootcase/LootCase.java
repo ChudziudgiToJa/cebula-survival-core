@@ -15,15 +15,13 @@ public class LootCase implements Serializable {
     private final String string;
     private final Location location;
     private String keyItemStack;
-    private final Particle particle;
     private final List<LootCaseChance> dropItems;
 
-    public LootCase(String name, String string, Location location, String keyItemStack, Particle particle, List<LootCaseChance> dropItems) {
+    public LootCase(String name, String string, Location location, String keyItemStack, List<LootCaseChance> dropItems) {
         this.name = name;
         this.string = string;
         this.location = location;
         this.keyItemStack = keyItemStack;
-        this.particle = particle;
         this.dropItems = dropItems;
     }
 }

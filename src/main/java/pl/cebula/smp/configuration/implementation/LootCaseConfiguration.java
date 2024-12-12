@@ -16,7 +16,6 @@ public class LootCaseConfiguration extends OkaeriConfig {
                     "skrzynia afk &8[&e⭐&7⭐⭐⭐⭐&8]",
                     new Location(Bukkit.getWorlds().getFirst(),30,72,28),
                     "",
-                    Particle.HEART,
                     List.of(
                     )
             ),
@@ -25,7 +24,6 @@ public class LootCaseConfiguration extends OkaeriConfig {
                     "skrzynia wędrowca &8[&e⭐⭐&7⭐⭐⭐&8]",
                     new Location(Bukkit.getWorlds().getFirst(),26,72,25),
                     "",
-                    Particle.NOTE,
                     List.of(
                     )
             ),
@@ -34,7 +32,6 @@ public class LootCaseConfiguration extends OkaeriConfig {
                     "skrzynia smoka &8[&e⭐⭐⭐&7⭐⭐&8]",
                     new Location(Bukkit.getWorlds().getFirst(),25,72,17),
                     "",
-                    Particle.SCULK_SOUL,
                     List.of(
                     )
             ),
@@ -43,7 +40,6 @@ public class LootCaseConfiguration extends OkaeriConfig {
                     "skrzynia piekieł &8[&e⭐⭐⭐⭐⭐&8]",
                     new Location(Bukkit.getWorlds().getFirst(),29,72,13),
                     "",
-                    Particle.SMOKE,
                     List.of(
                     )
             )

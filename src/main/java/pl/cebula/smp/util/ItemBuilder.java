@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ItemBuilder {
 
@@ -35,8 +36,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addLore(final String... lores) {
+        List<String> formattedLore = new ArrayList<>();
+        for (String lore : lores) {
+            formattedLore.add(MessageUtil.smallText(lore));
+        }
         final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(MessageUtil.colored(Arrays.asList(lores)));
+        itemMeta.setLore(formattedLore);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
@@ -79,13 +84,6 @@ public class ItemBuilder {
             itemMeta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
             itemMeta.addItemFlags(ItemFlag.HIDE_DYE);
         }
-        itemStack.setItemMeta(itemMeta);
-        return this;
-    }
-
-    public ItemBuilder addLore(final ArrayList<String> list) {
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(MessageUtil.colored(list));
         itemStack.setItemMeta(itemMeta);
         return this;
     }
