@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import pl.cebula.smp.configuration.implementation.LootCaseConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
@@ -17,16 +18,17 @@ import pl.cebula.smp.util.MessageUtil;
 @Permission("cebula.case.command")
 public class LootCaseCommand {
 
-    private final PluginConfiguration pluginConfiguration;
+    private final LootCaseConfiguration pluginConfiguration;
 
-    public LootCaseCommand(PluginConfiguration pluginConfiguration) {
+    public LootCaseCommand(LootCaseConfiguration pluginConfiguration) {
         this.pluginConfiguration = pluginConfiguration;
     }
+
 
     @Execute
     void execute(@Context Player player) {
         MessageUtil.sendMessage(player, "Lista casów: ");
-        for (LootCase lootCase : this.pluginConfiguration.lootCaseSettings.lootCases) {
+        for (LootCase lootCase : this.pluginConfiguration.lootCases) {
             MessageUtil.sendMessage(player, lootCase.getName());
         }
     }
@@ -34,7 +36,7 @@ public class LootCaseCommand {
     @Execute(name = "klucz")
     void execute(@Context CommandSender sender, @Arg Player player, @Arg String string, @Arg int i) {
         boolean found = false;
-        for (LootCase lootCase : this.pluginConfiguration.lootCaseSettings.lootCases) {
+        for (LootCase lootCase : this.pluginConfiguration.lootCases) {
             if (lootCase.getName().equalsIgnoreCase(string)) {
                 ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
                 if (itemStack == null) return;
@@ -58,7 +60,7 @@ public class LootCaseCommand {
         }
 
         boolean found = false;
-        for (LootCase lootCase : this.pluginConfiguration.lootCaseSettings.lootCases) {
+        for (LootCase lootCase : this.pluginConfiguration.lootCases) {
             if (lootCase.getName().equalsIgnoreCase(string)) {
                 ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
                 if (itemStack == null) return;
@@ -77,7 +79,7 @@ public class LootCaseCommand {
     @Permission("cebula.case.additem.admin")
     @Execute(name = "additem")
     void execute(@Context Player sender, @Arg String lootCasename,@Arg double chance) {
-        this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
+        this.pluginConfiguration.lootCases.forEach(lootCase -> {
             if (lootCase.getName().equals(lootCasename)) {
                 lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
                 this.pluginConfiguration.save();
@@ -88,7 +90,7 @@ public class LootCaseCommand {
     @Permission("cebula.case.additem.admin")
     @Execute(name = "setkey")
     void execute(@Context Player sender, @Arg String lootCasename) {
-        this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
+        this.pluginConfiguration.lootCases.forEach(lootCase -> {
             if (lootCase.getName().equals(lootCasename)) {
                 lootCase.setKeyItemStack(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
                 this.pluginConfiguration.save();

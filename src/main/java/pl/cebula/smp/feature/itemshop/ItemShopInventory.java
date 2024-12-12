@@ -5,6 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.configuration.implementation.ItemShopConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -17,16 +18,17 @@ import java.util.Arrays;
 
 public class ItemShopInventory {
     private final SurvivalPlugin survivalPlugin;
-    private final PluginConfiguration pluginConfiguration;
+    private final ItemShopConfiguration itemShopConfiguration;
     private final ItemShopManager itemShopManager;
     private final UserService userService;
 
-    public ItemShopInventory(SurvivalPlugin survivalPlugin, PluginConfiguration pluginConfiguration, ItemShopManager itemShopManager, UserService userService) {
+    public ItemShopInventory(SurvivalPlugin survivalPlugin, ItemShopConfiguration itemShopConfiguration, ItemShopManager itemShopManager, UserService userService) {
         this.survivalPlugin = survivalPlugin;
-        this.pluginConfiguration = pluginConfiguration;
+        this.itemShopConfiguration = itemShopConfiguration;
         this.itemShopManager = itemShopManager;
         this.userService = userService;
     }
+
 
     public void show(final Player player) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&6&lITEMSHOP"));
@@ -48,7 +50,7 @@ public class ItemShopInventory {
                         .setName("&fTwoje saldo&8: &a" + DecimalUtil.getFormat(user.getVpln()))
                 .build());
 
-        for (ItemShop itemShop : this.pluginConfiguration.itemShopSettings.shops) {
+        for (ItemShop itemShop : this.itemShopConfiguration.shops) {
             inventory.addItem(itemShop.getItemStack());
         }
 
@@ -57,7 +59,7 @@ public class ItemShopInventory {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
 
-            for (ItemShop itemShop : this.pluginConfiguration.itemShopSettings.shops) {
+            for (ItemShop itemShop : this.itemShopConfiguration.shops) {
                 if (event.getCurrentItem() != null && event.getCurrentItem().equals(itemShop.getItemStack())) {
                     showAreYouSure(player, itemShop, user);
                     player.playSound(player, Sound.BLOCK_LEVER_CLICK, 5, 5);

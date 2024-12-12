@@ -3,6 +3,7 @@ package pl.cebula.smp.feature.afkzone;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.configuration.implementation.LootCaseConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -16,10 +17,10 @@ public class AfkZoneTask extends BukkitRunnable {
 
     private final SurvivalPlugin survivalPlugin;
     private final AfkZoneManager afkZoneManager;
-    private final PluginConfiguration pluginConfiguration;
+    private final LootCaseConfiguration pluginConfiguration;
     private final UserService userService;
 
-    public AfkZoneTask(SurvivalPlugin survivalPlugin, AfkZoneManager afkZoneManager, PluginConfiguration pluginConfiguration, UserService userService) {
+    public AfkZoneTask(SurvivalPlugin survivalPlugin, AfkZoneManager afkZoneManager, LootCaseConfiguration pluginConfiguration, UserService userService) {
         this.survivalPlugin = survivalPlugin;
         this.afkZoneManager = afkZoneManager;
         this.pluginConfiguration = pluginConfiguration;
@@ -53,7 +54,7 @@ public class AfkZoneTask extends BukkitRunnable {
 
                     User user = userService.findUserByNickName(player.getName());
                     if (user != null) {
-                        pluginConfiguration.lootCaseSettings.lootCases.stream()
+                        pluginConfiguration.lootCases.stream()
                                 .filter(lootCase -> lootCase.getName().equalsIgnoreCase("afk"))
                                 .findFirst()
                                 .ifPresent(lootCase -> {

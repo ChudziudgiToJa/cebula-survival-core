@@ -2,6 +2,7 @@ package pl.cebula.smp.feature.lootcase;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
+import pl.cebula.smp.configuration.implementation.LootCaseConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.MessageUtil;
 
@@ -11,17 +12,16 @@ import java.util.UUID;
 
 public class LootCaseHandler {
 
-    private final PluginConfiguration pluginConfiguration;
+    private final LootCaseConfiguration pluginConfiguration;
 
-
-    public LootCaseHandler(PluginConfiguration pluginConfiguration) {
+    public LootCaseHandler(LootCaseConfiguration pluginConfiguration) {
         this.pluginConfiguration = pluginConfiguration;
     }
 
 
     public void createLootCaseHolograms() {
         List<String> description = new ArrayList<>();
-        this.pluginConfiguration.lootCaseSettings.lootCases.forEach(lootCase -> {
+        this.pluginConfiguration.lootCases.forEach(lootCase -> {
             description.add(MessageUtil.smallText(lootCase.getString()));
             description.add(MessageUtil.smallText("&f"));
             description.add(MessageUtil.smallText("&akliknij aby otworzyć skrzynie"));

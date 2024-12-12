@@ -1,0 +1,51 @@
+package pl.cebula.smp.configuration.implementation;
+
+import eu.okaeri.configs.OkaeriConfig;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import pl.cebula.smp.feature.lootcase.LootCase;
+
+import java.util.List;
+
+public class LootCaseConfiguration extends OkaeriConfig {
+
+    public List<LootCase> lootCases = List.of(
+            new LootCase(
+                    "afk",
+                    "skrzynia afk &8[&e⭐&7⭐⭐⭐⭐&8]",
+                    new Location(Bukkit.getWorlds().getFirst(),30,72,28),
+                    "",
+                    Particle.HEART,
+                    List.of(
+                    )
+            ),
+            new LootCase(
+                    "wedrowca",
+                    "skrzynia wędrowca &8[&e⭐⭐&7⭐⭐⭐&8]",
+                    new Location(Bukkit.getWorlds().getFirst(),26,72,25),
+                    "",
+                    Particle.NOTE,
+                    List.of(
+                    )
+            ),
+            new LootCase(
+                    "smoka",
+                    "skrzynia smoka &8[&e⭐⭐⭐&7⭐⭐&8]",
+                    new Location(Bukkit.getWorlds().getFirst(),25,72,17),
+                    "",
+                    Particle.SCULK_SOUL,
+                    List.of(
+                    )
+            ),
+            new LootCase(
+                    "piekiel",
+                    "skrzynia piekieł &8[&e⭐⭐⭐⭐⭐&8]",
+                    new Location(Bukkit.getWorlds().getFirst(),29,72,13),
+                    "",
+                    Particle.SMOKE,
+                    List.of(
+                    )
+            )
+    );
+}

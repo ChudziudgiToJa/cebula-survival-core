@@ -15,7 +15,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.cebula.smp.configuration.ConfigService;
-import pl.cebula.smp.configuration.implementation.PluginConfiguration;
+import pl.cebula.smp.configuration.implementation.*;
 import pl.cebula.smp.database.MongoDatabaseService;
 import pl.cebula.smp.feature.abyss.AbyssTask;
 import pl.cebula.smp.feature.afkzone.AfkZoneManager;
@@ -86,6 +86,10 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
+    private LootCaseConfiguration lootCaseConfiguration;
+    private KitConfiguration kitConfiguration;
+    private ItemShopConfiguration itemShopConfiguration;
+    private NpcShopConfiguration npcShopConfiguration;
     private UserService userService;
     private ClanService clanService;
     private ProtocolManager protocolManager;
@@ -121,6 +125,11 @@ public final class SurvivalPlugin extends JavaPlugin {
         ConfigService configService = new ConfigService();
         File dataFolder = this.getDataFolder();
         this.pluginConfiguration = configService.create(PluginConfiguration.class, new File(dataFolder, "config.yml"));
+        this.lootCaseConfiguration = configService.create(LootCaseConfiguration.class, new File(dataFolder, "lootcase.yml"));
+        this.kitConfiguration = configService.create(KitConfiguration.class, new File(dataFolder, "kit.yml"));
+        this.npcShopConfiguration = configService.create(NpcShopConfiguration.class, new File(dataFolder, "lootcase.yml"));
+        this.itemShopConfiguration = configService.create(ItemShopConfiguration.class, new File(dataFolder, "itemshop"));
+
 
         // topki
         this.topManager = new TopManager(this.userService);
@@ -135,17 +144,17 @@ public final class SurvivalPlugin extends JavaPlugin {
         JobInventory jobInventory = new JobInventory(this, this.userService);
 
         // kit
-        KitInventory kitInventory = new KitInventory(this, this.pluginConfiguration, this.userService);
+        KitInventory kitInventory = new KitInventory(this, this.kitConfiguration, this.userService);
 
         // backup
         BackupInventory backupInventory = new BackupInventory(this, this.userService);
 
         // ItemShop
-        ItemShopInventory itemShopInventory = new ItemShopInventory(this, this.pluginConfiguration, this.itemShopManager, this.userService);
+        ItemShopInventory itemShopInventory = new ItemShopInventory(this, this.itemShopConfiguration, this.itemShopManager, this.userService);
 
         // lootCase
         LootCaseInventory lootCaseInventory = new LootCaseInventory(this);
-        LootCaseHandler lootCaseHandler = new LootCaseHandler(this.pluginConfiguration);
+        LootCaseHandler lootCaseHandler = new LootCaseHandler(this.lootCaseConfiguration);
         lootCaseHandler.createLootCaseHolograms();
 
         // Statistic
@@ -171,11 +180,11 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new TrashCommand(this),
                         new EconomyCommand(this.userService),
                         new JobCommand(jobInventory),
-                        new KitCommand(kitInventory, this.pluginConfiguration, this.userService),
+                        new KitCommand(kitInventory, this.kitConfiguration, this.userService),
                         new BackupCommand(backupInventory),
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
-                        new LootCaseCommand(this.pluginConfiguration),
+                        new LootCaseCommand(this.lootCaseConfiguration),
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
@@ -190,12 +199,12 @@ public final class SurvivalPlugin extends JavaPlugin {
         // load Listeners
         Stream.of(
                 new JoinQuitListener(this.userService),
-                new ShopNpcController(this.pluginConfiguration, shopInventory),
+                new ShopNpcController(this.npcShopConfiguration, shopInventory),
                 new JobController(this.userService, this.random),
                 new BackupController(this.userService),
                 new BlockerController(this.pluginConfiguration),
                 new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),
-                new LootCaseController(this.pluginConfiguration, lootCaseInventory),
+                new LootCaseController(this.lootCaseConfiguration, lootCaseInventory),
                 new StatisticController(this.userService),
                 new ClanPvpController(this.clanService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
@@ -208,8 +217,8 @@ public final class SurvivalPlugin extends JavaPlugin {
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
-        new AfkZoneTask(this, afkZoneManager, this.pluginConfiguration, userService);
-        new LootCaseTask(this, this.pluginConfiguration);
+        new AfkZoneTask(this, afkZoneManager, this.lootCaseConfiguration, userService);
+        new LootCaseTask(this, this.lootCaseConfiguration);
         new NpcPushTask(this, this.pluginConfiguration);
         new ClanArmorTask(this, this.clanService);
     }

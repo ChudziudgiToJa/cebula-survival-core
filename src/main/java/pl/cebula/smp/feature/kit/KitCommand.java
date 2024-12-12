@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.entity.Player;
+import pl.cebula.smp.configuration.implementation.KitConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -15,12 +16,12 @@ import pl.cebula.smp.util.MessageUtil;
 public class KitCommand {
 
     private final KitInventory kitInventory;
-    private final PluginConfiguration pluginConfiguration;
+    private final KitConfiguration kitConfiguration;
     private final UserService userService;
 
-    public KitCommand(KitInventory kitInventory, PluginConfiguration pluginConfiguration, UserService userService) {
+    public KitCommand(KitInventory kitInventory, KitConfiguration kitConfiguration, UserService userService) {
         this.kitInventory = kitInventory;
-        this.pluginConfiguration = pluginConfiguration;
+        this.kitConfiguration = kitConfiguration;
         this.userService = userService;
     }
 
@@ -33,7 +34,7 @@ public class KitCommand {
     @Permission("cebula.kit.command.give")
     @Execute(name = "give")
     void execute(@Context Player player, @Arg Player target, @Arg String string) {
-        this.pluginConfiguration.kitSettings.kitList.forEach(kit -> {
+        this.kitConfiguration.kitList.forEach(kit -> {
             if (kit.getName().equals(string)) {
                 kit.getItemStackArrayList().forEach(itemStack -> {
                     target.getInventory().addItem(itemStack);

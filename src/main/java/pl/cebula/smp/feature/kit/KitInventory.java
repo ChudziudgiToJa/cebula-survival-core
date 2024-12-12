@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.configuration.implementation.KitConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -17,12 +18,12 @@ import java.util.HashMap;
 public class KitInventory {
 
     private final SurvivalPlugin survivalPlugin;
-    private final PluginConfiguration pluginConfiguration;
+    private final KitConfiguration kitConfiguration;
     private final UserService userService;
 
-    public KitInventory(SurvivalPlugin survivalPlugin, PluginConfiguration pluginConfiguration, UserService userService) {
+    public KitInventory(SurvivalPlugin survivalPlugin, KitConfiguration kitConfiguration, UserService userService) {
         this.survivalPlugin = survivalPlugin;
-        this.pluginConfiguration = pluginConfiguration;
+        this.kitConfiguration = kitConfiguration;
         this.userService = userService;
     }
 
@@ -40,7 +41,7 @@ public class KitInventory {
                         .setName(" ")
                         .build()));
 
-        for (Kit kit : this.pluginConfiguration.kitSettings.kitList) {
+        for (Kit kit : this.kitConfiguration.kitList) {
             inventory.addItem(kit.getIcon());
         }
 
@@ -49,7 +50,7 @@ public class KitInventory {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
 
-            for (Kit kit : this.pluginConfiguration.kitSettings.kitList) {
+            for (Kit kit : this.kitConfiguration.kitList) {
                 if (event.getCurrentItem() != null && event.getCurrentItem().isSimilar(kit.getIcon())) {
                     this.showPrewiew(player, kit);
                     player.playSound(player, Sound.BLOCK_LEVER_CLICK, 5, 5);
