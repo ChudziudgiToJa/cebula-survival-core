@@ -30,6 +30,8 @@ public class KitConfiguration extends OkaeriConfig {
                             new ItemBuilder(Material.LEATHER_CHESTPLATE).build(),
                             new ItemBuilder(Material.LEATHER_LEGGINGS).build(),
                             new ItemBuilder(Material.COOKED_BEEF, 16).build()
+                    ),
+                    List.of(
                     )
             ),
             new Kit(
@@ -60,6 +62,8 @@ public class KitConfiguration extends OkaeriConfig {
                             new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
                                     .build()
 
+                    ),
+                    List.of(
                     )
             ),
             new Kit(
@@ -92,6 +96,8 @@ public class KitConfiguration extends OkaeriConfig {
                                     .addEnchant(Enchantment.PROTECTION, 1)
                                     .build()
 
+                    ),
+                    List.of(
                     )
             ),
             new Kit(
@@ -124,6 +130,8 @@ public class KitConfiguration extends OkaeriConfig {
                             new ItemBuilder(Material.IRON_LEGGINGS)
                                     .addEnchant(Enchantment.PROTECTION, 2)
                                     .build()
+                    ),
+                    List.of(
                     )
             )
     );

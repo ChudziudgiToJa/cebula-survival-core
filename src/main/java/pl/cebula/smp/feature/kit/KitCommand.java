@@ -8,9 +8,13 @@ import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.configuration.implementation.KitConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
+import pl.cebula.smp.feature.lootcase.LootCaseChance;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
+
+import java.util.List;
 
 @Command(name = "kit")
 public class KitCommand {
@@ -57,6 +61,40 @@ public class KitCommand {
             if (kitData.getName().equals(kitname)) {
                 user.getKits().remove(kitData);
                 MessageUtil.sendMessage(player, "&aUsunięto czas oczekiwania na kit " + targetName + " dla: " + targetName);
+            }
+        });
+    }
+
+    @Permission("cebula.kit.command.customitem")
+    @Execute(name = "addcustomitem")
+    void execute(@Context Player sender, @Arg String s) {
+        this.kitConfiguration.kitList.forEach(kit -> {
+            if (kit.getName().equals(s)) {
+                kit.getCustomItemList().add(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
+                MessageUtil.sendMessage(sender, "&adodano przedmiot do listy itemów kitu: "  + kit.getName());
+            }
+        });
+    }
+
+    @Permission("cebula.kit.command.customitem")
+    @Execute(name = "removecustomitem")
+    void executeRemove(@Context Player sender, @Arg String kitName, @Arg int i) {
+        int index = i -1;
+        this.kitConfiguration.kitList.forEach(kit -> {
+            if (kit.getName().equals(kitName)) {
+
+                if (kit.getCustomItemList().isEmpty()) {
+                    MessageUtil.sendMessage(sender, "&cLista przedmiotów w tym kicie jest pusta.");
+                    return;
+                }
+
+                if (index < 0 || index >= kit.getCustomItemList().size()) {
+                    MessageUtil.sendMessage(sender, "&cNieprawidłowy indeks. Lista zawiera " + kit.getCustomItemList().size() + " element(y/ów).");
+                    return;
+                }
+
+                kit.getCustomItemList().remove(index);
+                MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy itemów kitu: " + kit.getName());
             }
         });
     }

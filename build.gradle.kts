@@ -2,6 +2,7 @@ plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     java
+    kotlin("jvm")
 }
 
 repositories {
@@ -75,6 +76,7 @@ dependencies {
 
     //Protocolib
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 bukkit {

@@ -92,6 +92,13 @@ public class KitInventory {
             inventory.addItem(itemStack);
         }
 
+        for (String string : kit.getCustomItemList()) {
+            ItemStack itemStack = ItemStackSerializable.readItemStack(string);
+            if (itemStack != null) {
+                inventory.addItem(itemStack);
+            }
+        }
+
 
         simpleInventory.click(event -> {
             event.setCancelled(true);
@@ -127,6 +134,15 @@ public class KitInventory {
                     leftover.values().forEach(remaining ->
                             player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                     );
+                }
+                for (String string : kit.getCustomItemList()) {
+                    ItemStack itemStack = ItemStackSerializable.readItemStack(string);
+                    if (itemStack != null) {
+                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(itemStack);
+                        leftover.values().forEach(remaining ->
+                                player.getWorld().dropItemNaturally(player.getLocation(), remaining)
+                        );
+                    }
                 }
                 MessageUtil.sendTitle(player, "", "&aodebrano zestaw", 20, 50, 20);
                 player.closeInventory();

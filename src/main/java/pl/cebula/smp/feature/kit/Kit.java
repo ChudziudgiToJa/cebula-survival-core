@@ -13,12 +13,14 @@ public class Kit implements Serializable {
     private final ItemStack icon;
     private final String permission;
     private final List<ItemStack> itemStackArrayList;
+    private final List<String> customItemList;
 
-    public Kit(String name, long coolDownTime, ItemStack icon, String permission, List<ItemStack> itemStackArrayList) {
+    public Kit(String name, long coolDownTime, ItemStack icon, String permission, List<ItemStack> itemStackArrayList, List<String> customItemList) {
         this.name = name;
         this.coolDownTime = coolDownTime;
         this.icon = icon;
         this.permission = permission;
         this.itemStackArrayList = itemStackArrayList;
+        this.customItemList = customItemList;
     }
 }

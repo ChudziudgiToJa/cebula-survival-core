@@ -1,5 +1,6 @@
 package pl.cebula.smp.feature.lootcase;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,18 +24,22 @@ public class LootCaseController implements Listener {
 
     @EventHandler
     public void onClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
+        Block block = event.getClickedBlock();
         if (block == null) return;
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            for (LootCase lootCase : this.pluginConfiguration.lootCases) {
-                if (lootCase.getLocation().equals(block.getLocation())) {
-                    this.lootCaseInventory.showPrewiew(player, lootCase);
-                    event.setCancelled(true);
-                }
-            }
+        Player player = event.getPlayer();
+        Location clickedLocation = block.getLocation();
+
+        LootCase matchingLootCase = this.pluginConfiguration.lootCases.stream()
+                .filter(lootCase -> lootCase.getLocation().equals(clickedLocation))
+                .findFirst()
+                .orElse(null);
+
+        if (matchingLootCase != null) {
+            this.lootCaseInventory.showPrewiew(player, matchingLootCase);
+            event.setCancelled(true);
         }
     }
 }

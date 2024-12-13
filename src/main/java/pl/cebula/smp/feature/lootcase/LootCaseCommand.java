@@ -86,6 +86,30 @@ public class LootCaseCommand {
         });
     }
 
+    @Permission("cebula.case.removeitem.admin")
+    @Execute(name = "removeitem")
+    void executeRemoveItem(@Context Player sender, @Arg String lootCasename, @Arg int i) {
+        int index = i -1;
+        this.lootCaseConfiguration.lootCases.forEach(lootCase -> {
+            if (lootCase.getName().equals(lootCasename)) {
+
+                if (lootCase.getDropItems().isEmpty()) {
+                    MessageUtil.sendMessage(sender, "&cLista przedmiotów w tej skrzynce jest pusta.");
+                    return;
+                }
+
+                if (index < 0 || index >= lootCase.getDropItems().size()) {
+                    MessageUtil.sendMessage(sender, "&cNieprawidłowy indeks. Lista zawiera " + lootCase.getDropItems().size() + " element(y/ów).");
+                    return;
+                }
+
+                lootCase.getDropItems().remove(index);
+                this.lootCaseConfiguration.save();
+                MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy dropów skrzynki: " + lootCase.getName());
+            }
+        });
+    }
+
     @Permission("cebula.case.additem.admin")
     @Execute(name = "setkey")
     void execute(@Context Player sender, @Arg String lootCasename) {
