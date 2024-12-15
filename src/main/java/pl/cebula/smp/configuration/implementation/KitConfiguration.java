@@ -9,7 +9,8 @@ import pl.cebula.smp.util.ItemBuilder;
 
 import java.util.List;
 
-public class KitConfiguration extends OkaeriConfig {
+public class
+KitConfiguration extends OkaeriConfig {
 
     @Comment("## czas podajemy w milisekundach bo to liczy na czasie aktualnym świata")
     public List<Kit> kitList = List.of(
@@ -25,10 +26,12 @@ public class KitConfiguration extends OkaeriConfig {
                             .build(),
                     "cebulasmp.kit.gracz",
                     List.of(
-                            new ItemBuilder(Material.STONE_AXE).build(),
-                            new ItemBuilder(Material.STONE_PICKAXE).build(),
-                            new ItemBuilder(Material.LEATHER_CHESTPLATE).build(),
-                            new ItemBuilder(Material.LEATHER_LEGGINGS).build(),
+                            new ItemBuilder(Material.STONE_AXE)
+                                    .addEnchant(Enchantment.BINDING_CURSE, 1)
+                                    .build(),
+                            new ItemBuilder(Material.STONE_PICKAXE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_CHESTPLATE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_LEGGINGS).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
                             new ItemBuilder(Material.COOKED_BEEF, 16).build()
                     ),
                     List.of(

@@ -106,6 +106,13 @@ public class ClanCommand {
             MessageUtil.sendMessage(player, "&cGracz posiada już klan");
             return;
         }
+
+
+        if (clan.getClanMemberLimitType().getSlotLimit() >= clan.getMemberArrayList().size()) {
+            MessageUtil.sendMessage(player, "&cnie posiadasz miejsc w klanie &7(/klan ulepsz)");
+            return;
+        }
+
         this.clanInviteService.inviteToClan(clan, target.getName());
         MessageUtil.sendMessage(player, "&aZaproszono do klanu: &f" + target.getName());
         MessageUtil.sendMessage(target, "&aOtrzymałeś/aś zaproszenie do klanu: " + clan.getTag());

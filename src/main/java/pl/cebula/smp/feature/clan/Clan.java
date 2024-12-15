@@ -2,17 +2,12 @@ package pl.cebula.smp.feature.clan;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
-import pl.cebula.smp.feature.backup.Backup;
-import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
-import pl.cebula.smp.feature.job.JobType;
-import pl.cebula.smp.feature.kit.KitData;
+import pl.cebula.smp.feature.clan.feature.upgrade.ClanMemberLimitType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 @Getter
@@ -23,6 +18,7 @@ public class Clan implements Serializable, Identifiable<String> {
     private String tag;
     private String ownerName;
 
+    private ClanMemberLimitType clanMemberLimitType;
     private ArrayList<String> memberArrayList;
 
     private boolean pvp;
@@ -32,6 +28,7 @@ public class Clan implements Serializable, Identifiable<String> {
         this.ownerName = player.getName();
         this.tag = tag.toUpperCase();
 
+        this.clanMemberLimitType = ClanMemberLimitType.SMALL;
         this.memberArrayList = new ArrayList<>();
 
         this.pvp = false;
