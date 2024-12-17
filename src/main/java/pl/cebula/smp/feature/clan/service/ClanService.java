@@ -31,6 +31,7 @@ public class ClanService {
 
     public void removeClan(Clan clan) {
         this.clanConcurrentHashMap.remove(clan.getId());
+        clanRepository.update(clan, clan.getId(), UpdateType.REMOVE);
     }
 
     public Clan findClanByMember(String nickName) {
