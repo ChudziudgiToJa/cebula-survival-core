@@ -40,8 +40,6 @@ public class User implements Serializable, Identifiable<String> {
     private int breakBlock;
     private int placeBlock;
 
-    private boolean incognito;
-
 
     public User(Player player) {
         this.uuid = String.valueOf(player.getUniqueId());
@@ -66,8 +64,6 @@ public class User implements Serializable, Identifiable<String> {
         this.kits = new ArrayList<>();
 
         this.backups = new ArrayList<>();
-
-        this.incognito = false;
     }
 
 

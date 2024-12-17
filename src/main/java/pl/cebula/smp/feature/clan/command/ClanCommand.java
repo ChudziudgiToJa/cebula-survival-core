@@ -43,6 +43,7 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&a/klan opuść &7- Opuszcza obecny klan (jeśli nie jesteś właścicielem).");
         MessageUtil.sendMessage(player, "&a/klan wyrzuć <gracz> &7- Wyrzuca gracza z twojego klanu.");
         MessageUtil.sendMessage(player, "&a/klan pvp &7- Otwiera menu zmiany ustawień PvP klanu.");
+        MessageUtil.sendMessage(player, "&a/klan ulepszenia &7- Otwiera menu ulepszeń klanu.");
     }
 
 
@@ -56,7 +57,7 @@ public class ClanCommand {
         }
 
         if (!(tag.length() == 4)) {
-            MessageUtil.sendMessage(player, "&ctag klanu musi mieć 5 znaków");
+            MessageUtil.sendMessage(player, "&ctag klanu musi mieć 4 znaków");
             return;
         }
 
@@ -104,12 +105,6 @@ public class ClanCommand {
 
         if (targetClan != null) {
             MessageUtil.sendMessage(player, "&cGracz posiada już klan");
-            return;
-        }
-
-
-        if (clan.getClanMemberLimitType().getSlotLimit() >= clan.getMemberArrayList().size()) {
-            MessageUtil.sendMessage(player, "&cnie posiadasz miejsc w klanie &7(/klan ulepsz)");
             return;
         }
 

@@ -61,10 +61,10 @@ import pl.cebula.smp.feature.statistic.StatisticInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
 import pl.cebula.smp.feature.top.TopManager;
 import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.feature.user.controller.JoinQuitListener;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 import pl.cebula.smp.feature.user.task.SpentTimeTask;
 import pl.cebula.smp.feature.user.task.UsersSaveTask;
-import pl.cebula.smp.feature.user.controller.JoinQuitListener;
 
 import java.io.File;
 import java.util.Random;

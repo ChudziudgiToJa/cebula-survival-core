@@ -33,56 +33,50 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     5.0
                             ),
                             new ItemToInteract(
-                                    new ItemBuilder(Material.IRON_INGOT).build(),
-                                    13,
-                                    12.0,
-                                    7.0
-                            ),
-                            new ItemToInteract(
                                     new ItemBuilder(Material.GOLD_INGOT).build(),
-                                    14,
+                                    13,
                                     55.0,
                                     15.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.GOLD_INGOT).build(),
-                                    15,
+                                    14,
                                     15.0,
                                     6.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.EMERALD).build(),
-                                    16,
+                                    15,
                                     40.0,
                                     10.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.DIAMOND).build(),
-                                    19,
+                                    16,
                                     40.0,
                                     10.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.NETHERITE_SCRAP).build(),
-                                    20,
+                                    19,
                                     250.0,
                                     130.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.POINTED_DRIPSTONE).build(),
-                                    21,
+                                    20,
                                     8.0,
                                     3.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.FLINT).build(),
-                                    22,
+                                    21,
                                     3.0,
                                     1.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.AMETHYST_SHARD).build(),
-                                    23,
+                                    22,
                                     4.0,
                                     1.0
                             )

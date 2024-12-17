@@ -17,7 +17,6 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.eternalcode.pl/releases")
-    maven("https://maven.citizensnpcs.co/repo")
     maven("https://maven.enginehub.org/repo/")
     maven("https://jitpack.io")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
@@ -72,7 +71,7 @@ dependencies {
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.11")
 
     //Vault
-    compileOnly ("com.github.MilkBowl:VaultAPI:1.7.1")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
 
     //Protocolib
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")

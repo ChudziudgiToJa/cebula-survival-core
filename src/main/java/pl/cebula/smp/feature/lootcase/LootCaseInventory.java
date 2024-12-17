@@ -91,7 +91,7 @@ public class LootCaseInventory {
                 if (lootedItemStack == null) return;
 
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-                    MessageUtil.sendMessage(onlinePlayer, player.getName() + " &7otwiera&8: &f " + lootCase.getString());
+                    MessageUtil.sendMessage(onlinePlayer, player.getName() + " &7otwiera&8: &d" + lootCase.getString());
                     onlinePlayer.playSound(onlinePlayer, Sound.ITEM_GOAT_HORN_SOUND_0, 5 ,5);
                 });
                 HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(lootedItemStack);
@@ -99,7 +99,6 @@ public class LootCaseInventory {
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );
             }
-            player.closeInventory();
         });
         player.openInventory(inventory);
     }
