@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.configuration.implementation.KitConfiguration;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.lootcase.LootCaseChance;
@@ -43,6 +44,12 @@ public class KitCommand {
                 kit.getItemStackArrayList().forEach(itemStack -> {
                     target.getInventory().addItem(itemStack);
                 });
+                kit.getCustomItemList().forEach(s -> {
+                    ItemStack itemStack = ItemStackSerializable.readItemStack(s);
+                    if (itemStack == null) return;
+                    target.getInventory().addItem(itemStack);
+                });
+                MessageUtil.sendMessage(player, "Nadano zestaw " + string + " dla " + target.getName());
             }
         });
     }
