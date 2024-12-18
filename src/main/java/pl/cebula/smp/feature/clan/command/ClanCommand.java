@@ -10,7 +10,6 @@ import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
-import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -23,15 +22,14 @@ public class ClanCommand {
     private final ClanService clanService;
     private final ClanDeleteInventory clanDeleteInventory;
     private final ClanInviteService clanInviteService;
-    private final ClanPvpInventory clanPvpInventory;
 
-    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ClanPvpInventory clanPvpInventory) {
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService) {
         this.userService = userService;
         this.clanService = clanService;
         this.clanDeleteInventory = clanDeleteInventory;
         this.clanInviteService = clanInviteService;
-        this.clanPvpInventory = clanPvpInventory;
     }
+
 
     @Execute()
     void help(@Context Player player) {
@@ -205,9 +203,10 @@ public class ClanCommand {
         }
 
         if (!clan.getOwnerName().equals(player.getName())) {
-            MessageUtil.sendMessage(player, "&cnie jesteś liderem klanu.");
+            MessageUtil.sendMessage(player, "&cNie jesteś liderem klanu.");
             return;
         }
-        this.clanPvpInventory.showChangePvp(player, clan);
+        clan.setPvp(!clan.isPvp());
+        MessageUtil.sendMessage(player, "&7Zmieniono status pvp na: " + (clan.isPvp() ? "&cwyłączony" : "&awłączony"));
     }
 }

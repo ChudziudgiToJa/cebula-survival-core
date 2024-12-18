@@ -29,7 +29,6 @@ import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpController;
-import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpInventory;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
@@ -162,7 +161,6 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         //Clan
         ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
-        ClanPvpInventory clanPvpInventory = new ClanPvpInventory(this, this.clanService);
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -188,7 +186,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
-                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService, clanPvpInventory)
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

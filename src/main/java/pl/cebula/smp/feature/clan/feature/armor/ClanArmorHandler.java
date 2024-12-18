@@ -8,6 +8,7 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.Pair;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -28,24 +29,28 @@ public class ClanArmorHandler {
         ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
         LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
         helmetMeta.setColor(Color.GREEN);
+        helmetMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
         helmet.setItemMeta(helmetMeta);
         list.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, helmet));
 
         ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
         LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) chestplate.getItemMeta();
         chestplateMeta.setColor(Color.GREEN);
+        chestplateMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
         chestplate.setItemMeta(chestplateMeta);
         list.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, chestplate));
 
         ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
         LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
         leggingsMeta.setColor(Color.GREEN);
+        leggingsMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
         leggings.setItemMeta(leggingsMeta);
         list.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, leggings));
 
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
         LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
         bootsMeta.setColor(Color.GREEN);
+        bootsMeta.addEnchant(Enchantment.UNBREAKING, 10, true);
         boots.setItemMeta(bootsMeta);
         list.add(new Pair<>(EnumWrappers.ItemSlot.FEET, boots));
 
