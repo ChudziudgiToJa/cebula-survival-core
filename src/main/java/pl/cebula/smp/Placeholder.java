@@ -70,11 +70,7 @@ public class Placeholder extends PlaceholderExpansion {
             return MessageUtil.smallText(DurationUtil.convertLong(AbyssManager.time));
         }
         if(params.startsWith("kd")) {
-            if (user.getDead() == 0) {
-                return "0.0";
-            }
-            return String.valueOf((double) user.getKill() / user.getDead());
-
+            return String.format("%.1f", (double) user.getKill() / user.getDead());
         }
         if(params.startsWith("lider")) {
             if (clanOwner != null) {
