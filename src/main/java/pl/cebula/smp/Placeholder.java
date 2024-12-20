@@ -70,6 +70,9 @@ public class Placeholder extends PlaceholderExpansion {
             return MessageUtil.smallText(DurationUtil.convertLong(AbyssManager.time));
         }
         if(params.startsWith("kd")) {
+            if (user.getKill() == 0.0 || user.getDead() == 0.0) {
+                return "0.0";
+            }
             return String.format("%.1f", (double) user.getKill() / user.getDead());
         }
         if(params.startsWith("lider")) {
