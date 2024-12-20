@@ -65,6 +65,9 @@ import pl.cebula.smp.feature.user.controller.JoinQuitListener;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 import pl.cebula.smp.feature.user.task.SpentTimeTask;
 import pl.cebula.smp.feature.user.task.UsersSaveTask;
+import pl.cebula.smp.feature.vanish.VanishCommand;
+import pl.cebula.smp.feature.vanish.VanishController;
+import pl.cebula.smp.feature.vanish.VanishHandler;
 
 import java.io.File;
 import java.util.Random;
@@ -169,6 +172,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         CraftingManager craftingManager = new CraftingManager(this.craftingConfiguration);
         craftingManager.registerCraftings();
 
+        //Vanish
+        VanishHandler vanishHandler = new VanishHandler(this.protocolManager);
+
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
         this.clanRepository.findAll().forEach(this.clanService::addClan);
@@ -193,7 +199,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
-                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService)
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
+                        new VanishCommand(this.userService, vanishHandler)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -211,7 +218,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),
                 new LootCaseController(this.lootCaseConfiguration, lootCaseInventory),
                 new StatisticController(this.userService),
-                new ClanPvpController(this.clanService)
+                new ClanPvpController(this.clanService),
+                new VanishController(this.userService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

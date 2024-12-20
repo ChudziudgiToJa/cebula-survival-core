@@ -12,15 +12,15 @@ public class CraftingConfiguration extends OkaeriConfig {
     public List<Crafting> craftings = List.of(
             new Crafting(
                     List.of(
-                            new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.GOLD_BLOCK).build(),
+                            new ItemBuilder(Material.SHORT_GRASS).build(),
+                            new ItemBuilder(Material.SHORT_GRASS).build(),
+                            new ItemBuilder(Material.SHORT_GRASS).build(),
                             new ItemBuilder(Material.GOLD_BLOCK).build(),
                             new ItemBuilder(Material.APPLE).build(),
                             new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.GOLD_BLOCK).build()
+                            new ItemBuilder(Material.DIRT).build(),
+                            new ItemBuilder(Material.DIRT).build(),
+                            new ItemBuilder(Material.DIRT).build()
                     ),
                     new ItemBuilder(Material.ENCHANTED_GOLDEN_APPLE).build()
             )

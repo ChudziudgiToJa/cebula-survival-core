@@ -69,6 +69,9 @@ public class Placeholder extends PlaceholderExpansion {
         if(params.startsWith("kosz")) {
             return MessageUtil.smallText(DurationUtil.convertLong(AbyssManager.time));
         }
+        if(params.startsWith("vanish")) {
+            return user.isVanish() ? MessageUtil.smallText(" &b&lvanish&f") : "";
+        }
         if(params.startsWith("kd")) {
             if (user.getKill() == 0.0 || user.getDead() == 0.0) {
                 return "0.0";
