@@ -52,8 +52,8 @@ import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
 import pl.cebula.smp.feature.lootcase.*;
 import pl.cebula.smp.feature.npcpush.NpcPushTask;
-import pl.cebula.smp.feature.shop.controller.ShopNpcController;
-import pl.cebula.smp.feature.shop.inventory.ShopInventory;
+import pl.cebula.smp.feature.npcshop.controller.NpcShopController;
+import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.statistic.StatisticCommand;
 import pl.cebula.smp.feature.statistic.StatisticController;
 import pl.cebula.smp.feature.statistic.StatisticInventory;
@@ -137,7 +137,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         HelpInventory helpInventory = new HelpInventory(this);
 
         // shop Menu
-        ShopInventory shopInventory = new ShopInventory(this, userService);
+        NpcShopInventory npcShopInventory = new NpcShopInventory(this, userService);
 
         // job Menu
         JobInventory jobInventory = new JobInventory(this, this.userService);
@@ -197,7 +197,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         // load Listeners
         Stream.of(
                 new JoinQuitListener(this.userService),
-                new ShopNpcController(this.npcShopConfiguration, shopInventory),
+                new NpcShopController(this.npcShopConfiguration, npcShopInventory),
                 new JobController(this.userService, this.random),
                 new BackupController(this.userService),
                 new BlockerController(this.pluginConfiguration),

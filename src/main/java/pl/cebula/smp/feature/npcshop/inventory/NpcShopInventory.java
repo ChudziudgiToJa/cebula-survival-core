@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.shop.inventory;
+package pl.cebula.smp.feature.npcshop.inventory;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -6,21 +6,24 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.shop.object.ItemToInteract;
-import pl.cebula.smp.feature.shop.object.Shop;
+import pl.cebula.smp.feature.npcshop.object.ItemToInteract;
+import pl.cebula.smp.feature.npcshop.object.Shop;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
-import pl.cebula.smp.util.*;
+import pl.cebula.smp.util.DecimalUtil;
+import pl.cebula.smp.util.ItemBuilder;
+import pl.cebula.smp.util.MessageUtil;
+import pl.cebula.smp.util.SimpleInventory;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class ShopInventory {
+public class NpcShopInventory {
 
     private final SurvivalPlugin survivalPlugin;
     private final UserService userService;
 
-    public ShopInventory(SurvivalPlugin survivalPlugin, UserService userService) {
+    public NpcShopInventory(SurvivalPlugin survivalPlugin, UserService userService) {
         this.survivalPlugin = survivalPlugin;
         this.userService = userService;
     }
@@ -46,8 +49,11 @@ public class ShopInventory {
                     .setName("&l&f" + itemToInteract.getItemStack().getType())
                     .addLore(
                             " ",
-                            "&6&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
-                            "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet"
+                            "&e&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
+                            "&6&lppm + shift &7- &akliknij aby sprzedać 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet",
+                            "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet",
+                            "&2&llpm + shift &7- &akliknij aby kupić 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet"
+
                     )
                     .build();
 
@@ -61,7 +67,7 @@ public class ShopInventory {
 
                 if (event.getSlot() == itemToInteract.getItemSlot()) {
 
-                    if (event.getClick().equals(ClickType.LEFT)) {
+                    if (event.getClick().equals(ClickType.LEFT)) { // Kupowanie pojedynczego przedmiotu
                         if (user.getMoney() >= itemToInteract.getBuyPrice()) {
                             user.setMoney(user.getMoney() - itemToInteract.getBuyPrice());
                             ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), 1);
@@ -79,7 +85,26 @@ public class ShopInventory {
                         return;
                     }
 
-                    if (event.getClick().equals(ClickType.RIGHT)) {
+                    if (event.getClick().equals(ClickType.SHIFT_LEFT)) { // Kupowanie 64 przedmiotów
+                        double totalPrice = itemToInteract.getBuyPrice() * 64;
+                        if (user.getMoney() >= totalPrice) {
+                            user.setMoney(user.getMoney() - totalPrice);
+                            ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), 64);
+
+                            HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
+                            if (!leftover.isEmpty()) {
+                                leftover.values().forEach(remaining -> player.getWorld().dropItemNaturally(player.getLocation(), remaining));
+                            }
+
+                            MessageUtil.sendMessage(player, "&aKupiłeś 64 przedmioty: " + item.getType() + " za " + totalPrice + "!");
+                        } else {
+                            MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić 64 przedmioty.", 20, 50, 20);
+                            player.closeInventory();
+                        }
+                        return;
+                    }
+
+                    if (event.getClick().equals(ClickType.RIGHT)) { // Sprzedawanie pojedynczego przedmiotu
                         ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), 1);
                         if (player.getInventory().containsAtLeast(itemToSell, 1)) {
                             player.getInventory().removeItem(itemToSell);
@@ -91,11 +116,23 @@ public class ShopInventory {
                         }
                         return;
                     }
+
+                    if (event.getClick().equals(ClickType.SHIFT_RIGHT)) { // Sprzedawanie 64 przedmiotów
+                        ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), 64);
+                        if (player.getInventory().containsAtLeast(itemToSell, 64)) {
+                            player.getInventory().removeItem(itemToSell);
+                            double totalPrice = itemToInteract.getSellPrice() * 64;
+                            user.setMoney(user.getMoney() + totalPrice);
+                            MessageUtil.sendMessage(player, "&aSprzedałeś 64 przedmioty: " + itemToSell.getType() + " za " + totalPrice + "!");
+                        } else {
+                            MessageUtil.sendTitle(player, "", "&cNie masz 64 tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
+                            player.closeInventory();
+                        }
+                        return;
+                    }
                 }
             }
         });
-
-
         player.openInventory(inventory);
     }
 }

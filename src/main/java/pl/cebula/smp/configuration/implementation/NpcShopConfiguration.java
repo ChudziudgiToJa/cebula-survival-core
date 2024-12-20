@@ -2,8 +2,8 @@ package pl.cebula.smp.configuration.implementation;
 
 import eu.okaeri.configs.OkaeriConfig;
 import org.bukkit.Material;
-import pl.cebula.smp.feature.shop.object.ItemToInteract;
-import pl.cebula.smp.feature.shop.object.Shop;
+import pl.cebula.smp.feature.npcshop.object.ItemToInteract;
+import pl.cebula.smp.feature.npcshop.object.Shop;
 import pl.cebula.smp.util.ItemBuilder;
 
 import java.util.List;

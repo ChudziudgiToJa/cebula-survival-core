@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.shop.controller;
+package pl.cebula.smp.feature.npcshop.controller;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Sound;
@@ -6,18 +6,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import pl.cebula.smp.configuration.implementation.NpcShopConfiguration;
-import pl.cebula.smp.configuration.implementation.PluginConfiguration;
-import pl.cebula.smp.feature.shop.inventory.ShopInventory;
-import pl.cebula.smp.feature.shop.object.Shop;
+import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
+import pl.cebula.smp.feature.npcshop.object.Shop;
 
-public class ShopNpcController implements Listener {
+public class NpcShopController implements Listener {
 
     private final NpcShopConfiguration npcShopConfiguration;
-    private final ShopInventory shopInventory;
+    private final NpcShopInventory npcShopInventory;
 
-    public ShopNpcController(NpcShopConfiguration npcShopConfiguration, ShopInventory shopInventory) {
+    public NpcShopController(NpcShopConfiguration npcShopConfiguration, NpcShopInventory npcShopInventory) {
         this.npcShopConfiguration = npcShopConfiguration;
-        this.shopInventory = shopInventory;
+        this.npcShopInventory = npcShopInventory;
     }
 
     @EventHandler
@@ -26,7 +25,7 @@ public class ShopNpcController implements Listener {
 
         for (Shop shop : this.npcShopConfiguration.shops) {
             if (event.getNPC().getId() == shop.getNpcId()) {
-                shopInventory.show(player, shop);
+                npcShopInventory.show(player, shop);
                 player.playSound(player, Sound.BLOCK_BARREL_OPEN, 5 ,5);
             }
         }

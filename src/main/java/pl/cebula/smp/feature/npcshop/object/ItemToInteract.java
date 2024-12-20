@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.shop.object;
+package pl.cebula.smp.feature.npcshop.object;
 
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
