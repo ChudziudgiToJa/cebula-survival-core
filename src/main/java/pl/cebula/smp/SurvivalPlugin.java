@@ -33,6 +33,7 @@ import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.command.TrashCommand;
+import pl.cebula.smp.feature.crafting.CraftingManager;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
 import pl.cebula.smp.feature.economy.EconomyCommand;
@@ -89,6 +90,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private KitConfiguration kitConfiguration;
     private ItemShopConfiguration itemShopConfiguration;
     private NpcShopConfiguration npcShopConfiguration;
+    private CraftingConfiguration craftingConfiguration;
     private UserService userService;
     private ClanService clanService;
     private ProtocolManager protocolManager;
@@ -128,6 +130,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.kitConfiguration = configService.create(KitConfiguration.class, new File(dataFolder, "kit.yml"));
         this.npcShopConfiguration = configService.create(NpcShopConfiguration.class, new File(dataFolder, "npcShop.yml"));
         this.itemShopConfiguration = configService.create(ItemShopConfiguration.class, new File(dataFolder, "itemshop.yml"));
+        this.craftingConfiguration = configService.create(CraftingConfiguration.class, new File(dataFolder, "crafting.yml"));
 
 
         // topki
@@ -161,6 +164,10 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         //Clan
         ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
+
+        //Custom crafting
+        CraftingManager craftingManager = new CraftingManager(this.craftingConfiguration);
+        craftingManager.registerCraftings();
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
