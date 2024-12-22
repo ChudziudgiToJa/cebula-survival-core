@@ -7,20 +7,23 @@ import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
 @Permission("cebulasmp.command.vanish")
-@Command(name = "vanish")
+@Command(name = "vanish", aliases = {"v"})
 public class VanishCommand {
 
     private final UserService userService;
     private final VanishHandler vanishHandler;
+    private final SurvivalPlugin survivalPlugin;
 
-    public VanishCommand(UserService userService, VanishHandler vanishHandler) {
+    public VanishCommand(UserService userService, VanishHandler vanishHandler, SurvivalPlugin survivalPlugin) {
         this.userService = userService;
         this.vanishHandler = vanishHandler;
+        this.survivalPlugin = survivalPlugin;
     }
 
 
@@ -31,7 +34,7 @@ public class VanishCommand {
             MessageUtil.sendMessage(player, "&cNie odnaleziono Twojego użytkownika w bazie danych.");
             return;
         }
-        vanishHandler.toggleVanish(player, user);
+        vanishHandler.toggleVanish(player, user, this.survivalPlugin);
     }
 
     @Execute
@@ -45,6 +48,6 @@ public class VanishCommand {
             MessageUtil.sendMessage(player, "&cNie odnaleziono Twojego użytkownika w bazie danych.");
             return;
         }
-        vanishHandler.toggleVanish(player, user);
+        vanishHandler.toggleVanish(player, user, this.survivalPlugin);
     }
 }

@@ -199,7 +199,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
                         new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
-                        new VanishCommand(this.userService, this.vanishHandler)
+                        new VanishCommand(this.userService, this.vanishHandler, this)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -218,7 +218,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new LootCaseController(this.lootCaseConfiguration, lootCaseInventory),
                 new StatisticController(this.userService),
                 new ClanPvpController(this.clanService),
-                new VanishController(this.userService)
+                new VanishController(this.userService, this)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

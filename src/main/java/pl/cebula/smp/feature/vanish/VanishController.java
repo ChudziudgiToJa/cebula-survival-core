@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
@@ -13,9 +15,11 @@ import pl.cebula.smp.util.MessageUtil;
 public class VanishController implements Listener {
 
     private final UserService userService;
+    private final SurvivalPlugin survivalPlugin;
 
-    public VanishController(UserService userService) {
+    public VanishController(UserService userService, SurvivalPlugin survivalPlugin) {
         this.userService = userService;
+        this.survivalPlugin = survivalPlugin;
     }
 
     @EventHandler
@@ -31,6 +35,7 @@ public class VanishController implements Listener {
 
         User joiningUser = userService.findUserByUUID(joiningPlayer.getUniqueId());
         if (joiningUser != null && joiningUser.isVanish()) {
+            joiningPlayer.setMetadata("vanish", new FixedMetadataValue(survivalPlugin, true));
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if (!player.hasPermission("cebulasmp.vanish.see")) {
                     player.hidePlayer(joiningPlayer);
@@ -38,6 +43,7 @@ public class VanishController implements Listener {
             });
             MessageUtil.sendTitle(joiningPlayer, "", "&bvanish jest &caktywny", 20, 50, 20);
         }
+        joiningPlayer.setMetadata("vanish", new FixedMetadataValue(survivalPlugin, false));
     }
 
 
