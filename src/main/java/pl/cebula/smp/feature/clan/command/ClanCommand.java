@@ -4,6 +4,11 @@ import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
+import dev.rollczi.litecommands.annotations.optional.OptionalArg;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
@@ -108,8 +113,14 @@ public class ClanCommand {
 
         this.clanInviteService.inviteToClan(clan, target.getName());
         MessageUtil.sendMessage(player, "&aZaproszono do klanu: &f" + target.getName());
-        MessageUtil.sendMessage(target, "&aOtrzymałeś/aś zaproszenie do klanu: " + clan.getTag());
-        MessageUtil.sendMessage(target, "      &7&npo 15s zaprosenie wygasa!");
+
+        Component targetMessage1 = Component.text("§aOtrzymałeś/aś zaproszenie do klanu: " + clan.getTag())
+                .clickEvent(ClickEvent.runCommand("/klan dołącz " + clan.getTag()));
+        target.sendMessage(targetMessage1);
+
+        Component targetMessage2 = Component.text("      §7§npo 30s zaproszenie wygasa! &b[klik]")
+                .clickEvent(ClickEvent.runCommand("/klan dołącz " + clan.getTag()));
+        target.sendMessage(targetMessage2);
     }
 
     @Execute(name = "dołącz")

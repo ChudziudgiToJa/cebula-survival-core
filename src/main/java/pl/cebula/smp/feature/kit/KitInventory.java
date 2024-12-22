@@ -116,16 +116,18 @@ public class KitInventory {
                     return;
                 }
 
-                for (KitData kitData : user.getKits()) {
-                    if (kitData.getName().equals(kit.getName())) {
-                        if (kitData.getTime() > System.currentTimeMillis()) {
-                            MessageUtil.sendTitle(player, "", "&cmożesz odebrać za: " + DurationUtil.getTimeFormat(kitData.getTime() - System.currentTimeMillis()), 20, 50, 20);
-                            player.closeInventory();
-                            player.playSound(player, Sound.ENTITY_BEE_HURT, 5, 5);
-                            return;
+                if (!player.hasPermission("cebulasmp.kit.admin")) {
+                    for (KitData kitData : user.getKits()) {
+                        if (kitData.getName().equals(kit.getName())) {
+                            if (kitData.getTime() > System.currentTimeMillis()) {
+                                MessageUtil.sendTitle(player, "", "&cmożesz odebrać za: " + DurationUtil.getTimeFormat(kitData.getTime() - System.currentTimeMillis()), 20, 50, 20);
+                                player.closeInventory();
+                                player.playSound(player, Sound.ENTITY_BEE_HURT, 5, 5);
+                                return;
+                            }
+                            user.getKits().remove(kitData);
+                            break;
                         }
-                        user.getKits().remove(kitData);
-                        break;
                     }
                 }
                 user.getKits().add(new KitData(kit.getName(), kit.getCoolDownTime() + System.currentTimeMillis()));

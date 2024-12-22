@@ -75,6 +75,10 @@ dependencies {
 
     //Protocolib
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+
+    // TAB
+    compileOnly("com.github.NEZNAMY", "TAB-API", "5.0.3")
+
     implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -84,7 +88,7 @@ bukkit {
     version = "1.0-SNAPSHOT"
     apiVersion = "1.21"
     author = "Chudziudgi"
-    softDepend = listOf("PlaceholderAPI", "Citizens", "DecentHolograms")
+    softDepend = listOf("PlaceholderAPI", "Citizens", "DecentHolograms", "Tab")
     depend = listOf("Vault", "ProtocolLib")
     prefix = "cebulasmp-survival"
 }

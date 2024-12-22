@@ -87,6 +87,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final AfkZoneManager afkZoneManager = new AfkZoneManager();
     private final Random random = new Random();
     private final DailyVplnManager dailyVplnManager = new DailyVplnManager(this.random);
+    private final VanishHandler vanishHandler = new VanishHandler();
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
     private LootCaseConfiguration lootCaseConfiguration;
@@ -172,8 +173,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         CraftingManager craftingManager = new CraftingManager(this.craftingConfiguration);
         craftingManager.registerCraftings();
 
-        //Vanish
-        VanishHandler vanishHandler = new VanishHandler(this.protocolManager);
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -200,7 +199,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
                         new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
-                        new VanishCommand(this.userService, vanishHandler)
+                        new VanishCommand(this.userService, this.vanishHandler)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

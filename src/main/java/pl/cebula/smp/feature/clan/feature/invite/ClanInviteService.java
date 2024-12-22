@@ -24,7 +24,7 @@ public class ClanInviteService {
             public void run() {
                 removeInviteToClan(clan, target);
             }
-        }.runTaskLater(survivalPlugin, 20 * 20);
+        }.runTaskLater(survivalPlugin, 20 * 30);
     }
 
     public void removeInviteToClan(Clan clan, String target) {

@@ -69,7 +69,7 @@ public class Placeholder extends PlaceholderExpansion {
         if(params.startsWith("kosz")) {
             return MessageUtil.smallText(DurationUtil.convertLong(AbyssManager.time));
         }
-        if(params.startsWith("vanish")) {
+        if(params.startsWith("vanished")) {
             return user.isVanish() ? MessageUtil.smallText(" &b&lvanish&f") : "";
         }
         if(params.startsWith("kd")) {
@@ -77,11 +77,6 @@ public class Placeholder extends PlaceholderExpansion {
                 return "0.0";
             }
             return String.format("%.1f", (double) user.getKill() / user.getDead());
-        }
-        if(params.startsWith("lider")) {
-            if (clanOwner != null) {
-                return "&6anga lider do oraxena &8|";
-            }
         }
         if(params.startsWith("clan")) {
             if (clanMember != null) {

@@ -1,6 +1,7 @@
 package pl.cebula.smp.feature.job;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.util.Random;
+import java.util.Set;
 
 public class JobController implements Listener {
 
@@ -43,8 +45,12 @@ public class JobController implements Listener {
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
 
+        if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+            return;
+        }
+
         if (user.getJobType() == JobType.MINER) {
-            if (isOre(blockType) && random.nextDouble() < 0.20) {
+            if (ore.contains(blockType) && random.nextDouble() < 0.20) {
                 user.addMoney(15);
                 MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20,50,20);
             }
@@ -58,7 +64,7 @@ public class JobController implements Listener {
         User user = this.userService.findUserByNickName(player.getName());
 
         if (user.getJobType() == JobType.LUMBERJACK) {
-            if (isLog(blockType) && random.nextDouble() < 0.10) {
+            if (log.contains (blockType) && random.nextDouble() < 0.10) {
                 user.addMoney(5);
                 MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20,50,20);
             }
@@ -72,7 +78,7 @@ public class JobController implements Listener {
         User user = this.userService.findUserByNickName(player.getName());
 
         if (user.getJobType() == JobType.FARMER) {
-            if (isCrop(blockType) && random.nextDouble() < 0.20) {
+            if (crop.contains(blockType) && random.nextDouble() < 0.20) {
                 user.addMoney(10);
                 MessageUtil.sendTitle(player, "", "&2+&a10 monet", 20,50,20);
             }
@@ -91,34 +97,39 @@ public class JobController implements Listener {
         }
     }
 
-    private boolean isOre(Material material) {
-        return material == Material.DIAMOND_ORE || material == Material.DEEPSLATE_DIAMOND_ORE ||
-                material == Material.GOLD_ORE || material == Material.DEEPSLATE_GOLD_ORE ||
-                material == Material.IRON_ORE || material == Material.DEEPSLATE_IRON_ORE ||
-                material == Material.COAL_ORE || material == Material.DEEPSLATE_COAL_ORE ||
-                material == Material.EMERALD_ORE || material == Material.DEEPSLATE_EMERALD_ORE ||
-                material == Material.COPPER_ORE || material == Material.DEEPSLATE_COPPER_ORE ||
-                material == Material.LAPIS_ORE || material == Material.DEEPSLATE_LAPIS_ORE ||
-                material == Material.REDSTONE_ORE || material == Material.DEEPSLATE_REDSTONE_ORE ||
-                material == Material.NETHER_QUARTZ_ORE || material == Material.NETHER_GOLD_ORE ||
-                material == Material.ANCIENT_DEBRIS;
-    }
+    private static final Set<Material> ore = Set.of(
+            Material.DIAMOND_ORE, Material.DEEPSLATE_DIAMOND_ORE,
+            Material.GOLD_ORE, Material.DEEPSLATE_GOLD_ORE,
+            Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE,
+            Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE,
+            Material.EMERALD_ORE, Material.DEEPSLATE_EMERALD_ORE,
+            Material.COPPER_ORE, Material.DEEPSLATE_COPPER_ORE,
+            Material.LAPIS_ORE, Material.DEEPSLATE_LAPIS_ORE,
+            Material.REDSTONE_ORE, Material.DEEPSLATE_REDSTONE_ORE,
+            Material.NETHER_QUARTZ_ORE, Material.NETHER_GOLD_ORE,
+            Material.ANCIENT_DEBRIS, Material.GILDED_BLACKSTONE
+    );
 
-    private boolean isLog(Material material) {
-        return material == Material.OAK_LOG || material == Material.SPRUCE_LOG ||
-                material == Material.BIRCH_LOG || material == Material.JUNGLE_LOG ||
-                material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG ||
-                material == Material.MANGROVE_LOG || material == Material.CHERRY_LOG ||
-                material == Material.CRIMSON_STEM || material == Material.WARPED_STEM;
-    }
+    private static final Set<Material> log = Set.of(
+            Material.OAK_LOG, Material.SPRUCE_LOG, Material.BIRCH_LOG,
+            Material.JUNGLE_LOG, Material.ACACIA_LOG, Material.DARK_OAK_LOG,
+            Material.MANGROVE_LOG, Material.CHERRY_LOG,
+            Material.CRIMSON_STEM, Material.WARPED_STEM,
+            Material.STRIPPED_OAK_LOG, Material.STRIPPED_SPRUCE_LOG,
+            Material.STRIPPED_BIRCH_LOG, Material.STRIPPED_JUNGLE_LOG,
+            Material.STRIPPED_ACACIA_LOG, Material.STRIPPED_DARK_OAK_LOG,
+            Material.STRIPPED_MANGROVE_LOG, Material.STRIPPED_CHERRY_LOG,
+            Material.STRIPPED_CRIMSON_STEM, Material.STRIPPED_WARPED_STEM
+    );
 
 
-    private boolean isCrop(Material material) {
-        return material == Material.WHEAT || material == Material.CARROTS ||
-                material == Material.POTATOES || material == Material.BEETROOTS ||
-                material == Material.MELON_STEM || material == Material.PUMPKIN_STEM ||
-                material == Material.SWEET_BERRY_BUSH || material == Material.NETHER_WART ||
-                material == Material.COCOA || material == Material.BAMBOO_SAPLING;
-    }
+    private final Set<Material> crop = Set.of(
+            Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
+            Material.MELON_STEM, Material.PUMPKIN_STEM, Material.SWEET_BERRY_BUSH,
+            Material.NETHER_WART, Material.COCOA, Material.BAMBOO_SAPLING,
+            Material.CACTUS, Material.SUGAR_CANE, Material.KELP, Material.KELP_PLANT,
+            Material.SEAGRASS, Material.TALL_SEAGRASS, Material.TWISTING_VINES,
+            Material.WEEPING_VINES, Material.CHORUS_PLANT, Material.CHORUS_FLOWER
+    );
 
 }
