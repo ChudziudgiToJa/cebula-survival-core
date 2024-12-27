@@ -84,6 +84,7 @@ public class KitCommand {
             if (kit.getName().equals(s)) {
                 kit.getCustomItemList().add(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
                 MessageUtil.sendMessage(sender, "&adodano przedmiot do listy itemów kitu: "  + kit.getName());
+                this.kitConfiguration.save();
             }
         });
     }
@@ -107,6 +108,7 @@ public class KitCommand {
 
                 kit.getCustomItemList().remove(index);
                 MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy itemów kitu: " + kit.getName());
+                this.kitConfiguration.save();
             }
         });
     }
