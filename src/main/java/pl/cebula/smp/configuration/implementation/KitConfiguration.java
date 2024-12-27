@@ -12,6 +12,9 @@ import java.util.List;
 public class
 KitConfiguration extends OkaeriConfig {
 
+    @Comment("## status czy kity są włączone")
+    public boolean kitStatus = true;
+
     @Comment("## czas podajemy w milisekundach bo to liczy na czasie aktualnym świata")
     public List<Kit> kitList = List.of(
             new Kit(
@@ -30,8 +33,10 @@ KitConfiguration extends OkaeriConfig {
                                     .addEnchant(Enchantment.BINDING_CURSE, 1)
                                     .build(),
                             new ItemBuilder(Material.STONE_PICKAXE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_HELMET).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
                             new ItemBuilder(Material.LEATHER_CHESTPLATE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
                             new ItemBuilder(Material.LEATHER_LEGGINGS).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_BOOTS).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
                             new ItemBuilder(Material.COOKED_BEEF, 16).build()
                     ),
                     List.of(
@@ -60,9 +65,14 @@ KitConfiguration extends OkaeriConfig {
                                     .build(),
                             new ItemBuilder(Material.COOKED_BEEF, 32).build(),
                             new ItemBuilder(Material.GOLDEN_APPLE, 2).build(),
+                            new ItemBuilder(Material.CHAINMAIL_HELMET)
+                                    .build(),
                             new ItemBuilder(Material.CHAINMAIL_CHESTPLATE)
                                     .build(),
                             new ItemBuilder(Material.CHAINMAIL_LEGGINGS)
+                                    .build(),
+                            new ItemBuilder(Material.CHAINMAIL_BOOTS)
+                                    .addEnchant(Enchantment.PROTECTION, 1)
                                     .build()
 
                     ),
@@ -92,10 +102,16 @@ KitConfiguration extends OkaeriConfig {
                                     .build(),
                             new ItemBuilder(Material.COOKED_BEEF, 32).build(),
                             new ItemBuilder(Material.GOLDEN_APPLE, 2).build(),
+                            new ItemBuilder(Material.IRON_HELMET)
+                                    .addEnchant(Enchantment.PROTECTION, 1)
+                                    .build(),
                             new ItemBuilder(Material.IRON_CHESTPLATE)
                                     .addEnchant(Enchantment.PROTECTION, 1)
                                     .build(),
                             new ItemBuilder(Material.IRON_LEGGINGS)
+                                    .addEnchant(Enchantment.PROTECTION, 1)
+                                    .build(),
+                            new ItemBuilder(Material.IRON_BOOTS)
                                     .addEnchant(Enchantment.PROTECTION, 1)
                                     .build()
 
@@ -127,12 +143,66 @@ KitConfiguration extends OkaeriConfig {
                                     .build(),
                             new ItemBuilder(Material.COOKED_BEEF, 32).build(),
                             new ItemBuilder(Material.GOLDEN_APPLE, 3).build(),
+                            new ItemBuilder(Material.IRON_HELMET)
+                                    .addEnchant(Enchantment.PROTECTION, 2)
+                                    .build(),
                             new ItemBuilder(Material.IRON_CHESTPLATE)
                                     .addEnchant(Enchantment.PROTECTION, 2)
                                     .build(),
                             new ItemBuilder(Material.IRON_LEGGINGS)
                                     .addEnchant(Enchantment.PROTECTION, 2)
+                                    .build(),
+                            new ItemBuilder(Material.IRON_BOOTS)
+                                    .addEnchant(Enchantment.PROTECTION, 2)
                                     .build()
+                    ),
+                    List.of(
+                    )
+            ),
+            new Kit(
+                    "maly",
+                    86400000,
+                    new ItemBuilder(Material.NETHERITE_HELMET)
+                            .setName("&b&lmaly &fzestaw kluczy")
+                            .addLore(
+                                    "",
+                                    "&aKliknij aby otworzyć podgląd."
+                            )
+                            .build(),
+                    "cebulasmp.kit.maly",
+                    List.of(
+                    ),
+                    List.of(
+                    )
+            ),
+            new Kit(
+                    "sredni",
+                    86400000,
+                    new ItemBuilder(Material.NETHERITE_HELMET)
+                            .setName("&b&lsredni &fzestaw kluczy")
+                            .addLore(
+                                    "",
+                                    "&aKliknij aby otworzyć podgląd."
+                            )
+                            .build(),
+                    "cebulasmp.kit.sredni",
+                    List.of(
+                    ),
+                    List.of(
+                    )
+            ),
+            new Kit(
+                    "duzy",
+                    86400000,
+                    new ItemBuilder(Material.NETHERITE_HELMET)
+                            .setName("&b&lduzy &fzestaw kluczy")
+                            .addLore(
+                                    "",
+                                    "&aKliknij aby otworzyć podgląd."
+                            )
+                            .build(),
+                    "cebulasmp.kit.duzy",
+                    List.of(
                     ),
                     List.of(
                     )

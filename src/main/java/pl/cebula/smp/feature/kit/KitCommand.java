@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.configuration.implementation.KitConfiguration;
@@ -32,6 +33,10 @@ public class KitCommand {
 
     @Execute
     void execute(@Context Player player) {
+        if (!this.kitConfiguration.kitStatus) {
+            MessageUtil.sendTitle(player, "", "&czestawy są aktuanie wyłączone", 20,50,20);
+            return;
+        }
         this.kitInventory.show(player);
     }
 
@@ -104,5 +109,14 @@ public class KitCommand {
                 MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy itemów kitu: " + kit.getName());
             }
         });
+    }
+
+
+    @Permission("cebula.kit.command.toggle")
+    @Execute(name = "toggle")
+    void toggle (@Context CommandSender commandSender) {
+        this.kitConfiguration.kitStatus = !this.kitConfiguration.kitStatus;
+        MessageUtil.sendMessage(commandSender, "&bkity zostały: " + (this.kitConfiguration.kitStatus ? "&awłączone" : "&cwyłączone"));
+        this.kitConfiguration.save();
     }
 }

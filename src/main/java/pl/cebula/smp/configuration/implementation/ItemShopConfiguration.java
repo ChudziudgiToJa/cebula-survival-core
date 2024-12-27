@@ -117,7 +117,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                                     "&aKliknij aby kupić usługę."
                             )
                             .build(),
-                    2.00,
+                    2.99,
                     List.of(
                             "eco ADD {PLAYER} 1000.0"
                     )

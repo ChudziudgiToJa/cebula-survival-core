@@ -16,7 +16,7 @@ public class CraftingConfiguration extends OkaeriConfig {
                             new ItemBuilder(Material.SHORT_GRASS).build(),
                             new ItemBuilder(Material.SHORT_GRASS).build(),
                             new ItemBuilder(Material.GOLD_BLOCK).build(),
-                            new ItemBuilder(Material.APPLE).build(),
+                            new ItemBuilder(Material.POTATO).build(),
                             new ItemBuilder(Material.GOLD_BLOCK).build(),
                             new ItemBuilder(Material.DIRT).build(),
                             new ItemBuilder(Material.DIRT).build(),
