@@ -51,9 +51,9 @@ public class NpcShopInventory {
                             " ",
                             "&e&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
                             "&6&lppm + shift &7- &akliknij aby sprzedać 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet",
+                            "&6&lq &7- &akliknij aby sprzedać całe eq",
                             "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet",
                             "&2&llpm + shift &7- &akliknij aby kupić 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet"
-
                     )
                     .build();
 
@@ -129,6 +129,25 @@ public class NpcShopInventory {
                             player.closeInventory();
                         }
                         return;
+                    }
+                    if (event.getClick().equals(ClickType.DROP)) { // Sprzedawanie wszystkich sztuk danego przedmiotu z ekwipunku
+                        ItemStack itemStackToSell = itemToInteract.getItemStack();
+                        Material itemTypeToSell = itemStackToSell.getType();
+                        int totalAmount = 0;
+                        for (ItemStack item : player.getInventory().getContents()) {
+                            if (item != null && item.getType() == itemTypeToSell) {
+                                totalAmount += item.getAmount();
+                            }
+                        }
+                        if (totalAmount > 0) {
+                            player.getInventory().remove(itemTypeToSell);
+                            double totalPrice = itemToInteract.getSellPrice() * totalAmount;
+                            user.setMoney(user.getMoney() + totalPrice);
+                            MessageUtil.sendMessage(player, "&aSprzedałeś " + totalAmount + " przedmiotów: " + itemTypeToSell + " za " + totalPrice + "!");
+                        } else {
+                            MessageUtil.sendTitle(player, "", "&cNie masz tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
+                            player.closeInventory();
+                        }
                     }
                 }
             }

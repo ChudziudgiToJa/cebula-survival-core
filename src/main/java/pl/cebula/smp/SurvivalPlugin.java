@@ -49,6 +49,7 @@ import pl.cebula.smp.feature.itemshop.VplnCommand;
 import pl.cebula.smp.feature.job.JobCommand;
 import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
+import pl.cebula.smp.feature.killcounter.KillCounterController;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
 import pl.cebula.smp.feature.lootcase.*;
@@ -218,7 +219,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new LootCaseController(this.lootCaseConfiguration, lootCaseInventory),
                 new StatisticController(this.userService),
                 new ClanPvpController(this.clanService),
-                new VanishController(this.userService, this)
+                new VanishController(this.userService, this),
+                new KillCounterController(this)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
