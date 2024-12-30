@@ -20,7 +20,7 @@ public class ClanArmorTask extends BukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             player.getWorld().getPlayers().stream()
-                    .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(player.getLocation()) < 30)
+                    .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(player.getLocation()) < 10)
                     .filter(nearbyPlayer -> !nearbyPlayer.equals(player))
                     .forEach(nearbyPlayer -> {
                         Clan clan = this.clanService.findClanByMember(nearbyPlayer.getName());
