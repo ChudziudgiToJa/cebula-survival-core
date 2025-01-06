@@ -36,7 +36,7 @@ public class HelpInventory {
 
         ItemBuilder helpItem = new ItemBuilder(Material.PAPER, 1)
                 .setName(" ")
-                .addLore("&2&lKOMENDY POMOC",
+                .setLore("&2&lKOMENDY POMOC",
                         "",
                         "&8• &e/market &8- &fotwiera market",
                         "&8• &e/spawn &8- &fteleport na spawn",
@@ -57,7 +57,7 @@ public class HelpInventory {
 
         ItemBuilder vipItem = new ItemBuilder(Material.GOLDEN_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore("ꑅ",
+                .setLore("ꑅ",
                         "",
                         "&8• &fUprawnienia:",
                         "&8• &acodzienne vpn &8- &fdrop od 0.05 do 0.10",
@@ -80,7 +80,7 @@ public class HelpInventory {
 
         ItemBuilder svipItem = new ItemBuilder(Material.IRON_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore("ꑇ",
+                .setLore("ꑇ",
                         "",
                         "&8• &fUprawnienia:",
                         "&8• &acodzienne vpn &8- &fdrop od 0.10 do 0.30",
@@ -106,7 +106,7 @@ public class HelpInventory {
 
         ItemBuilder sponsorItem = new ItemBuilder(Material.DIAMOND_CHESTPLATE, 1)
                 .setName(" ")
-                .addLore("ꑍ",
+                .setLore("ꑍ",
                         "",
                         "&8• &fUprawnienia:",
                         "&8• &acodzienne vpn &8- &fdrop od 0.30 do 0.60",

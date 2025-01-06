@@ -22,7 +22,7 @@ KitConfiguration extends OkaeriConfig {
                     900000,
                     new ItemBuilder(Material.LEATHER_HELMET)
                             .setName("⚙")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -47,7 +47,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.IRON_HELMET)
                             .setName("ꑅ")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -84,7 +84,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.DIAMOND_HELMET)
                             .setName("ꑇ")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -124,7 +124,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.NETHERITE_HELMET)
                             .setName("ꑍ")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -164,7 +164,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.NETHERITE_HELMET)
                             .setName("&b&lmaly &fzestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -180,7 +180,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.NETHERITE_HELMET)
                             .setName("&b&lsredni &fzestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
@@ -196,7 +196,7 @@ KitConfiguration extends OkaeriConfig {
                     86400000,
                     new ItemBuilder(Material.NETHERITE_HELMET)
                             .setName("&b&lduzy &fzestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )

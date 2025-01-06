@@ -12,7 +12,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.IRON_HELMET)
                             .setName("ꑅ &8(&f30dni&8)")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&7Cena&8: &f9.99 &avpln",
                                     "",
@@ -25,7 +25,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.DIAMOND_HELMET)
                             .setName("ꑇ &8(&f30dni&8)")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&7Cena&8: &f19.99 &avpln",
                                     "",
@@ -38,7 +38,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.NETHERITE_HELMET)
                             .setName("ꑍ &8(&f30dni&8)")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&7Cena&8: &f49.99 &avpln",
                                     "",
@@ -51,7 +51,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.TRIAL_KEY)
                             .setName("&b&lMALY &7zestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
                                     " &d2x wedrowca, &e1x smoka",
@@ -69,7 +69,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.TRIAL_KEY)
                             .setName("&b&lSREDNI &7zestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
                                     " &d4x wedrowca, &e2x smoka, &c1x piekiel",
@@ -89,7 +89,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.OMINOUS_TRIAL_KEY)
                             .setName("&b&lDUZY &7zestaw kluczy")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
                                     " &d10x wedrowca, &e5x smoka, &c3x piekieł",
@@ -110,7 +110,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.GOLD_NUGGET)
                             .setName("&6&lDOLADOWANIE MONET &f1tyś")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&7Cena&8: &f2.00 &avpln",
                                     "",
@@ -125,7 +125,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
             new ItemShop(
                     new ItemBuilder(Material.GOLD_INGOT)
                             .setName("&6&lDOLADOWANIE MONET &f5tyś")
-                            .addLore(
+                            .setLore(
                                     "",
                                     "&7Cena&8: &f8.99 &avpln",
                                     "",

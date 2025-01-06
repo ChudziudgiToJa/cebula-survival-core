@@ -55,7 +55,7 @@ public class BackupInventory {
             inventory.addItem(
                     new ItemBuilder(Material.BOOK)
                             .setName(backup.getInstantFormat())
-                            .addLore("", "&aKliknij, aby otworzyć podgląd.")
+                            .setLore("", "&aKliknij, aby otworzyć podgląd.")
                             .build()
             );
         });
@@ -109,7 +109,7 @@ public class BackupInventory {
         inventory.setItem(49,
                 new ItemBuilder(Material.PAPER)
                         .setName("&aInformacje poboczne")
-                        .addLore(
+                        .setLore(
                                 "&7lvl: &7" + backup.getLvl(),
                                 "&7exp: &7" + backup.getExp())
                         .build()
@@ -118,7 +118,7 @@ public class BackupInventory {
         inventory.setItem(53,
                 new ItemBuilder(Material.GREEN_DYE)
                         .setName("&aNadaj zestaw")
-                        .addLore(
+                        .setLore(
                                 "",
                                 "&aKliknij aby nadać graczu backup")
                         .build()

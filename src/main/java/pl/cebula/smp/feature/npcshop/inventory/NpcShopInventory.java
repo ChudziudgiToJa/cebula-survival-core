@@ -47,7 +47,7 @@ public class NpcShopInventory {
 
             ItemStack itemBuilder = new ItemBuilder(itemToInteract.getItemStack().getType())
                     .setName("&l&f" + itemToInteract.getItemStack().getType())
-                    .addLore(
+                    .setLore(
                             " ",
                             "&e&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
                             "&6&lppm + shift &7- &akliknij aby sprzedać 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet",

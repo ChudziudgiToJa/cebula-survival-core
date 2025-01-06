@@ -10,7 +10,7 @@ public class ClanSaveTask implements Runnable {
 
     public ClanSaveTask(final SurvivalPlugin survivalPlugin , ClanService clanService) {
         this.clanService = clanService;
-        Bukkit.getScheduler().runTaskTimerAsynchronously(survivalPlugin, this, 1L, 20L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(survivalPlugin, this, 600L, 20L);
     }
 
 

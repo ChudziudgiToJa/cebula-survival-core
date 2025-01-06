@@ -12,7 +12,7 @@ public class UsersSaveTask implements Runnable {
 
     public UsersSaveTask(final SurvivalPlugin survivalPlugin, UserService userService) {
         this.userService = userService;
-        Bukkit.getScheduler().runTaskTimerAsynchronously(survivalPlugin, this, 1L, 20L);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(survivalPlugin, this, 300L, 20L);
     }
 
     @Override

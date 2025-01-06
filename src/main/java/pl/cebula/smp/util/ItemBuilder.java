@@ -1,5 +1,8 @@
 package pl.cebula.smp.util;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -8,8 +11,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class ItemBuilder {
 
@@ -36,16 +39,30 @@ public class ItemBuilder {
     }
 
 
-    public ItemBuilder addLore(final String... list) {
+    public ItemBuilder setLore(final String... list) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
         ArrayList<String> loreList = new ArrayList<>();
         for (String text : list) {
-            loreList.add(MessageUtil.smallTextToColor(text));
+            loreList.add(MessageUtil.smallText(text));
         }
         itemMeta.setLore(loreList);
         itemStack.setItemMeta(itemMeta);
         return this;
     }
+
+    public ItemBuilder addLore(final String... list) {
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> loreList = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
+
+        for (String text : list) {
+            loreList.add(MessageUtil.smallText(text));
+        }
+
+        itemMeta.setLore(loreList);
+        itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
 
     public ItemBuilder addEnchant(final Enchantment enchant, final int level) {
         final ItemMeta itemMeta = itemStack.getItemMeta();
@@ -89,11 +106,20 @@ public class ItemBuilder {
         return this;
     }
 
-    public final ItemBuilder setHeadOwner(final String newowner) {
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-        ((SkullMeta) itemMeta).setOwner(newowner);
-        itemStack.setItemMeta(itemMeta);
+    public ItemBuilder setHeadOwner(final String textureUrl) {
+        if (itemStack.getType() != Material.PLAYER_HEAD) {
+            return this;
+        }
+
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        if (meta == null) return this;
+
+        itemStack.editMeta(SkullMeta.class, skullMeta -> {
+            final UUID uuid = UUID.randomUUID();
+            final PlayerProfile playerProfile = Bukkit.createProfile(uuid, uuid.toString().substring(0, 16));
+            playerProfile.setProperty(new ProfileProperty("textures", textureUrl));
+            skullMeta.setPlayerProfile(playerProfile);
+        });
         return this;
     }
-
 }

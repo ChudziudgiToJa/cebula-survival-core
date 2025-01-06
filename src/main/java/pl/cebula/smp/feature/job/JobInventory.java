@@ -85,12 +85,12 @@ public class JobInventory {
                 .setName("&f&l" + jobType.getPolishName());
 
         if (user.getJobType().equals(jobType)) {
-            itemBuilder.addLore(
+            itemBuilder.setLore(
                     "",
                     "&cPosiadasz już ten zawód"
             );
         } else {
-            itemBuilder.addLore(
+            itemBuilder.setLore(
                     "",
                     "&aKliknij aby zatrudnić się"
             );
