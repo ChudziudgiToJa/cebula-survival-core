@@ -19,7 +19,7 @@ public class PetMoveTask extends BukkitRunnable {
     public PetMoveTask(SurvivalPlugin survivalPlugin, UserService userService) {
         this.survivalPlugin = survivalPlugin;
         this.userService = userService;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 3, 0);
+        this.runTaskTimerAsynchronously(this.survivalPlugin, 5, 0);
     }
 
 

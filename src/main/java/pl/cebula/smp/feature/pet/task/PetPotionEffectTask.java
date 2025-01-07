@@ -16,7 +16,7 @@ public class PetPotionEffectTask extends BukkitRunnable {
     public PetPotionEffectTask(UserService userService, SurvivalPlugin survivalPlugin) {
         this.userService = userService;
         this.survivalPlugin = survivalPlugin;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 20, 0);
+        this.runTaskTimerAsynchronously(this.survivalPlugin, 20 * 5, 0);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class PetPotionEffectTask extends BukkitRunnable {
             if (user.getPetDataArrayList().isEmpty()) return;
             user.getPetDataArrayList().forEach(pet -> {
                 Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
-                    PotionEffectType potionEffectType = PotionEffectType.getByName(pet.getPetData().getPotionEffect());
-                    if (potionEffectType == null) return;
-                    player.addPotionEffect(new PotionEffect(potionEffectType, 40, 0, true, false));
+                    PotionEffectType potionEffect = PotionEffectType.getById(pet.getPetData().getPotionEffect());
+                    if (potionEffect == null) return;
+                    player.addPotionEffect(new PotionEffect(potionEffect, 30 * 5, 0, true, false));
                 }, 0);
             });
         });

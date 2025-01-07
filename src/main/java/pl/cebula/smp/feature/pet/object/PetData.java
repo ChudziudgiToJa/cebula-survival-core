@@ -10,10 +10,10 @@ public class PetData implements Serializable {
 
     private final String name;
     private final String SkinValue;
-    private final String potionEffect;
+    private final int potionEffect;
     private final String stringArrayList;
 
-    public PetData(String name, String skinValue, String potionEffect, String stringArrayList) {
+    public PetData(String name, String skinValue, int potionEffect, String stringArrayList) {
         this.name = name;
         SkinValue = skinValue;
         this.potionEffect = potionEffect;

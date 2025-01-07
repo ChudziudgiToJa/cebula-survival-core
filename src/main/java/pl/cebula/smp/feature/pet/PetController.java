@@ -75,9 +75,6 @@ public class PetController implements Listener {
     public void onClickPet(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
-
-        if (!event.getAction().equals(Action.LEFT_CLICK_AIR) || !event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
-
         if (item == null || item.getType() != Material.PLAYER_HEAD || item.getItemMeta() == null) {
             return;
         }
