@@ -28,7 +28,7 @@ public class PetPotionEffectTask extends BukkitRunnable {
                 Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
                     PotionEffectType potionEffect = PotionEffectType.getById(pet.getPetData().getPotionEffect());
                     if (potionEffect == null) return;
-                    player.addPotionEffect(new PotionEffect(potionEffect, 30 * 5, 0, true, false));
+                    player.addPotionEffect(new PotionEffect(potionEffect, 25 * 5, 0, true, false));
                 }, 0);
             });
         });

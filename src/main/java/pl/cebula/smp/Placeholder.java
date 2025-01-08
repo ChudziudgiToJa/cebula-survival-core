@@ -88,6 +88,12 @@ public class Placeholder extends PlaceholderExpansion {
             }
             return "";
         }
+        if(params.startsWith("nameclan")) {
+            if (clanMember != null) {
+                return MessageUtil.smallText(clanMember.getTag() + " &8(&7" + clanMember.getOwnerName()+ "&8)");
+            }
+            return MessageUtil.smallText("&cbrak &7/klan");
+        }
         return "";
     }
 

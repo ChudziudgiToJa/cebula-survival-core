@@ -33,6 +33,9 @@ import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.command.TrashCommand;
+import pl.cebula.smp.feature.crafting.Crafting;
+import pl.cebula.smp.feature.crafting.CraftingCommand;
+import pl.cebula.smp.feature.crafting.CraftingInventory;
 import pl.cebula.smp.feature.crafting.CraftingManager;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
@@ -184,6 +187,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         //Pet
         PetInventory petInventory = new PetInventory();
 
+        //Crafting
+        CraftingInventory craftingInventory = new CraftingInventory(this, this.craftingConfiguration);
+
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -211,7 +217,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new PayCommand(this.userService),
                         new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
                         new VanishCommand(this.userService, this.vanishHandler, this),
-                        new PetCommand(this.petconfiguration, petInventory, this.userService, this)
+                        new PetCommand(this.petconfiguration, petInventory, this.userService, this),
+                        new CraftingCommand(craftingInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

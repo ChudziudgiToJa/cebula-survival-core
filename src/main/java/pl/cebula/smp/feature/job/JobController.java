@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;

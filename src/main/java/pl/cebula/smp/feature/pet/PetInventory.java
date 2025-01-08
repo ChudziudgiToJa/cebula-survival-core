@@ -21,17 +21,14 @@ public class PetInventory {
         SimpleInventory simpleInventory = new SimpleInventory(survivalPlugin, 9 * 6, "&3&lPety: " + user.getNickName());
         Inventory inventory = simpleInventory.getInventory();
 
-        Integer[] glassBlueSlots = new Integer[]{1, 3, 5, 7, 9, 17, 27, 35, 47, 51};
-        Integer[] glassBlackSlots = new Integer[]{2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52};
-        Integer[] glassWhiteSlots = new Integer[]{0, 8, 45, 53};
+        Integer[] glassBlueSlots = new Integer[]{
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53
+        };
 
-        inventory.setItem(49, new ItemBuilder(Material.BARRIER).setName("&czamknij").build());
-
-        Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot, new ItemBuilder(Material.BLUE_STAINED_GLASS_PANE).setName(" ").build()));
-
-        Arrays.stream(glassBlackSlots).forEach(slot -> inventory.setItem(slot, new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build()));
-
-        Arrays.stream(glassWhiteSlots).forEach(slot -> inventory.setItem(slot, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName(" ").build()));
+        Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
+                new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
+                        .setName(" ")
+                        .build()));
 
         inventory.setItem(49, new ItemBuilder(Material.BARRIER).setName("&ccofnij").build());
 
@@ -42,6 +39,7 @@ public class PetInventory {
 
         simpleInventory.click(event -> {
             ItemStack clickedItem = event.getCurrentItem();
+            event.setCancelled(true);
 
             if (clickedItem != null && clickedItem.hasItemMeta()) {
 
