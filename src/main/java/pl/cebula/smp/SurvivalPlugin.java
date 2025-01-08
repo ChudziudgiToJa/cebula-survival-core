@@ -33,7 +33,6 @@ import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.command.TrashCommand;
-import pl.cebula.smp.feature.crafting.Crafting;
 import pl.cebula.smp.feature.crafting.CraftingCommand;
 import pl.cebula.smp.feature.crafting.CraftingInventory;
 import pl.cebula.smp.feature.crafting.CraftingManager;
@@ -245,7 +244,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         // load Tasks
         new UsersSaveTask(this, this.userService);
         new ClanSaveTask(this, this.clanService);
-
 
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);

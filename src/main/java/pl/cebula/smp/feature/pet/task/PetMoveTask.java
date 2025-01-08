@@ -1,11 +1,13 @@
 package pl.cebula.smp.feature.pet.task;
 
 import eu.decentsoftware.holograms.api.DHAPI;
+import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.feature.pet.PetHologramHandler;
 import pl.cebula.smp.feature.pet.object.Pet;
 import pl.cebula.smp.feature.pet.object.PetData;
 import pl.cebula.smp.feature.user.User;
@@ -13,13 +15,11 @@ import pl.cebula.smp.feature.user.UserService;
 
 public class PetMoveTask extends BukkitRunnable {
 
-    private final SurvivalPlugin survivalPlugin;
     private final UserService userService;
 
     public PetMoveTask(SurvivalPlugin survivalPlugin, UserService userService) {
-        this.survivalPlugin = survivalPlugin;
         this.userService = userService;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 5, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 5, 0);
     }
 
 
@@ -29,6 +29,23 @@ public class PetMoveTask extends BukkitRunnable {
             User user = this.userService.findUserByUUID(player.getUniqueId());
             if (user == null) return;
             if (user.getPetDataArrayList().isEmpty()) return;
+
+            if (user.isVanish()) {
+                user.getPetDataArrayList().forEach(pet -> {
+                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
+                    if (hologram != null) {
+                        DHAPI.removeHologram(hologram.getName());
+                    }
+                });
+            } else {
+                user.getPetDataArrayList().forEach(pet -> {
+                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
+                    if (hologram == null) {
+                        PetHologramHandler.create(player, user, pet);
+                    }
+                });
+            }
+
             Location playerLocation = player.getLocation();
             Vector direction = playerLocation.getDirection();
 

@@ -35,15 +35,20 @@ public class VanishController implements Listener {
 
         User joiningUser = userService.findUserByUUID(joiningPlayer.getUniqueId());
         if (joiningUser != null && joiningUser.isVanish()) {
-            joiningPlayer.setMetadata("vanish", new FixedMetadataValue(survivalPlugin, true));
+            if (!joiningPlayer.hasPermission("cebulasmp.vanish.admin")) {
+                joiningUser.setVanish(false);
+                joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, false));
+                return;
+            }
+            joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, true));
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if (!player.hasPermission("cebulasmp.vanish.see")) {
                     player.hidePlayer(joiningPlayer);
                 }
             });
-            MessageUtil.sendTitle(joiningPlayer, "", "&bvanish jest &caktywny", 20, 50, 20);
+            MessageUtil.sendMessage(joiningPlayer, "&b&lV &ajest aktywny");
         }
-        joiningPlayer.setMetadata("vanish", new FixedMetadataValue(survivalPlugin, false));
+        joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, false));
     }
 
 
