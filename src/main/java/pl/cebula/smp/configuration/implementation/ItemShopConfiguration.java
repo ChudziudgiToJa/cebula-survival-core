@@ -54,7 +54,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
-                                    " &d2x wedrowca, &e1x smoka",
+                                    " &d5x afk, &e3x smoka",
                                     "",
                                     "&7Cena&8: &f4.99 &avpln",
                                     "",
@@ -72,7 +72,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
-                                    " &d4x wedrowca, &e2x smoka, &c1x piekiel",
+                                    " &d1x wedrowca, &e4x smoka",
                                     "",
                                     "&7Cena&8: &f6.99 &avpln",
                                     "",
@@ -91,7 +91,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .setLore(
                                     "",
                                     "&8| &fposiada w sobie klucze do:",
-                                    " &d10x wedrowca, &e5x smoka, &c3x piekieł",
+                                    " &d2x wedrowca, &e5x smoka, &c2x piekieł",
                                     "",
                                     "&7Cena&8: &f14.99 &avpln",
                                     "",
