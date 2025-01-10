@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -71,6 +72,17 @@ public class PetController implements Listener {
         });
     }
 
+
+    @EventHandler
+    public void onDead(PlayerDeathEvent event) {
+        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
+        Player player = event.getPlayer();
+        if (user.getPetDataArrayList().isEmpty()) return;
+        user.getPetDataArrayList().forEach(pet -> {
+            player.getWorld().dropItemNaturally(player.getLocation(), PetUtil.createItemStackPet(pet.getPetData()));
+        });
+        user.getPetDataArrayList().clear();
+    }
 
     @EventHandler
     public void onClickPet(PlayerInteractEvent event) {
