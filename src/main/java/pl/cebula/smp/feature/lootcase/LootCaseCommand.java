@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,7 +42,6 @@ public class LootCaseCommand {
                 if (itemStack == null) return;
                 itemStack.setAmount(i);
                 player.getInventory().addItem(itemStack);
-                MessageUtil.sendMessage(player, "Dodano " + i + " kluczy dla skrzyni: " + lootCase.getName());
                 found = true;
                 break;
             }
@@ -80,8 +80,13 @@ public class LootCaseCommand {
     void execute(@Context Player sender, @Arg String lootCasename,@Arg double chance) {
         this.lootCaseConfiguration.lootCases.forEach(lootCase -> {
             if (lootCase.getName().equals(lootCasename)) {
+                if (sender.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                    MessageUtil.sendMessage(sender.getPlayer(), "&cMusisz coś trzymać w łapce");
+                    return;
+                }
                 lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
                 this.lootCaseConfiguration.save();
+                MessageUtil.sendMessage(sender.getPlayer(), "&aDodanp item do " + lootCasename);
             }
         });
     }

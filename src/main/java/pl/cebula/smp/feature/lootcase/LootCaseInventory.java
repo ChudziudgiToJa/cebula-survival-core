@@ -13,6 +13,7 @@ import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,12 +51,16 @@ public class LootCaseInventory {
         for (LootCaseChance lootCaseChance : lootCase.getDropItems()) {
             ItemStack lootItemStack = ItemStackSerializable.readItemStack(lootCaseChance.getItemStackInString());
             ItemMeta itemMeta = lootItemStack.getItemMeta();
-            itemMeta.setLore(List.of(
-                    " ",
-                    MessageUtil.smallText("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"),
-                    ""
-            ));
-            lootItemStack.setItemMeta(itemMeta);
+
+            if (itemMeta != null) {
+                List<String> lore = itemMeta.hasLore() ? new ArrayList<>(itemMeta.getLore()) : new ArrayList<>();
+                lore.add(" ");
+                lore.add(MessageUtil.smallText("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"));
+
+                itemMeta.setLore(lore);
+                lootItemStack.setItemMeta(itemMeta);
+            }
+
             inventory.addItem(lootItemStack);
         }
 
@@ -71,7 +76,6 @@ public class LootCaseInventory {
                     player.closeInventory();
                     return;
                 }
-
 
 
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
@@ -92,7 +96,7 @@ public class LootCaseInventory {
 
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
                     MessageUtil.sendMessage(onlinePlayer, player.getName() + " &7otwiera&8: &d" + lootCase.getString());
-                    onlinePlayer.playSound(onlinePlayer, Sound.ITEM_GOAT_HORN_SOUND_0, 5 ,5);
+                    onlinePlayer.playSound(onlinePlayer, Sound.ITEM_GOAT_HORN_SOUND_0, 5, 5);
                 });
                 HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(lootedItemStack);
                 leftover.values().forEach(remaining ->

@@ -63,8 +63,8 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     4.99,
                     List.of(
-                            "case klucz {PLAYER} wedrowca 2",
-                            "case klucz {PLAYER} smoka 1"
+                            "case klucz {PLAYER} afk 5",
+                            "case klucz {PLAYER} smoka 3"
                     )            ),
             new ItemShop(
                     new ItemBuilder(Material.TRIAL_KEY)
@@ -81,9 +81,8 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     6.99,
                     List.of(
-                            "case klucz {PLAYER} wedrowca 4",
-                            "case klucz {PLAYER} smoka 2",
-                            "case klucz {PLAYER} piekiel 1"
+                            "case klucz {PLAYER} wedrowca 1",
+                            "case klucz {PLAYER} smoka 4"
                     )
             ),
             new ItemShop(
@@ -101,18 +100,68 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     14.99,
                     List.of(
-                            "case klucz {PLAYER} wedrowca 10",
+                            "case klucz {PLAYER} wedrowca 2",
                             "case klucz {PLAYER} smoka 5",
-                            "case klucz {PLAYER} piekiel 3"
+                            "case klucz {PLAYER} piekiel 2"
                     )
-            )
-            ,
+            ),
+            new ItemShop(
+                    new ItemBuilder(Material.TRIAL_KEY)
+                            .setName("&b&lKLUCZ &7Smoka")
+                            .setLore(
+                                    "",
+                                    "&8| &fZdobądź 1 klucz smoka!",
+                                    "",
+                                    "&7Cena&8: &f1.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    1.99,
+                    List.of(
+                            "case klucz {PLAYER} smoka 1"
+                    )
+            ),
+            new ItemShop(
+                    new ItemBuilder(Material.TRIAL_KEY)
+                            .setName("&b&lKLUCZ &7Wedrowca")
+                            .setLore(
+                                    "",
+                                    "&8| &fZdobądź 1 klucz wedrowca!",
+                                    "",
+                                    "&7Cena&8: &f4.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    4.99,
+                    List.of(
+                            "case klucz {PLAYER} wedrowca 1"
+                    )
+            ),
+            new ItemShop(
+                    new ItemBuilder(Material.OMINOUS_TRIAL_KEY)
+                            .setName("&b&lKLUCZ &7Piekiel")
+                            .setLore(
+                                    "",
+                                    "&8| &fZdobądź 1 klucz piekiel!",
+                                    "",
+                                    "&7Cena&8: &f9.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    9.99,
+                    List.of(
+                            "case klucz {PLAYER} piekiel 1"
+                    )
+            ),
             new ItemShop(
                     new ItemBuilder(Material.GOLD_NUGGET)
                             .setName("&6&lDOLADOWANIE MONET &f1tyś")
                             .setLore(
                                     "",
-                                    "&7Cena&8: &f2.00 &avpln",
+                                    "&7Cena&8: &f2.99 &avpln",
                                     "",
                                     "&aKliknij aby kupić usługę."
                             )
@@ -123,8 +172,23 @@ public class ItemShopConfiguration extends OkaeriConfig {
                     )
             ),
             new ItemShop(
+                    new ItemBuilder(Material.GOLD_NUGGET)
+                            .setName("&6&lDOLADOWANIE MONET &f3tyś")
+                            .setLore(
+                                    "",
+                                    "&7Cena&8: &f5.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    5.99,
+                    List.of(
+                            "eco {PLAYER} ADD 3000.0"
+                    )
+            ),
+            new ItemShop(
                     new ItemBuilder(Material.GOLD_INGOT)
-                            .setName("&6&lDOLADOWANIE MONET &f5tyś")
+                            .setName("&6&lDOLADOWANIE MONET &f6tyś")
                             .setLore(
                                     "",
                                     "&7Cena&8: &f8.99 &avpln",
@@ -134,7 +198,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     8.99,
                     List.of(
-                            "eco {PLAYER} ADD 5000.0"
+                            "eco {PLAYER} ADD 6000.0"
                     )
             )
     );

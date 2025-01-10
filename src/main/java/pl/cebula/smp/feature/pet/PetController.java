@@ -1,7 +1,6 @@
 package pl.cebula.smp.feature.pet;
 
 import eu.decentsoftware.holograms.api.DHAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,10 +55,7 @@ public class PetController implements Listener {
         if (user.isVanish()) return;
         user.getPetDataArrayList().forEach(petData -> {
             DHAPI.removeHologram(petData.getUuid().toString());
-
-            Bukkit.getScheduler().runTaskLaterAsynchronously(this.survivalPlugin, () -> {
-                PetHologramHandler.create(player, user, petData);
-            }, 0);
+            PetHologramHandler.create(player, user, petData);
         });
     }
 
@@ -80,8 +76,9 @@ public class PetController implements Listener {
         if (user.getPetDataArrayList().isEmpty()) return;
         user.getPetDataArrayList().forEach(pet -> {
             player.getWorld().dropItemNaturally(player.getLocation(), PetUtil.createItemStackPet(pet.getPetData()));
+            DHAPI.removeHologram(pet.getUuid().toString());
         });
-        user.getPetDataArrayList().clear();
+        user.getPetDataArrayList().clear();;
     }
 
     @EventHandler
@@ -104,7 +101,7 @@ public class PetController implements Listener {
             }
 
             if (item.getAmount() > 1) {
-                item.setAmount(item.getAmount()-1);
+                item.setAmount(item.getAmount() - 1);
             } else {
                 player.getInventory().removeItem(event.getItem());
             }
