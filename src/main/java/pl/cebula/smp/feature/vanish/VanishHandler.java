@@ -1,10 +1,12 @@
 package pl.cebula.smp.feature.vanish;
 
+import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.feature.pet.PetHologramHandler;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.util.MessageUtil;
 
@@ -18,11 +20,17 @@ public class VanishHandler {
                     onlinePlayer.hidePlayer(player);
                 }
             });
+            user.getPetDataArrayList().forEach(pet -> {
+                DHAPI.removeHologram(pet.getUuid().toString());
+            });
             MessageUtil.sendMessage(player, "&b&lV &fjest &aaktywny");
         } else {
             player.removeMetadata("vanished", survivalPlugin);
             Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
                 onlinePlayer.showPlayer(player);
+            });
+            user.getPetDataArrayList().forEach(pet -> {
+                PetHologramHandler.create(player, user, pet);
             });
             player.playSound(player.getLocation(), Sound.ENTITY_BAT_LOOP, 10, 10);
             MessageUtil.sendMessage(player, "&b&lV &fzostał &cwyłączony");

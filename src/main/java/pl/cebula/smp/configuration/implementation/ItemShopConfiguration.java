@@ -119,7 +119,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     2.99,
                     List.of(
-                            "eco ADD {PLAYER} 1000.0"
+                            "eco {PLAYER} ADD 1000.0"
                     )
             ),
             new ItemShop(
@@ -134,7 +134,7 @@ public class ItemShopConfiguration extends OkaeriConfig {
                             .build(),
                     8.99,
                     List.of(
-                            "eco ADD {PLAYER} 5000.0"
+                            "eco {PLAYER} ADD 5000.0"
                     )
             )
     );

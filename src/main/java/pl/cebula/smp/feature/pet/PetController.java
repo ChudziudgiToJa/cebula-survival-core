@@ -39,6 +39,7 @@ public class PetController implements Listener {
         User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
         if (user.getPetDataArrayList() == null) return;
         if (user.getPetDataArrayList().isEmpty()) return;
+        if (user.isVanish()) return;
         user.getPetDataArrayList().forEach(petData -> {
             PetHologramHandler.create(event.getPlayer(), user, petData);
         });
@@ -51,6 +52,7 @@ public class PetController implements Listener {
         User user = this.userService.findUserByUUID(player.getUniqueId());
         if (user == null) return;
         if (user.getPetDataArrayList().isEmpty()) return;
+        if (user.isVanish()) return;
         user.getPetDataArrayList().forEach(petData -> {
             DHAPI.removeHologram(petData.getUuid().toString());
 
@@ -89,7 +91,12 @@ public class PetController implements Listener {
                 return;
             }
 
-            player.getInventory().removeItem(event.getItem());
+            if (item.getAmount() > 1) {
+                item.setAmount(item.getAmount()-1);
+            } else {
+                player.getInventory().removeItem(event.getItem());
+            }
+
             final Pet Pet = new Pet(petData, UUID.randomUUID());
             user.getPetDataArrayList().add(Pet);
             PetHologramHandler.create(player, user, Pet);

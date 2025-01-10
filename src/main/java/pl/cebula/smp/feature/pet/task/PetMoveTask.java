@@ -30,21 +30,21 @@ public class PetMoveTask extends BukkitRunnable {
             if (user == null) return;
             if (user.getPetDataArrayList().isEmpty()) return;
 
-            if (user.isVanish()) {
-                user.getPetDataArrayList().forEach(pet -> {
-                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
-                    if (hologram != null) {
-                        DHAPI.removeHologram(hologram.getName());
-                    }
-                });
-            } else {
-                user.getPetDataArrayList().forEach(pet -> {
-                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
-                    if (hologram == null) {
-                        PetHologramHandler.create(player, user, pet);
-                    }
-                });
-            }
+//            if (user.isVanish()) {
+//                user.getPetDataArrayList().forEach(pet -> {
+//                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
+//                    if (hologram != null) {
+//                        DHAPI.removeHologram(hologram.getName());
+//                    }
+//                });
+//            } else {
+//                user.getPetDataArrayList().forEach(pet -> {
+//                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
+//                    if (hologram == null) {
+//                        PetHologramHandler.create(player, user, pet);
+//                    }
+//                });
+//            }
 
             Location playerLocation = player.getLocation();
             Vector direction = playerLocation.getDirection();
