@@ -107,7 +107,7 @@ public class ItemShopInventory {
 
             if (Arrays.asList(glassRedSlots).contains(event.getSlot())) {
                 show(player);
-                player.playSound(player, Sound.BLOCK_BARREL_CLOSE, 5 ,5);
+                player.playSound(player, Sound.BLOCK_BARREL_CLOSE, 1 ,1);
                 return;
             }
 

@@ -1,8 +1,10 @@
 package pl.cebula.smp.feature.blocker;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -37,6 +39,23 @@ public class BlockerController implements Listener {
         if (pluginConfiguration.BlockerSettings.materials.contains(itemInHand.getType())) {
             event.setCancelled(true);
             MessageUtil.sendTitle(player, "", "&cPrzedmiot zakazany", 20, 50, 20);
+        }
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent event) {
+        EntityType entityType = event.getEntity().getType();
+        if (entityType == EntityType.WOLF ||
+                entityType == EntityType.CAT ||
+                entityType == EntityType.HORSE ||
+                entityType == EntityType.PILLAGER ||
+                entityType == EntityType.PHANTOM ||
+                entityType == EntityType.ALLAY ||
+                entityType == EntityType.EVOKER ||
+                entityType == EntityType.EVOKER_FANGS ||
+                entityType == EntityType.DONKEY ||
+                entityType == EntityType.ENDERMITE) {
+            event.setCancelled(true);
         }
     }
 

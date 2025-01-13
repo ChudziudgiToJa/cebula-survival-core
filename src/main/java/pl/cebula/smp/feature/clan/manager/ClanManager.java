@@ -4,6 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
+import pl.cebula.smp.feature.clan.service.ClanService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClanManager {
 
@@ -27,5 +31,20 @@ public class ClanManager {
         Bukkit.getOnlinePlayers().forEach(target -> {
             ClanArmorHandler.refreshArmorPacket(player, target);
         });
+    }
+
+
+    public static List<String> formatPlayerStatus(List<String> playerNames) {
+        List<String> formattedNames = new ArrayList<>();
+        for (String name : playerNames) {
+            Player player = Bukkit.getPlayerExact(name);
+            if (player != null && player.isOnline()) {
+                formattedNames.add("&a" + name);
+            } else {
+                formattedNames.add("&7" + name);
+            }
+        }
+
+        return formattedNames;
     }
 }

@@ -85,6 +85,24 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     23,
                                     500.0,
                                     300.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.REDSTONE).build(),
+                                    24,
+                                    8.0,
+                                    2.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.COBBLESTONE).build(),
+                                    25,
+                                    1.0,
+                                    0.1
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.DEEPSLATE).build(),
+                                    28,
+                                    1.5,
+                                    0.1
                             )
                     )
             ),
@@ -95,8 +113,8 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.WHEAT).build(),
                                     10,
-                                    3.0, // Sprzedaż
-                                    1.5  // Zakup
+                                    3.0,
+                                    1.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.POTATO).build(),
@@ -120,7 +138,7 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     new ItemBuilder(Material.PUMPKIN).build(),
                                     14,
                                     6.0,
-                                    3.0
+                                    2.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.MELON_SLICE).build(),
@@ -132,13 +150,31 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     new ItemBuilder(Material.GLOW_BERRIES).build(),
                                     16,
                                     10.0,
-                                    6.0
+                                    1.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SWEET_BERRIES).build(),
                                     19,
                                     6.0,
-                                    4.0
+                                    0.8
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.SUGAR_CANE).build(),
+                                    20,
+                                    5.5,
+                                    0.7
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.BAMBOO).build(),
+                                    21,
+                                    4,
+                                    0.8
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.CACTUS).build(),
+                                    22,
+                                    3.4,
+                                    0.9
                             )
                     )
             ),
@@ -203,68 +239,140 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.COD).build(),
                                     10,
-                                    12.0, // Sprzedaż
+                                    6.0, // Sprzedaż (12.0 / 2)
                                     8.0  // Zakup
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SALMON).build(),
                                     11,
-                                    14.0,
+                                    7.0, // Sprzedaż (14.0 / 2)
                                     9.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.TROPICAL_FISH).build(),
                                     12,
-                                    10.0,
+                                    5.0, // Sprzedaż (10.0 / 2)
                                     6.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.PUFFERFISH).build(),
                                     13,
-                                    18.0,
+                                    9.0, // Sprzedaż (18.0 / 2)
                                     12.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.NAME_TAG).build(),
                                     14,
-                                    75.0,
+                                    37.5, // Sprzedaż (75.0 / 2)
                                     35.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SADDLE).build(),
                                     15,
-                                    60.0,
+                                    30.0, // Sprzedaż (60.0 / 2)
                                     30.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LILY_PAD).build(),
                                     16,
-                                    8.0,
+                                    4.0, // Sprzedaż (8.0 / 2)
                                     4.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.INK_SAC).build(),
                                     19,
-                                    10.0,
+                                    5.0, // Sprzedaż (10.0 / 2)
                                     4.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.BOWL).build(),
                                     20,
-                                    5.0,
+                                    2.5, // Sprzedaż (5.0 / 2)
                                     2.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.TRIPWIRE_HOOK).build(),
                                     21,
-                                    40.0,
+                                    20.0, // Sprzedaż (40.0 / 2)
                                     15.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LEATHER).build(),
                                     22,
-                                    7.0,
+                                    3.5,
                                     3.0
+                            )
+                    )
+            ),
+            new Shop(
+                    "&0&lDrwal",
+                    30,
+                    List.of(
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.OAK_LOG).build(),
+                                    10,
+                                    6.0,
+                                    3.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.SPRUCE_LOG).build(),
+                                    11,
+                                    6.0,
+                                    3.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.BIRCH_LOG).build(),
+                                    12,
+                                    6.0,
+                                    3.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.JUNGLE_LOG).build(),
+                                    13,
+                                    7.0,
+                                    3.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.ACACIA_LOG).build(),
+                                    14,
+                                    7.0,
+                                    3.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.DARK_OAK_LOG).build(),
+                                    15,
+                                    7.0,
+                                    3.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.MANGROVE_LOG).build(),
+                                    16,
+                                    8.0,
+                                    4.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.CHERRY_LOG).build(),
+                                    19,
+                                    8.0,
+                                    4.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.BAMBOO_BLOCK).build(),
+                                    20,
+                                    5.0,
+                                    2.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.CRIMSON_STEM).build(),
+                                    21,
+                                    10.0,
+                                    5.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.WARPED_STEM).build(),
+                                    22,
+                                    10.0,
+                                    5.0
                             )
                     )
             )

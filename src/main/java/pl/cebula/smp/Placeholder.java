@@ -1,6 +1,7 @@
 package pl.cebula.smp;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.clip.placeholderapi.expansion.Relational;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.cebula.smp.feature.abyss.AbyssManager;
@@ -14,7 +15,7 @@ import pl.cebula.smp.util.MessageUtil;
 
 import java.time.Duration;
 
-public class Placeholder extends PlaceholderExpansion {
+public class Placeholder extends PlaceholderExpansion implements Relational {
 
     private final UserService userService;
     private final ClanService clanService;
@@ -78,16 +79,6 @@ public class Placeholder extends PlaceholderExpansion {
             }
             return String.format("%.1f", (double) user.getKill() / user.getDead());
         }
-        if(params.startsWith("clan")) {
-            if (clanMember != null) {
-                if (clanMember.getMemberArrayList().contains(player.getName()) || clanMember.getOwnerName().equals(player.getName())) {
-                    return " &a&l" + MessageUtil.smallText(clanMember.getTag().toUpperCase());
-                } else {
-                    return " &4&l" + MessageUtil.smallText(clanMember.getTag().toUpperCase());
-                }
-            }
-            return "";
-        }
         if(params.startsWith("nameclan")) {
             if (clanMember != null) {
                 return MessageUtil.smallText(clanMember.getTag() + " &8(&7" + clanMember.getOwnerName()+ "&8)");
@@ -97,4 +88,28 @@ public class Placeholder extends PlaceholderExpansion {
         return "";
     }
 
+    @Override
+    public String onPlaceholderRequest(Player one, Player two, String params) {
+        if (one == null || two == null) return null;
+
+        Clan clanOne = this.clanService.findClanByMember(one.getName());
+        Clan clanTwo = this.clanService.findClanByMember(two.getName());
+
+        if (params.equalsIgnoreCase("clans")) {
+            if (clanOne != null && clanTwo != null) {
+                if (clanOne.equals(clanTwo)) {
+                    return MessageUtil.smallText(" &a&l" + clanOne.getTag().toUpperCase());
+                } else {
+                    return MessageUtil.smallText(" &e&l" + clanOne.getTag().toUpperCase());
+                }
+            } else if (clanOne != null) {
+                return MessageUtil.smallText(" &c&l" + clanOne.getTag().toUpperCase());
+            } else if (clanTwo != null) {
+                return MessageUtil.smallText("");
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
 }

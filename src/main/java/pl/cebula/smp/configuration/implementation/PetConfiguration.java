@@ -54,10 +54,10 @@ public class PetConfiguration extends OkaeriConfig {
                     "&fNadaje efekt szbykiego pływania I"
             ),
             new PetData(
-                    "Panda",
-                    "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWIxMTg3NjNjZThiNWYzMDg2MTVlNjQ3NzEyNzRjYWNiZTMxMTg4NDc3ZTc1NmI5ZDc5NjVmZWI3ZTJkYzQwNiJ9fX0=",
-                    23,
-                    "&fNadaje efekt nasycenia I"
+                    "Kamaleon",
+                    "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDk3ZGI3ZTA3NjBlNTNjYjgwM2U3Y2ViMDNjYmIyNzI3MTM3NTBjMjllYWI2NjhhNWRhZGZiMTk1ZDhkOGJmMCJ9fX0=",
+                    14,
+                    "&fNadaje efekt niewidzialności"
             )
     );
 }

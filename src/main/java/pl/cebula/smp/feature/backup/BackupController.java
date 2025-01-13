@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.cebula.smp.feature.pet.PetUtil;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.ItemStackSerializable;
@@ -35,6 +36,9 @@ public class BackupController implements Listener {
         for (ItemStack itemStack : inventory) {
             if (itemStack != null) {
                 itemList.add(itemStack);
+                user.getPetDataArrayList().forEach(pet -> {
+                    itemList.add(PetUtil.createItemStackPet(pet.getPetData()));
+                });
             }
         }
 

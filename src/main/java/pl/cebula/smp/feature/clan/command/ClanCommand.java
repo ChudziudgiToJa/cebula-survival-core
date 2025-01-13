@@ -10,11 +10,15 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.A;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
+import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -59,8 +63,8 @@ public class ClanCommand {
             return;
         }
 
-        if (!(tag.length() == 4)) {
-            MessageUtil.sendMessage(player, "&ctag klanu musi mieć 4 znaków");
+        if (tag.length() < 2 || tag.length() > 5) {
+            MessageUtil.sendMessage(player, "&cTag klanu musi mieć od 2 do 5 znaków");
             return;
         }
 
@@ -68,16 +72,43 @@ public class ClanCommand {
             MessageUtil.sendMessage(player, "&cTag klanu może zawierać tylko litery alfabetu (bez cyfr i znaków specjalnych)");
             return;
         }
+
+        if (!(player.getLocation().getY() == 40)) {
+            MessageUtil.sendMessage(player, "&cMusisz stac na 40 kratce wysokości aby stworzyć klanu");
+            return;
+        }
+
+        if (clanService.isNearAnotherClan(player.getLocation())) {
+            MessageUtil.sendMessage(player, "&cNie możesz stworzyć klanu w pobliżu innego klanu.");
+            return;
+        }
+
+        double distanceFromOrigin = player.getLocation().distance(new Location(player.getWorld(), 0, 0, 0));
+        if (distanceFromOrigin < 200) {
+            MessageUtil.sendMessage(player, "&cMusisz być co najmniej 200 kratek od współrzędnych 0,0,0.");
+            return;
+        }
+
+        WorldBorder worldBorder = player.getWorld().getWorldBorder();
+        double distanceFromBorder = player.getLocation().distance(new Location(player.getWorld(), worldBorder.getCenter().getX(), player.getLocation().getY(), worldBorder.getCenter().getZ()));
+        if (distanceFromBorder < 100) {
+            MessageUtil.sendMessage(player, "&cMusisz być co najmniej 100 kratek od granicy świata.");
+            return;
+        }
+
         User user = this.userService.findUserByUUID(player.getUniqueId());
 
         if (user.getMoney() < 3500) {
             MessageUtil.sendMessage(player, "&cNie stać cię! kosz klanu to &43500 &cmonet");
             return;
         }
+
         user.setMoney(user.getMoney() - 3500);
-        this.clanService.createClan(new Clan(player, tag));
+        this.clanService.createClan(new Clan(player, tag.toLowerCase()));
         Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
     }
+
+
 
     @Execute(name = "usuń")
     void delete(@Context Player player) {
@@ -219,5 +250,33 @@ public class ClanCommand {
         }
         clan.setPvp(!clan.isPvp());
         MessageUtil.sendMessage(player, "&7Zmieniono status pvp na: " + (clan.isPvp() ? "&cwyłączony" : "&awłączony"));
+    }
+
+
+    @Execute(name = "info")
+    void infoOther(@Context Player player, @OptionalArg String string) {
+        if (string == null || string.isBlank() || string.isEmpty()) {
+
+            Clan clan = this.clanService.findClanByMember(player.getName());
+
+            if (clan == null) {
+                MessageUtil.sendMessage(player, "&cNie masz klanu.");
+                return;
+            }
+            MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
+            MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
+            MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
+            return;
+        }
+
+        Clan targetClan = this.clanService.findClanByTag(string.toLowerCase());
+
+        if (targetClan == null) {
+            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
+            return;
+        }
+        MessageUtil.sendMessage(player, "&fklan: &a&l" + targetClan.getTag());
+        MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + targetClan.getOwnerName());
+        MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
     }
 }

@@ -27,6 +27,7 @@ public class NpcShopController implements Listener {
             if (event.getNPC().getId() == shop.getNpcId()) {
                 npcShopInventory.show(player, shop);
                 player.playSound(player, Sound.BLOCK_BARREL_OPEN, 5 ,5);
+                event.setCancelled(true);
             }
         }
     }

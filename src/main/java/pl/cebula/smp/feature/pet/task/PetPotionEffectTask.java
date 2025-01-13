@@ -8,6 +8,9 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 
+import java.util.List;
+import java.util.Objects;
+
 public class PetPotionEffectTask extends BukkitRunnable {
 
     private final UserService userService;
@@ -16,7 +19,7 @@ public class PetPotionEffectTask extends BukkitRunnable {
     public PetPotionEffectTask(UserService userService, SurvivalPlugin survivalPlugin) {
         this.userService = userService;
         this.survivalPlugin = survivalPlugin;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 20 * 5, 0);
+        this.runTaskTimerAsynchronously(this.survivalPlugin, 20, 0);
     }
 
     @Override
@@ -24,13 +27,18 @@ public class PetPotionEffectTask extends BukkitRunnable {
         Bukkit.getOnlinePlayers().forEach(player -> {
             User user = this.userService.findUserByUUID(player.getUniqueId());
             if (user.getPetDataArrayList().isEmpty()) return;
-            user.getPetDataArrayList().forEach(pet -> {
-                Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
-                    PotionEffectType potionEffect = PotionEffectType.getById(pet.getPetData().getPotionEffect());
-                    if (potionEffect == null) return;
-                    player.addPotionEffect(new PotionEffect(potionEffect, 25 * 5, 0, true, false));
-                }, 0);
-            });
+            List<PotionEffect> effects = user.getPetDataArrayList().stream()
+                    .map(pet -> PotionEffectType.getById(pet.getPetData().getPotionEffect()))
+                    .filter(Objects::nonNull)
+                    .map(effectType -> new PotionEffect(effectType, 40, 0, true, false))
+                    .toList();
+
+            if (!effects.isEmpty()) {
+                Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
+                    player.addPotionEffects(effects);
+                });
+            }
         });
     }
+
 }

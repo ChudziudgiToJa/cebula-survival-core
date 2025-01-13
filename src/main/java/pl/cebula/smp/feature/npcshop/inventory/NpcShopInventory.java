@@ -50,10 +50,10 @@ public class NpcShopInventory {
                     .setLore(
                             " ",
                             "&e&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
-                            "&6&lppm + shift &7- &akliknij aby sprzedać 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet",
+                            "&6&lppm + shift &7- &akliknij aby sprzedać "+ itemToInteract.getItemStack().getMaxStackSize() +" za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getBuyPrice()) + " monet",
                             "&6&lq &7- &akliknij aby sprzedać całe eq",
                             "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet",
-                            "&2&llpm + shift &7- &akliknij aby kupić 64 za &f" + DecimalUtil.getFormat(64 * itemToInteract.getBuyPrice()) + " monet"
+                            "&2&llpm + shift &7- &akliknij aby kupić " +itemToInteract.getItemStack().getMaxStackSize() +" za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getBuyPrice()) + " monet"
                     )
                     .build();
 
@@ -67,7 +67,7 @@ public class NpcShopInventory {
 
                 if (event.getSlot() == itemToInteract.getItemSlot()) {
 
-                    if (event.getClick().equals(ClickType.LEFT)) { // Kupowanie pojedynczego przedmiotu
+                    if (event.getClick().equals(ClickType.LEFT)) {
                         if (user.getMoney() >= itemToInteract.getBuyPrice()) {
                             user.setMoney(user.getMoney() - itemToInteract.getBuyPrice());
                             ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), 1);
@@ -85,26 +85,26 @@ public class NpcShopInventory {
                         return;
                     }
 
-                    if (event.getClick().equals(ClickType.SHIFT_LEFT)) { // Kupowanie 64 przedmiotów
-                        double totalPrice = itemToInteract.getBuyPrice() * 64;
+                    if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
+                        double totalPrice = itemToInteract.getBuyPrice() * itemToInteract.getItemStack().getMaxStackSize();
                         if (user.getMoney() >= totalPrice) {
                             user.setMoney(user.getMoney() - totalPrice);
-                            ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), 64);
+                            ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), itemToInteract.getItemStack().getMaxStackSize());
 
                             HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
                             if (!leftover.isEmpty()) {
                                 leftover.values().forEach(remaining -> player.getWorld().dropItemNaturally(player.getLocation(), remaining));
                             }
 
-                            MessageUtil.sendMessage(player, "&aKupiłeś 64 przedmioty: " + item.getType() + " za " + totalPrice + "!");
+                            MessageUtil.sendMessage(player, "&aKupiłeś " + itemToInteract.getItemStack().getMaxStackSize() +" przedmioty: " + item.getType() + " za " + totalPrice + "!");
                         } else {
-                            MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić 64 przedmioty.", 20, 50, 20);
+                            MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić " + itemToInteract.getItemStack().getMaxStackSize() +" przedmioty.", 20, 50, 20);
                             player.closeInventory();
                         }
                         return;
                     }
 
-                    if (event.getClick().equals(ClickType.RIGHT)) { // Sprzedawanie pojedynczego przedmiotu
+                    if (event.getClick().equals(ClickType.RIGHT)) {
                         ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), 1);
                         if (player.getInventory().containsAtLeast(itemToSell, 1)) {
                             player.getInventory().removeItem(itemToSell);
@@ -117,20 +117,20 @@ public class NpcShopInventory {
                         return;
                     }
 
-                    if (event.getClick().equals(ClickType.SHIFT_RIGHT)) { // Sprzedawanie 64 przedmiotów
-                        ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), 64);
-                        if (player.getInventory().containsAtLeast(itemToSell, 64)) {
+                    if (event.getClick().equals(ClickType.SHIFT_RIGHT)) {
+                        ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), itemToInteract.getItemStack().getMaxStackSize());
+                        if (player.getInventory().containsAtLeast(itemToSell, itemToInteract.getItemStack().getMaxStackSize())) {
                             player.getInventory().removeItem(itemToSell);
-                            double totalPrice = itemToInteract.getSellPrice() * 64;
+                            double totalPrice = itemToInteract.getSellPrice() * itemToInteract.getItemStack().getMaxStackSize();
                             user.setMoney(user.getMoney() + totalPrice);
-                            MessageUtil.sendMessage(player, "&aSprzedałeś 64 przedmioty: " + itemToSell.getType() + " za " + totalPrice + "!");
+                            MessageUtil.sendMessage(player, "&aSprzedałeś "+ itemToInteract.getItemStack().getMaxStackSize()+" przedmioty: " + itemToSell.getType() + " za " + totalPrice + "!");
                         } else {
-                            MessageUtil.sendTitle(player, "", "&cNie masz 64 tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
+                            MessageUtil.sendTitle(player, "", "&cNie masz "+ itemToInteract.getItemStack().getMaxStackSize() +" tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
                             player.closeInventory();
                         }
                         return;
                     }
-                    if (event.getClick().equals(ClickType.DROP)) { // Sprzedawanie wszystkich sztuk danego przedmiotu z ekwipunku
+                    if (event.getClick().equals(ClickType.DROP)) {
                         ItemStack itemStackToSell = itemToInteract.getItemStack();
                         Material itemTypeToSell = itemStackToSell.getType();
                         int totalAmount = 0;

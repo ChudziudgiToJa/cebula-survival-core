@@ -26,7 +26,7 @@ public class ItemShopManager {
                 MessageUtil.sendMessage(all, " &f" + user.getNickName() + " &azakupił usługe: &f" + shop.getItemStack().getItemMeta().getDisplayName());
                 MessageUtil.sendMessage(all, " &b&lgz &fna chacie.... &4<3");
                 MessageUtil.sendMessage(all, " ");
-                all.playSound(all, Sound.ENTITY_ENDER_DRAGON_DEATH, 5, 5);
+                all.playSound(all, Sound.ENTITY_ENDER_DRAGON_DEATH, 1, 1);
             });
         }
     }

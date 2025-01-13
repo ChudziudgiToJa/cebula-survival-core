@@ -13,11 +13,13 @@ import pl.cebula.smp.util.MessageUtil;
 public class VanishHandler {
     public void toggleVanish(Player player, User user, final SurvivalPlugin survivalPlugin) {
         user.setVanish(!user.isVanish());
+        Player target = Bukkit.getPlayer(user.getNickName());
+        if (target == null) return;
         if (user.isVanish()) {
-            player.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, true));
+            target.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, true));
             Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
                 if (!onlinePlayer.hasPermission("cebulasmp.vanish.see")) {
-                    onlinePlayer.hidePlayer(player);
+                    onlinePlayer.hidePlayer(target);
                 }
             });
             user.getPetDataArrayList().forEach(pet -> {
@@ -25,12 +27,12 @@ public class VanishHandler {
             });
             MessageUtil.sendMessage(player, "&b&lV &fjest &aaktywny");
         } else {
-            player.removeMetadata("vanished", survivalPlugin);
+            target.removeMetadata("vanished", survivalPlugin);
             Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-                onlinePlayer.showPlayer(player);
+                onlinePlayer.showPlayer(target);
             });
             user.getPetDataArrayList().forEach(pet -> {
-                PetHologramHandler.create(player, user, pet);
+                PetHologramHandler.create(target, user, pet);
             });
             player.playSound(player.getLocation(), Sound.ENTITY_BAT_LOOP, 10, 10);
             MessageUtil.sendMessage(player, "&b&lV &fzostał &cwyłączony");

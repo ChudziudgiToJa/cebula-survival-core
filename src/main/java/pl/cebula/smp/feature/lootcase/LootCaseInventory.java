@@ -93,11 +93,6 @@ public class LootCaseInventory {
                 ItemStack lootedItemStack = ItemStackSerializable.readItemStack(LootCaseManager.pickRandomItem(lootCase.getDropItems()).getItemStackInString());
 
                 if (lootedItemStack == null) return;
-
-                Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-                    MessageUtil.sendMessage(onlinePlayer, player.getName() + " &7otwiera&8: &d" + lootCase.getString());
-                    onlinePlayer.playSound(onlinePlayer, Sound.ITEM_GOAT_HORN_SOUND_0, 5, 5);
-                });
                 HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(lootedItemStack);
                 leftover.values().forEach(remaining ->
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)

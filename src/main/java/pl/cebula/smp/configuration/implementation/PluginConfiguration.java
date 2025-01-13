@@ -12,6 +12,8 @@ public class PluginConfiguration extends OkaeriConfig {
     public BlockerSettings BlockerSettings = new BlockerSettings();
 
     public int freePlnNpcID =16;
+    public int blackSmithID = 31;
+    public String discordUrl = "https://discord.gg/Y5v5JSMFkN";
 
     public static class BlockerSettings extends OkaeriConfig {
         @Comment("Lista zablokowanych przedmiotów do craftingów  interackjci")

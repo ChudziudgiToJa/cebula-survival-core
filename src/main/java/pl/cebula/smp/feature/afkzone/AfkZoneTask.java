@@ -41,14 +41,12 @@ public class AfkZoneTask extends BukkitRunnable {
                 afkZoneManager.playerInAfkZone.put(playerId, timeInAfkZone);
 
                 long remainingTime = 600 - timeInAfkZone;
-                Bukkit.getScheduler().runTask(survivalPlugin, () -> {
                     MessageUtil.sendTitle(
                             player,
                             "",
                             "&aDrop klucza za: &f" + DurationUtil.convertLong(Math.max(remainingTime, 0)),
                             1, 20, 1
                     );
-                });
                 if (timeInAfkZone >= 600) {
                     afkZoneManager.playerInAfkZone.remove(playerId);
 

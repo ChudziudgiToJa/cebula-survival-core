@@ -1,15 +1,12 @@
 package pl.cebula.smp.feature.pet.task;
 
 import eu.decentsoftware.holograms.api.DHAPI;
-import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.pet.PetHologramHandler;
 import pl.cebula.smp.feature.pet.object.Pet;
-import pl.cebula.smp.feature.pet.object.PetData;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 
@@ -19,7 +16,7 @@ public class PetMoveTask extends BukkitRunnable {
 
     public PetMoveTask(SurvivalPlugin survivalPlugin, UserService userService) {
         this.userService = userService;
-        this.runTaskTimerAsynchronously(survivalPlugin, 5, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 2, 0);
     }
 
 
@@ -30,32 +27,16 @@ public class PetMoveTask extends BukkitRunnable {
             if (user == null) return;
             if (user.getPetDataArrayList().isEmpty()) return;
 
-//            if (user.isVanish()) {
-//                user.getPetDataArrayList().forEach(pet -> {
-//                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
-//                    if (hologram != null) {
-//                        DHAPI.removeHologram(hologram.getName());
-//                    }
-//                });
-//            } else {
-//                user.getPetDataArrayList().forEach(pet -> {
-//                    Hologram hologram = DHAPI.getHologram(pet.getUuid().toString());
-//                    if (hologram == null) {
-//                        PetHologramHandler.create(player, user, pet);
-//                    }
-//                });
-//            }
-
             Location playerLocation = player.getLocation();
             Vector direction = playerLocation.getDirection();
 
             direction.setY(0);
             direction.normalize();
 
-            double distanceFromPlayer = 0.5;
-            double heightAbovePlayer = 2.3;
+            double distanceFromPlayer = 0.7;
+            double heightAbovePlayer = 3.0;
             int petCount = user.getPetDataArrayList().size();
-            double sideOffset = 0.5;
+            double sideOffset = 0.6;
 
             for (int i = 0; i < petCount; i++) {
                 Pet pet = user.getPetDataArrayList().get(i);
@@ -65,8 +46,7 @@ public class PetMoveTask extends BukkitRunnable {
 
                 if (petCount == 1) {
                     hologramOffset = direction.clone().multiply(-distanceFromPlayer).setY(heightAbovePlayer);
-                }
-                else if (petCount == 2) {
+                } else if (petCount == 2) {
                     hologramOffset = perpendicularDirection.clone().multiply(i == 0 ? -sideOffset : sideOffset)
                             .add(direction.clone().multiply(-distanceFromPlayer))
                             .setY(heightAbovePlayer);
@@ -75,6 +55,7 @@ public class PetMoveTask extends BukkitRunnable {
                 Location hologramLocation = playerLocation.clone().add(hologramOffset);
                 DHAPI.moveHologram(pet.getUuid().toString(), hologramLocation);
             }
+
         });
     }
 

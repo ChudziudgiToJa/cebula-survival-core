@@ -23,15 +23,23 @@ import pl.cebula.smp.feature.afkzone.AfkZoneTask;
 import pl.cebula.smp.feature.backup.BackupCommand;
 import pl.cebula.smp.feature.backup.BackupController;
 import pl.cebula.smp.feature.backup.BackupInventory;
+import pl.cebula.smp.feature.blacksmith.BlacksmithController;
+import pl.cebula.smp.feature.blacksmith.BlacksmithInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.CuboidController;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarTak;
+import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidJoinQuitTask;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpController;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
+import pl.cebula.smp.feature.command.DiscordCommand;
 import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.crafting.CraftingCommand;
 import pl.cebula.smp.feature.crafting.CraftingInventory;
@@ -47,7 +55,7 @@ import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
 import pl.cebula.smp.feature.itemshop.ItemShopInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopManager;
-import pl.cebula.smp.feature.itemshop.VplnCommand;
+import pl.cebula.smp.feature.command.VplnCommand;
 import pl.cebula.smp.feature.job.JobCommand;
 import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
@@ -186,6 +194,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         //Pet
         PetInventory petInventory = new PetInventory();
 
+        //Blacksmih
+        BlacksmithInventory blacksmithInventory = new BlacksmithInventory(this, this.userService);
+
         //Crafting
         CraftingInventory craftingInventory = new CraftingInventory(this, this.craftingConfiguration);
 
@@ -217,7 +228,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
                         new VanishCommand(this.userService, this.vanishHandler, this),
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
-                        new CraftingCommand(craftingInventory)
+                        new CraftingCommand(craftingInventory),
+                        new DiscordCommand(this.pluginConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -238,13 +250,15 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanPvpController(this.clanService),
                 new VanishController(this.userService, this),
                 new KillCounterController(this),
-                new PetController(this.userService, this.petconfiguration, this)
+                new PetController(this.userService, this.petconfiguration, this),
+                new ChatCharController(),
+                new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
+                new CuboidController(this.clanService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
         new UsersSaveTask(this, this.userService);
         new ClanSaveTask(this, this.clanService);
-
         new TopCitizenTask(this, this.topManager);
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
@@ -253,6 +267,9 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanArmorTask(this, this.clanService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
+        new CuboidBorderTask(this.clanService, this, this.protocolManager);
+        new CuboidJoinQuitTask(this.clanService, this);
+        new CuboidBossBarTak(this.clanService, this);
     }
 
     @Override

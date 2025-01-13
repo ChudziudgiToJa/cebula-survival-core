@@ -1,6 +1,7 @@
 package pl.cebula.smp.feature.pet;
 
 import eu.decentsoftware.holograms.api.DHAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,12 +37,14 @@ public class PetController implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
-        if (user.getPetDataArrayList() == null) return;
-        if (user.getPetDataArrayList().isEmpty()) return;
-        if (user.isVanish()) return;
-        user.getPetDataArrayList().forEach(petData -> {
-            PetHologramHandler.create(event.getPlayer(), user, petData);
+        Bukkit.getScheduler().runTaskAsynchronously(this.survivalPlugin, () -> {
+            User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
+            if (user.getPetDataArrayList() == null) return;
+            if (user.getPetDataArrayList().isEmpty()) return;
+            if (user.isVanish()) return;
+            user.getPetDataArrayList().forEach(petData -> {
+                PetHologramHandler.create(event.getPlayer(), user, petData);
+            });
         });
     }
 
@@ -49,22 +52,26 @@ public class PetController implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        User user = this.userService.findUserByUUID(player.getUniqueId());
-        if (user == null) return;
-        if (user.getPetDataArrayList().isEmpty()) return;
-        if (user.isVanish()) return;
-        user.getPetDataArrayList().forEach(petData -> {
-            DHAPI.removeHologram(petData.getUuid().toString());
-            PetHologramHandler.create(player, user, petData);
+        Bukkit.getScheduler().runTaskAsynchronously(this.survivalPlugin, () -> {
+            User user = this.userService.findUserByUUID(player.getUniqueId());
+            if (user == null) return;
+            if (user.getPetDataArrayList().isEmpty()) return;
+            if (user.isVanish()) return;
+            user.getPetDataArrayList().forEach(petData -> {
+                DHAPI.removeHologram(petData.getUuid().toString());
+                PetHologramHandler.create(player, user, petData);
+            });
         });
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
-        if (user == null) return;
-        user.getPetDataArrayList().forEach(petData -> {
-            DHAPI.removeHologram(petData.getUuid().toString());
+        Bukkit.getScheduler().runTaskAsynchronously(this.survivalPlugin, () -> {
+            User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
+            if (user == null) return;
+            user.getPetDataArrayList().forEach(petData -> {
+                DHAPI.removeHologram(petData.getUuid().toString());
+            });
         });
     }
 
@@ -78,7 +85,7 @@ public class PetController implements Listener {
             player.getWorld().dropItemNaturally(player.getLocation(), PetUtil.createItemStackPet(pet.getPetData()));
             DHAPI.removeHologram(pet.getUuid().toString());
         });
-        user.getPetDataArrayList().clear();;
+        user.getPetDataArrayList().clear();
     }
 
     @EventHandler

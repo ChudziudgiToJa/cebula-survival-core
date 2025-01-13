@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AbyssManager {
-    public static long time = 600;
+    public static long time = 1000;
 }

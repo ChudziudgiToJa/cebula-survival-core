@@ -1,10 +1,12 @@
 package pl.cebula.smp.feature.clan.service;
 
+import org.bukkit.Location;
 import pl.cebula.smp.database.UpdateType;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.feature.cuboid.CuboidHearthLocation;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -49,7 +51,6 @@ public class ClanService {
         return null;
     }
 
-
     public Clan findClanByTag(String tag) {
         return this.clanConcurrentHashMap.values()
                 .stream()
@@ -66,10 +67,59 @@ public class ClanService {
                 .orElse(null);
     }
 
+    public Clan findClanByLocation(Location playerLocation) {
+        return this.clanConcurrentHashMap.values()
+                .stream()
+                .filter(clan -> {
+                    CuboidHearthLocation clanLocation = clan.getLocation();
+                    double minX = clanLocation.getX() - 20;
+                    double maxX = clanLocation.getX() + 20;
+                    double minZ = clanLocation.getZ() - 20;
+                    double maxZ = clanLocation.getZ() + 20;
+
+                    return playerLocation.getX() >= minX && playerLocation.getX() <= maxX
+                            && playerLocation.getZ() >= minZ && playerLocation.getZ() <= maxZ;
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+
     public void saveAllClans() {
         this.clanConcurrentHashMap.forEach((s, clan) -> {
                     saveClan(clan);
                 }
         );
     }
+
+    public Collection<Clan> getAllClans() {
+        return this.clanConcurrentHashMap.values();
+    }
+
+    public boolean isNearAnotherClan(Location playerLocation) {
+        return this.clanConcurrentHashMap.values().stream().anyMatch(existingClan -> {
+            CuboidHearthLocation clanLocation = existingClan.getLocation();
+
+            double distanceSquared = Math.pow(clanLocation.getX() - playerLocation.getX(), 2)
+                    + Math.pow(clanLocation.getZ() - playerLocation.getZ(), 2);
+
+            return distanceSquared <= Math.pow(90, 2);
+        });
+    }
+
+    public boolean isBlockOnClanTerritory(Location blockLocation) {
+        for (Clan clan : clanConcurrentHashMap.values()) {
+            CuboidHearthLocation clanLocation = clan.getLocation();
+            double minX = clanLocation.getX() - 20;
+            double maxX = clanLocation.getX() + 20;
+            double minZ = clanLocation.getZ() - 20;
+            double maxZ = clanLocation.getZ() + 20;
+            if (blockLocation.getX() >= minX && blockLocation.getX() <= maxX
+                    && blockLocation.getZ() >= minZ && blockLocation.getZ() <= maxZ) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+

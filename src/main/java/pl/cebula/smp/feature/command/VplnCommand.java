@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.itemshop;
+package pl.cebula.smp.feature.command;
 
 import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
@@ -6,7 +6,6 @@ import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.economy.EconomyCommandType;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;

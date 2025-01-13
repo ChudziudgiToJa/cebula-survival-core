@@ -11,7 +11,7 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.util.MessageUtil;
 
 public class AbyssTask extends BukkitRunnable {
-    private static final int START_TIME = 600;
+    private static final int START_TIME = 1000;
     private final SurvivalPlugin survivalPlugin;
 
     public AbyssTask(SurvivalPlugin survivalPlugin) {
@@ -24,10 +24,7 @@ public class AbyssTask extends BukkitRunnable {
         if (AbyssManager.time <= 0) {
             Bukkit.getOnlinePlayers().forEach(player -> {
                 player.playSound(player, Sound.BLOCK_BELL_RESONATE, 5, 5);
-                MessageUtil.sendMessage(player, " ");
-                MessageUtil.sendMessage(player, "&a♻ &fPorządki zakończone!");
-                MessageUtil.sendMessage(player, "            &7Wszystkie byty zostały skutecznie usunięte. &2\uD83C\uDF0D");
-                MessageUtil.sendMessage(player, " ");
+                MessageUtil.sendTitle(player, "", "&7Wszystkie byty zostały skutecznie usunięte. &2\uD83C\uDF0D", 20,50,20);
             });
             Bukkit.getScheduler().runTask(survivalPlugin, () -> {
                 Bukkit.getWorlds().forEach(world ->
