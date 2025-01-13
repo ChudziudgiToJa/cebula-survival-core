@@ -89,6 +89,15 @@ public class ClanCommand {
             return;
         }
 
+        double worldBorderSize = player.getWorld().getWorldBorder().getSize() / 2;
+        double playerX = player.getLocation().getX();
+        double playerZ = player.getLocation().getZ();
+
+        if (Math.abs(playerX) >= worldBorderSize - 70 || Math.abs(playerZ) >= worldBorderSize - 70) {
+            MessageUtil.sendMessage(player, "&cNie możesz stworzyć klanu w pobliżu granicy świata. Musisz być co najmniej 70 kratek od granicy.");
+            return;
+        }
+
         WorldBorder worldBorder = player.getWorld().getWorldBorder();
         double distanceFromBorder = player.getLocation().distance(new Location(player.getWorld(), worldBorder.getCenter().getX(), player.getLocation().getY(), worldBorder.getCenter().getZ()));
         if (distanceFromBorder < 100) {

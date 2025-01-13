@@ -23,15 +23,12 @@ public class ClanArmorTask extends BukkitRunnable {
                     .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(player.getLocation()) < 10)
                     .filter(nearbyPlayer -> !nearbyPlayer.equals(player))
                     .forEach(nearbyPlayer -> {
-                        Clan clan = this.clanService.findClanByMember(nearbyPlayer.getName());
-                        if (clan == null) return;
-                        if (clan.getMemberArrayList().contains(nearbyPlayer.getName()) ||
-                                clan.getMemberArrayList().contains(player.getName()) ||
-                                clan.getOwnerName().equals(player.getName())) {
+                        Clan playerClan = this.clanService.findClanByMember(player.getName());
+                        Clan nearbyPlayerClan = this.clanService.findClanByMember(nearbyPlayer.getName());
+                        if (playerClan != null && playerClan.equals(nearbyPlayerClan)) {
                             ClanArmorHandler.sendArmorPacket(player, nearbyPlayer);
                         }
                     });
         });
     }
-
 }

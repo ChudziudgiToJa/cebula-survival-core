@@ -73,6 +73,9 @@ public class Placeholder extends PlaceholderExpansion implements Relational {
         if(params.startsWith("vanished")) {
             return user.isVanish() ? MessageUtil.smallText(" &b&lvanish&f") : "";
         }
+        if(params.startsWith("clan")) {
+            return MessageUtil.smallTextToColor(" &5"+clanMember.getTag().toUpperCase());
+        }
         if(params.startsWith("kd")) {
             if (user.getKill() == 0.0 || user.getDead() == 0.0) {
                 return "0.0";
@@ -90,26 +93,26 @@ public class Placeholder extends PlaceholderExpansion implements Relational {
 
     @Override
     public String onPlaceholderRequest(Player one, Player two, String params) {
-        if (one == null || two == null) return null;
-
+        if (one == null || two == null || !params.equalsIgnoreCase("clans")) {
+            return null;
+        }
         Clan clanOne = this.clanService.findClanByMember(one.getName());
         Clan clanTwo = this.clanService.findClanByMember(two.getName());
 
-        if (params.equalsIgnoreCase("clans")) {
-            if (clanOne != null && clanTwo != null) {
-                if (clanOne.equals(clanTwo)) {
-                    return MessageUtil.smallText(" &a&l" + clanOne.getTag().toUpperCase());
-                } else {
-                    return MessageUtil.smallText(" &e&l" + clanOne.getTag().toUpperCase());
-                }
-            } else if (clanOne != null) {
-                return MessageUtil.smallText(" &c&l" + clanOne.getTag().toUpperCase());
-            } else if (clanTwo != null) {
-                return MessageUtil.smallText("");
-            } else {
-                return "";
-            }
+        if (clanOne != null && clanTwo == null) {
+            return "";
         }
-        return "";
+        if (clanOne == null && clanTwo != null) {
+            return MessageUtil.smallTextToColor(" &c&l" + clanTwo.getTag());
+        }
+        if (clanOne == null) {
+            return "";
+        }
+        if (clanOne.equals(clanTwo)) {
+            return MessageUtil.smallTextToColor(" &a&l" + clanOne.getTag());
+        } else {
+            return MessageUtil.smallTextToColor(" &c&l" + clanTwo.getTag());
+        }
     }
+
 }
