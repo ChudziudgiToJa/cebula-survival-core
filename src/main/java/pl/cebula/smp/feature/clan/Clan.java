@@ -33,7 +33,7 @@ public class Clan implements Serializable, Identifiable<String> {
         this.ownerName = player.getName();
         this.tag = tag.toUpperCase();
 
-        this.location = new CuboidHearthLocation((int) player.getLocation().getX(),(int) player.getLocation().getY(),(int) player.getLocation().getZ() );
+        this.location = new CuboidHearthLocation((int) player.getLocation().getX(),(int) player.getLocation().getY() -1,(int) player.getLocation().getZ() );
         this.cuboidHearthValue = 200;
 
         this.memberArrayList = new ArrayList<>();
@@ -49,6 +49,10 @@ public class Clan implements Serializable, Identifiable<String> {
 
     public int getOnlineMembersCount() {
         int onlineCount = 0;
+        Player owner = Bukkit.getPlayer(this.ownerName);
+        if (owner != null) {
+            onlineCount ++;
+        }
 
         for (String playerName : memberArrayList) {
             Player player = Bukkit.getPlayer(playerName);

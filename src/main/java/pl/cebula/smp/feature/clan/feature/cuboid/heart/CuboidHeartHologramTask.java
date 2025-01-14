@@ -18,7 +18,7 @@ public class CuboidHeartHologramTask extends BukkitRunnable {
     public CuboidHeartHologramTask(SurvivalPlugin survivalPlugin, ClanService clanService) {
         this.survivalPlugin = survivalPlugin;
         this.clanService = clanService;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 50, 0);
+        this.runTaskTimerAsynchronously(this.survivalPlugin, 20*10, 20);
     }
 
     @Override

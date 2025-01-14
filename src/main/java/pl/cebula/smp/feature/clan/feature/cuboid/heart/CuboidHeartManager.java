@@ -13,14 +13,11 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import eu.decentsoftware.holograms.api.DHAPI;
-import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.io.File;
@@ -43,11 +40,7 @@ public class CuboidHeartManager {
         description.add(MessageUtil.smallTextToColor(clan.getTag()));
         description.add(MessageUtil.smallTextToColor("&a" + clan.getOnlineMembersCount() + "&8/&7" + (clan.getMemberArrayList().size() + 1) + " &f członków online"));
         description.add(MessageUtil.smallTextToColor("&fżycie &d" + clan.getCuboidHearthValue()));
-        Hologram hologram =  DHAPI.createHologram(clan.getTag(), new Location(Bukkit.getWorlds().getFirst(),clan.getLocation().getX() + 0.5,clan.getLocation().getY() + 2,clan.getLocation().getZ() + 0.5), false, description);
-        DHAPI.addHologramLine(hologram, new ItemBuilder(Material.PLAYER_HEAD)
-                .setHeadOwner("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjQ1NTlkNzU0NjRiMmU0MGE1MThlNGRlOGU2Y2YzMDg1ZjBhM2NhMGIxYjcwMTI2MTRjNGNkOTZmZWQ2MDM3OCJ9fX0=")
-                .build());
-        description.clear();
+        DHAPI.createHologram(clan.getTag(), new Location(Bukkit.getWorlds().getFirst(),clan.getLocation().getX() + 0.5,clan.getLocation().getY() + 2,clan.getLocation().getZ() + 0.5), false, description);
     }
 
 

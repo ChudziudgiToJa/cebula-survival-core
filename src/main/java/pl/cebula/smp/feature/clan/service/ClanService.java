@@ -109,7 +109,7 @@ public class ClanService {
         });
     }
 
-    public boolean isBlockOnClanTerritory(Location blockLocation) {
+    public boolean isLocationOnClanCuboid(Location blockLocation) {
         for (Clan clan : clanConcurrentHashMap.values()) {
             CuboidHearthLocation clanLocation = clan.getLocation();
             double minX = clanLocation.getX() - 20;

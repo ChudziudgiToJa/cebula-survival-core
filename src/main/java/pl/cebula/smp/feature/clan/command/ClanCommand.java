@@ -6,6 +6,7 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.optional.OptionalArg;
+import dev.rollczi.litecommands.annotations.permission.Permission;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -89,7 +90,7 @@ public class ClanCommand {
 
         double distanceFromOrigin = player.getLocation().distance(new Location(player.getWorld(), 0, 0, 0));
         if (distanceFromOrigin < 200) {
-            MessageUtil.sendMessage(player, "&cMusisz być co najmniej 200 kratek od współrzędnych 0,0,0.");
+            MessageUtil.sendMessage(player, "&cMusisz być co najmniej 200 kratek od spawna");
             return;
         }
 
@@ -97,8 +98,8 @@ public class ClanCommand {
         double playerX = player.getLocation().getX();
         double playerZ = player.getLocation().getZ();
 
-        if (Math.abs(playerX) >= worldBorderSize - 70 || Math.abs(playerZ) >= worldBorderSize - 70) {
-            MessageUtil.sendMessage(player, "&cNie możesz stworzyć klanu w pobliżu granicy świata. Musisz być co najmniej 70 kratek od granicy.");
+        if (Math.abs(playerX) >= worldBorderSize - 100 || Math.abs(playerZ) >= worldBorderSize - 100) {
+            MessageUtil.sendMessage(player, "&cNie możesz stworzyć klanu w pobliżu granicy świata. Musisz być co najmniej 100 kratek od granicy.");
             return;
         }
 
@@ -291,6 +292,7 @@ public class ClanCommand {
                 return;
             }
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
+            MessageUtil.sendMessage(player, "&fkordy: &a&l" + clan.getLocation().toString());
             MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
             MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
             return;
@@ -306,4 +308,11 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + targetClan.getOwnerName());
         MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
     }
+
+
+//    @Execute(name = "admin")
+//    @Permission("cebulasmp.command.clan.admin")
+//    void adminCommands(@Context Player player) {
+//
+//    }
 }

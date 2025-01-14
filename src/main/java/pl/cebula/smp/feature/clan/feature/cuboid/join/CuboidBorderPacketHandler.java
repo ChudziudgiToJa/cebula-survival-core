@@ -18,7 +18,7 @@ public class CuboidBorderPacketHandler {
             protocolManager.sendServerPacket(player, centerPacket);
 
             PacketContainer sizePacket = new PacketContainer(PacketType.Play.Server.SET_BORDER_SIZE);
-            sizePacket.getDoubles().write(0, 41.50);
+            sizePacket.getDoubles().write(0, 42.50);
             protocolManager.sendServerPacket(player, sizePacket);
         } catch (Exception e) {
             e.printStackTrace();
