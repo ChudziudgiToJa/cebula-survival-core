@@ -36,11 +36,12 @@ public class BackupController implements Listener {
         for (ItemStack itemStack : inventory) {
             if (itemStack != null) {
                 itemList.add(itemStack);
-                user.getPetDataArrayList().forEach(pet -> {
-                    itemList.add(PetUtil.createItemStackPet(pet.getPetData()));
-                });
             }
         }
+
+        user.getPetDataArrayList().forEach(pet -> {
+            itemList.add(PetUtil.createItemStackPet(pet.getPetData()));
+        });
 
         if (itemList.isEmpty()) return;
 
