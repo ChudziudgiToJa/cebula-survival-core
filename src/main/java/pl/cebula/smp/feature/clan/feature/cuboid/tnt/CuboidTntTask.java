@@ -6,47 +6,40 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.configuration.implementation.CuboidConfiguration;
+import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.util.MessageUtil;
-
-import java.time.LocalTime;
 
 public class CuboidTntTask extends BukkitRunnable {
 
     private final SurvivalPlugin survivalPlugin;
-    private final CuboidConfiguration cuboidConfiguration;
+    private final ClanConfiguration cuboidConfiguration;
 
-    public CuboidTntTask(SurvivalPlugin survivalPlugin, CuboidConfiguration cuboidConfiguration) {
+    public CuboidTntTask(SurvivalPlugin survivalPlugin, ClanConfiguration cuboidConfiguration) {
         this.survivalPlugin = survivalPlugin;
         this.cuboidConfiguration = cuboidConfiguration;
+        this.runTaskTimerAsynchronously(this.survivalPlugin, 20*60, 0);
     }
 
 
     @Override
     public void run() {
-        LocalTime now = LocalTime.now();
-        LocalTime startTime = LocalTime.parse(this.cuboidConfiguration.warStartTime);
-        LocalTime endTime = LocalTime.parse(this.cuboidConfiguration.warEndTime);
-
-        boolean isWarTime = now.isAfter(startTime) && now.isBefore(endTime);
-        this.cuboidConfiguration.war = isWarTime;
-
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (isWarTime) {
-                Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
-                    BossBar bossBar = CuboidTntBossBarManager.getBossBar(player.getUniqueId());
-                    if (bossBar == null) {
-                        bossBar = Bukkit.createBossBar(
-                                MessageUtil.smallTextToColor(this.cuboidConfiguration.bossBarMessage),
-                                BarColor.RED,
-                                BarStyle.SOLID
-                        );
-                        bossBar.addPlayer(player);
-                        CuboidTntBossBarManager.addBossBar(player.getUniqueId(), bossBar);
-                    }
-
-                    bossBar.setTitle(this.cuboidConfiguration.bossBarMessage);
-                });
+            if (this.cuboidConfiguration.war) {
+                if (CuboidTntBossBarManager.containsKeyBossBar(player.getUniqueId())) {
+                    Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
+                        BossBar bossBar = CuboidTntBossBarManager.getBossBar(player.getUniqueId());
+                        if (bossBar == null) {
+                            bossBar = Bukkit.createBossBar(
+                                    MessageUtil.smallTextToColor(this.cuboidConfiguration.bossBarMessage),
+                                    BarColor.RED,
+                                    BarStyle.SOLID
+                            );
+                            bossBar.addPlayer(player);
+                            CuboidTntBossBarManager.addBossBar(player.getUniqueId(), bossBar);
+                        }
+                        bossBar.setTitle(this.cuboidConfiguration.bossBarMessage);
+                    });
+                }
             } else {
                 CuboidTntBossBarManager.removeBossBar(player.getUniqueId());
             }

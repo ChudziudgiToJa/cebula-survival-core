@@ -20,4 +20,8 @@ public class CuboidTntBossBarManager {
     public static void removeBossBar(UUID uuid) {
         bossBars.remove(uuid);
     }
+
+    public static boolean containsKeyBossBar(UUID uuid) {
+        return  bossBars.containsKey(uuid);
+    }
 }

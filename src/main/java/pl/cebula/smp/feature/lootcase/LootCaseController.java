@@ -7,9 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import pl.cebula.smp.configuration.implementation.LootCaseConfiguration;
-import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 
 public class LootCaseController implements Listener {
 
@@ -38,7 +36,7 @@ public class LootCaseController implements Listener {
                 .orElse(null);
 
         if (matchingLootCase != null) {
-            this.lootCaseInventory.showPrewiew(player, matchingLootCase);
+            this.lootCaseInventory.showPreview(player, matchingLootCase);
             event.setCancelled(true);
         }
     }

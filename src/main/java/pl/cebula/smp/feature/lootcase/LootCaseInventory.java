@@ -1,8 +1,6 @@
 package pl.cebula.smp.feature.lootcase;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,10 +11,7 @@ import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class LootCaseInventory {
 
@@ -26,7 +21,7 @@ public class LootCaseInventory {
         this.survivalPlugin = survivalPlugin;
     }
 
-    public void showPrewiew(final Player player, final LootCase lootCase) {
+    public void showPreview(final Player player, final LootCase lootCase) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText(lootCase.getString()));
         Inventory inventory = simpleInventory.getInventory();
 
@@ -48,7 +43,10 @@ public class LootCaseInventory {
                         .setName("&akliknij aby otworzyć")
                         .build()));
 
-        for (LootCaseChance lootCaseChance : lootCase.getDropItems()) {
+        List<LootCaseChance> sortedLootItems = new ArrayList<>(lootCase.getDropItems());
+        sortedLootItems.sort(Comparator.comparingDouble(LootCaseChance::getChance));
+
+        for (LootCaseChance lootCaseChance : sortedLootItems) {
             ItemStack lootItemStack = ItemStackSerializable.readItemStack(lootCaseChance.getItemStackInString());
             ItemMeta itemMeta = lootItemStack.getItemMeta();
 
@@ -64,7 +62,6 @@ public class LootCaseInventory {
             inventory.addItem(lootItemStack);
         }
 
-
         simpleInventory.click(event -> {
             event.setCancelled(true);
 
@@ -76,7 +73,6 @@ public class LootCaseInventory {
                     player.closeInventory();
                     return;
                 }
-
 
                 for (int i = 0; i < player.getInventory().getSize(); i++) {
                     ItemStack slotItem = player.getInventory().getItem(i);
@@ -101,5 +97,4 @@ public class LootCaseInventory {
         });
         player.openInventory(inventory);
     }
-
 }

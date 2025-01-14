@@ -31,7 +31,7 @@ import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartHologramTask;
-import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
+import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderController;
 import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.CuboidController;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarTak;
@@ -109,7 +109,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final VanishHandler vanishHandler = new VanishHandler();
     public Economy economy;
     private PluginConfiguration pluginConfiguration;
-    private CuboidConfiguration cuboidConfiguration;
+    private ClanConfiguration clanConfiguration;
     private LootCaseConfiguration lootCaseConfiguration;
     private KitConfiguration kitConfiguration;
     private ItemShopConfiguration itemShopConfiguration;
@@ -157,7 +157,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.itemShopConfiguration = configService.create(ItemShopConfiguration.class, new File(dataFolder, "itemshop.yml"));
         this.craftingConfiguration = configService.create(CraftingConfiguration.class, new File(dataFolder, "crafting.yml"));
         this.petconfiguration = configService.create(PetConfiguration.class, new File(dataFolder, "pet.yml"));
-        this.cuboidConfiguration = configService.create(CuboidConfiguration.class, new File(dataFolder, "klan.yml"));
+        this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
 
 
 
@@ -231,7 +231,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
-                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService, this.protocolManager),
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService, this.clanConfiguration),
                         new VanishCommand(this.userService, this.vanishHandler, this),
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
                         new CraftingCommand(craftingInventory),
@@ -260,7 +260,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
                 new CuboidController(this.clanService),
-                new CuboidHeartController(this.clanService, this)
+                new CuboidHeartController(this.clanService, this),
+                new CuboidBorderController(this.clanService, this.protocolManager, this)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
@@ -278,7 +279,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new CuboidJoinQuitTask(this.clanService, this);
         new CuboidBossBarTak(this.clanService, this);
         new CuboidHeartHologramTask(this, this.clanService);
-        new CuboidTntTask(this, this.cuboidConfiguration);
+        new CuboidTntTask(this, this.clanConfiguration);
     }
 
     @Override

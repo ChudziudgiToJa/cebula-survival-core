@@ -16,6 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.units.qual.A;
+import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
@@ -34,14 +35,14 @@ public class ClanCommand {
     private final ClanService clanService;
     private final ClanDeleteInventory clanDeleteInventory;
     private final ClanInviteService clanInviteService;
-    private final ProtocolManager protocolManager;
+    private final ClanConfiguration clanConfiguration;
 
-    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ProtocolManager protocolManager) {
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ClanConfiguration clanConfiguration) {
         this.userService = userService;
         this.clanService = clanService;
         this.clanDeleteInventory = clanDeleteInventory;
         this.clanInviteService = clanInviteService;
-        this.protocolManager = protocolManager;
+        this.clanConfiguration = clanConfiguration;
     }
 
 
@@ -310,9 +311,10 @@ public class ClanCommand {
     }
 
 
-//    @Execute(name = "admin")
-//    @Permission("cebulasmp.command.clan.admin")
-//    void adminCommands(@Context Player player) {
-//
-//    }
+    @Execute(name = "admin war")
+    @Permission("cebulasmp.command.clan.admin")
+    void adminWar(@Context Player player,@Arg boolean b) {
+        this.clanConfiguration.setWar(b);
+        MessageUtil.sendMessage(player, "&fUstawiono walke na: " + (b ? "&awłączoną" : "&cwyłączoną"));
+    }
 }
