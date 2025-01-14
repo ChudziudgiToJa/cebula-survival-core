@@ -1,5 +1,6 @@
 package pl.cebula.smp.feature.clan.command;
 
+import com.comphenix.protocol.ProtocolManager;
 import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.checkerframework.checker.units.qual.A;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.manager.ClanManager;
@@ -31,12 +33,14 @@ public class ClanCommand {
     private final ClanService clanService;
     private final ClanDeleteInventory clanDeleteInventory;
     private final ClanInviteService clanInviteService;
+    private final ProtocolManager protocolManager;
 
-    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService) {
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ProtocolManager protocolManager) {
         this.userService = userService;
         this.clanService = clanService;
         this.clanDeleteInventory = clanDeleteInventory;
         this.clanInviteService = clanInviteService;
+        this.protocolManager = protocolManager;
     }
 
 
@@ -113,7 +117,9 @@ public class ClanCommand {
         }
 
         user.setMoney(user.getMoney() - 3500);
-        this.clanService.createClan(new Clan(player, tag.toLowerCase()));
+        Clan newClan = new Clan(player, tag.toLowerCase());
+        this.clanService.createClan(newClan);
+        CuboidHeartManager.createHearth(newClan);
         Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
     }
 
@@ -128,6 +134,39 @@ public class ClanCommand {
             return;
         }
         this.clanDeleteInventory.showDeleteInventory(player, clan);
+    }
+
+    @Execute(name = "dołącz")
+    void acceptClanInvite(@Context Player player, @Arg String targetClan) {
+        Clan playerClan = this.clanService.findClanByOwner(player.getName());
+        if (playerClan != null) {
+            MessageUtil.sendMessage(player, "&cPosiadasz już klan.");
+            return;
+        }
+        Clan clan = this.clanService.findClanByTag(targetClan);
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cTaki klan nie istnieje.");
+            return;
+        }
+        if (!this.clanInviteService.clanInviteConcurrentHashMap.containsKey(clan) ||
+                !this.clanInviteService.clanInviteConcurrentHashMap.get(clan).equals(player.getName())) {
+            MessageUtil.sendMessage(player, "&cNie masz zaproszenia do tego klanu.");
+            return;
+        }
+
+        if (clan.getMemberArrayList().size() >= 8) {
+            MessageUtil.sendMessage(player, "&cKlan osiągnął maksymalny limit graczy (8).");
+            return;
+        }
+
+        clan.getMemberArrayList().add(player.getName());
+        this.clanInviteService.clanInviteConcurrentHashMap.remove(clan, player.getName());
+        MessageUtil.sendMessage(player, "&aPomyślnie dołączyłeś do klanu " + clan.getTag() + ".");
+        clan.getMemberArrayList().forEach(s -> {
+            Player clanMember = Bukkit.getPlayer(s);
+            if (clanMember == null) return;
+            MessageUtil.sendMessage(clanMember, "&f" + player.getName() + " &adołączył do klanu.");
+        });
     }
 
     @Execute(name = "zaproś")
@@ -151,6 +190,11 @@ public class ClanCommand {
             return;
         }
 
+        if (clan.getMemberArrayList().size() >= 8) {
+            MessageUtil.sendMessage(player, "&cKlan osiągnął maksymalny limit graczy (8).");
+            return;
+        }
+
         this.clanInviteService.inviteToClan(clan, target.getName());
         MessageUtil.sendMessage(player, "&aZaproszono do klanu: &f" + target.getName());
 
@@ -158,37 +202,11 @@ public class ClanCommand {
                 .clickEvent(ClickEvent.runCommand("/klan dołącz " + clan.getTag()));
         target.sendMessage(targetMessage1);
 
-        Component targetMessage2 = Component.text("      §7§npo 30s zaproszenie wygasa! &b[klik]")
+        Component targetMessage2 = Component.text("      §7§npo 30s zaproszenie wygasa! §b[klik]")
                 .clickEvent(ClickEvent.runCommand("/klan dołącz " + clan.getTag()));
         target.sendMessage(targetMessage2);
     }
 
-    @Execute(name = "dołącz")
-    void acceptClanInvite(@Context Player player, @Arg String targetClan) {
-        Clan playerClan = this.clanService.findClanByOwner(player.getName());
-        if (playerClan != null) {
-            MessageUtil.sendMessage(player, "&cPosiadasz już klan.");
-            return;
-        }
-        Clan clan = this.clanService.findClanByTag(targetClan);
-        if (clan == null) {
-            MessageUtil.sendMessage(player, "&cTaki klan nie istnieje.");
-            return;
-        }
-        if (!this.clanInviteService.clanInviteConcurrentHashMap.containsKey(clan) ||
-                !this.clanInviteService.clanInviteConcurrentHashMap.get(clan).equals(player.getName())) {
-            MessageUtil.sendMessage(player, "&cNie masz zaproszenia do tego klanu.");
-            return;
-        }
-        clan.getMemberArrayList().add(player.getName());
-        this.clanInviteService.clanInviteConcurrentHashMap.remove(clan, player.getName());
-        MessageUtil.sendMessage(player, "&aPomyślnie dołączyłeś do klanu " + clan.getTag() + ".");
-        clan.getMemberArrayList().forEach(s -> {
-            Player clanMember = Bukkit.getPlayer(s);
-            if (clanMember == null) return;
-            MessageUtil.sendMessage(clanMember, "&f" + player.getName() + " &adołączył do klanu.");
-        });
-    }
 
 
     @Execute(name = "opuść")

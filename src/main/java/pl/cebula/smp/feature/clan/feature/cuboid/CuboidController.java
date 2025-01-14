@@ -1,6 +1,5 @@
 package pl.cebula.smp.feature.clan.feature.cuboid;
 
-import com.sk89q.worldguard.bukkit.event.block.PlaceBlockEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

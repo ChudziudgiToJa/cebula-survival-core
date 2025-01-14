@@ -1,7 +1,6 @@
 package pl.cebula.smp.feature.clan.feature.cuboid.bossbar;
 
 import org.bukkit.boss.BossBar;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;

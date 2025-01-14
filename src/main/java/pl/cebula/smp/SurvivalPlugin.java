@@ -29,6 +29,9 @@ import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartController;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartHologramTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
 import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.CuboidController;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarTak;
@@ -225,7 +228,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new MoneyCommand(this.userService),
                         new StatisticCommand(statisticInventory),
                         new PayCommand(this.userService),
-                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService),
+                        new ClanCommand(this.userService, this.clanService, clanDeleteInventory, this.clanInviteService, this.protocolManager),
                         new VanishCommand(this.userService, this.vanishHandler, this),
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
                         new CraftingCommand(craftingInventory),
@@ -253,7 +256,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new PetController(this.userService, this.petconfiguration, this),
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
-                new CuboidController(this.clanService)
+                new CuboidController(this.clanService),
+                new CuboidHeartController(this.clanService, this)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
@@ -270,6 +274,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new CuboidBorderTask(this.clanService, this, this.protocolManager);
         new CuboidJoinQuitTask(this.clanService, this);
         new CuboidBossBarTak(this.clanService, this);
+        new CuboidHeartHologramTask(this, this.clanService);
     }
 
     @Override

@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.cuboid.CuboidPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 
 public class CuboidBorderTask extends BukkitRunnable {
@@ -26,10 +25,10 @@ public class CuboidBorderTask extends BukkitRunnable {
             if (clanService.isBlockOnClanTerritory(playerLocation)) {
                 Clan clan = clanService.findClanByLocation(playerLocation);
                 if (clan != null) {
-                    CuboidPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
+                    CuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
                 }
             } else {
-                CuboidPacketHandler.sendBorderPacket(player, player.getWorld() ,this.protocolManager);
+                CuboidBorderPacketHandler.sendBorderPacket(player, player.getWorld() ,this.protocolManager);
             }
         });
     }

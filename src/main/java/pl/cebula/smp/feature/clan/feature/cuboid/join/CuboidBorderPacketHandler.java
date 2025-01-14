@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.clan.feature.cuboid;
+package pl.cebula.smp.feature.clan.feature.cuboid.join;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
 
-public class CuboidPacketHandler {
+public class CuboidBorderPacketHandler {
 
     public static void sendBorderPacket(Player player, Clan clan, ProtocolManager protocolManager) {
         try {

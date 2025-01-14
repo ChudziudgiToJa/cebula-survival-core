@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import pl.cebula.smp.database.UpdateType;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.cuboid.CuboidHearthLocation;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 
 import java.util.Collection;
@@ -20,6 +21,7 @@ public class ClanService {
 
     public void addClan(Clan clan) {
         this.clanConcurrentHashMap.put(clan.getId(), clan);
+        CuboidHeartManager.createHolo(clan);
     }
 
     public void createClan(Clan clan) {

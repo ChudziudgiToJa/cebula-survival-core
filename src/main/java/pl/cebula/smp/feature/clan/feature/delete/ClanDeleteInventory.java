@@ -1,5 +1,6 @@
 package pl.cebula.smp.feature.clan.feature.delete;
 
+import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -63,6 +64,7 @@ public class ClanDeleteInventory {
             }
 
             if (Arrays.asList(glassGreenSlots).contains(event.getSlot())) {
+                DHAPI.removeHologram(clan.getTag());
                 this.clanService.removeClan(clan);
                 Bukkit.getOnlinePlayers().forEach(player1 -> {
                     ClanArmorHandler.refreshArmorPacket(player, player1);
