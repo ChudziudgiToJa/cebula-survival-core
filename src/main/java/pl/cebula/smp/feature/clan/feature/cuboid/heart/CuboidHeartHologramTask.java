@@ -12,13 +12,11 @@ import java.util.List;
 
 public class CuboidHeartHologramTask extends BukkitRunnable {
 
-    private final SurvivalPlugin survivalPlugin;
     private final ClanService clanService;
 
     public CuboidHeartHologramTask(SurvivalPlugin survivalPlugin, ClanService clanService) {
-        this.survivalPlugin = survivalPlugin;
         this.clanService = clanService;
-        this.runTaskTimerAsynchronously(this.survivalPlugin, 20*10, 20);
+        this.runTaskTimerAsynchronously(survivalPlugin, 20*30, 20);
     }
 
     @Override

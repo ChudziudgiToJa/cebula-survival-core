@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.clan.feature.cuboid.join;
+package pl.cebula.smp.feature.clan.feature.cuboid.visual;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;

@@ -8,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 
 public class CuboidBossBarController implements Listener {

@@ -5,16 +5,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
+
+
+import java.util.Iterator;
 
 public class CuboidHeartController implements Listener {
 
@@ -123,6 +129,21 @@ public class CuboidHeartController implements Listener {
         if (isNearClanHeart(blockLocation, clanHeart)) {
             MessageUtil.sendActionbar(player, "&cNie możesz niszczyć bloków w pobliżu serca klanu!");
             event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent event) {
+        Clan clan = this.clanService.findClanByLocation(event.getLocation());
+        if (clan == null) return;
+
+        Iterator<Block> iterator = event.blockList().iterator();
+        while (iterator.hasNext()) {
+            Location blockLocation = iterator.next().getLocation();
+            if (isNearClanHeart(blockLocation, new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ()))) {
+                iterator.remove();
+            }
         }
     }
 

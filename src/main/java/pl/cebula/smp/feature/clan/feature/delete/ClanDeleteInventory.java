@@ -12,7 +12,7 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarManager;
-import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderPacketHandler;
+import pl.cebula.smp.feature.clan.feature.cuboid.visual.CuboidBorderPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;

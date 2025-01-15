@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.clan.feature.cuboid.join;
+package pl.cebula.smp.feature.clan.feature.cuboid.visual;
 
 import com.comphenix.protocol.ProtocolManager;
 import org.bukkit.Bukkit;
@@ -26,6 +26,7 @@ public class CuboidBorderController implements Listener {
     public void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         Clan clan = this.clanService.findClanByLocation(player.getLocation());
+        if (clan == null) return;
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.survivalPlugin, () -> {
             if (this.clanService.isLocationOnClanCuboid(player.getLocation())) {
                 CuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
