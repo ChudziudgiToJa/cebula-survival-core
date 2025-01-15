@@ -125,8 +125,6 @@ public class ClanCommand {
         Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
     }
 
-
-
     @Execute(name = "usuń")
     void delete(@Context Player player) {
         Clan clan = this.clanService.findClanByOwner(player.getName());
@@ -293,7 +291,7 @@ public class ClanCommand {
                 return;
             }
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
-            MessageUtil.sendMessage(player, "&fkordy: &a&l" + clan.getLocation().toString());
+            MessageUtil.sendMessage(player, "&fkordy: &7 x" + clan.getLocation().getX() + " z" + clan.getLocation().getZ());
             MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
             MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
             return;

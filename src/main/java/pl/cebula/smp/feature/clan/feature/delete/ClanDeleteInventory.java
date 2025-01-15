@@ -1,14 +1,18 @@
 package pl.cebula.smp.feature.clan.feature.delete;
 
+import com.comphenix.protocol.ProtocolManager;
 import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarManager;
+import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
@@ -20,10 +24,12 @@ public class ClanDeleteInventory {
 
     private final SurvivalPlugin survivalPlugin;
     private final ClanService clanService;
+    private final ProtocolManager protocolManager;
 
-    public ClanDeleteInventory(SurvivalPlugin survivalPlugin, ClanService clanService) {
+    public ClanDeleteInventory(SurvivalPlugin survivalPlugin, ClanService clanService, ProtocolManager protocolManager) {
         this.survivalPlugin = survivalPlugin;
         this.clanService = clanService;
+        this.protocolManager = protocolManager;
     }
 
     public void showDeleteInventory(final Player player, final Clan clan) {
@@ -31,15 +37,15 @@ public class ClanDeleteInventory {
         Inventory inventory = simpleInventory.getInventory();
 
         Integer[] glassGreenSlots = new Integer[]{
-                1,2,0,
-                9,10,11,
-                18,19,20
+                1, 2, 0,
+                9, 10, 11,
+                18, 19, 20
         };
 
         Integer[] glassRedSlots = new Integer[]{
-                6,7,8,
-                15,16,17,
-                24,25,26
+                6, 7, 8,
+                15, 16, 17,
+                24, 25, 26
         };
 
         Arrays.stream(glassGreenSlots).forEach(slot -> inventory.setItem(slot,
@@ -59,7 +65,7 @@ public class ClanDeleteInventory {
 
             if (Arrays.asList(glassRedSlots).contains(event.getSlot())) {
                 player.closeInventory();
-                player.playSound(player, Sound.BLOCK_BARREL_CLOSE, 5 ,5);
+                player.playSound(player, Sound.BLOCK_BARREL_CLOSE, 5, 5);
                 return;
             }
 
@@ -69,9 +75,15 @@ public class ClanDeleteInventory {
                 Bukkit.getOnlinePlayers().forEach(player1 -> {
                     ClanArmorHandler.refreshArmorPacket(player, player1);
                     ClanArmorHandler.refreshArmorPacket(player1, player);
+
+                    BossBar bossBar = CuboidBossBarManager.getBossBar(player1.getUniqueId());
+                    if (bossBar == null) return;
+                    bossBar.removePlayer(player1);
+                    CuboidBossBarManager.removeBossBar(player1.getUniqueId());
+                    CuboidBorderPacketHandler.sendBorderPacket(player1, player.getWorld(), this.protocolManager);
                 });
                 player.closeInventory();
-                MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20,50,20);
+                MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20, 50, 20);
             }
         });
 

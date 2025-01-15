@@ -70,6 +70,7 @@ public class LootCaseInventory {
             if (Arrays.asList(openCaseItem).contains(event.getSlot())) {
                 if (!player.getInventory().containsAtLeast(ItemStackSerializable.readItemStack(lootCase.getKeyItemStack()), 1)) {
                     MessageUtil.sendTitle(player, "", "&cNie posiadasz klucza zakup pod &7/itemshop", 20, 50, 20);
+                    player.setVelocity(player.getLocation().toVector().subtract(lootCase.getLocation().toVector()).normalize().multiply(1.5));
                     player.closeInventory();
                     return;
                 }

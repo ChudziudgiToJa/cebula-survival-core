@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import pl.cebula.smp.SurvivalPlugin;
+import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
@@ -19,10 +20,12 @@ public class CuboidHeartController implements Listener {
 
     private final ClanService clanService;
     private final SurvivalPlugin survivalPlugin;
+    private final ClanConfiguration clanConfiguration;
 
-    public CuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin) {
+    public CuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
         this.clanService = clanService;
         this.survivalPlugin = survivalPlugin;
+        this.clanConfiguration = clanConfiguration;
     }
 
 
@@ -37,45 +40,57 @@ public class CuboidHeartController implements Listener {
             return;
         }
 
-        if (event.getBlock().getType().equals(Material.BEE_NEST) && clan.equals(targetClan)) {
-            event.setCancelled(true);
-            MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
-            return;
-        }
-
-        if (!event.getBlock().getType().equals(Material.BEE_NEST)) return;
-
-        if (clan == null) {
-            MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu bez własnego klanu.");
-            event.setCancelled(true);
-            return;
-        }
-
-        if (targetClan.getCuboidHearthValue() > 1) {
-            targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
-            event.setCancelled(true);
-
-            blockLocation.getBlock().setType(Material.BEDROCK);
-            Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
-                if (blockLocation.getBlock().getType() == Material.BEDROCK) {
-                    blockLocation.getBlock().setType(Material.BEE_NEST);
-                }
-            }, 20);
-
-            MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
-            return;
-        }
-
-        DHAPI.removeHologram(targetClan.getTag());
-        this.clanService.removeClan(targetClan);
-        Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
-        player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
-
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            if (targetClan.getMemberArrayList().contains(online.getName())) {
-                MessageUtil.sendTitle(online, "", "&ctwój klan został podbity", 20, 50, 20);
+        if (event.getBlock().getType().equals(Material.BEE_NEST)) {
+            if (clan == null) {
+                MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu bez własnego klanu.");
+                event.setCancelled(true);
+                return;
             }
-            MessageUtil.sendMessage(online, "&4⚠ &fklan: &a&l" + clan.getTag() + " &fpodbił klan: &c&l" + targetClan.getTag());
+
+            if (clan.equals(targetClan)) {
+                event.setCancelled(true);
+                MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
+                return;
+            }
+
+            if (!this.clanConfiguration.isWar()) {
+                MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu gdy nie ma włączonych wojen!");
+                event.setCancelled(true);
+                return;
+            }
+
+            if (targetClan.getCuboidHearthValue() > 1) {
+                targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
+                event.setCancelled(true);
+
+                blockLocation.getBlock().setType(Material.BEDROCK);
+                Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
+                    if (blockLocation.getBlock().getType() == Material.BEDROCK) {
+                        blockLocation.getBlock().setType(Material.BEE_NEST);
+                    }
+                }, 20);
+
+                clan.getMemberArrayList().forEach(string -> {
+                    Player target = Bukkit.getPlayer(string);
+                    if (target != null) {
+                        MessageUtil.sendMessage(target, "&4⚠ &4&lUWAGA &cktoś atakuje twoje serce klanu!");
+                    }
+                });
+
+                MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
+            } else {
+                DHAPI.removeHologram(targetClan.getTag());
+                this.clanService.removeClan(targetClan);
+                Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
+                player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
+
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (targetClan.getMemberArrayList().contains(online.getName())) {
+                        MessageUtil.sendTitle(online, "", "&ctwój klan został podbity", 20, 50, 20);
+                    }
+                    MessageUtil.sendMessage(online, "&4⚠ &fklan: &a&l" + clan.getTag() + " &fpodbił klan: &c&l" + targetClan.getTag());
+                }
+            }
         }
     }
 

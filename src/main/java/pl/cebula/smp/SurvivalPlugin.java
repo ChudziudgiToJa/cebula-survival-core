@@ -29,6 +29,7 @@ import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartHologramTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.join.CuboidBorderController;
@@ -191,7 +192,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         StatisticInventory statisticInventory = new StatisticInventory(this, this.userService);
 
         //Clan
-        ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService);
+        ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService, this.protocolManager);
 
         //Custom crafting
         CraftingManager craftingManager = new CraftingManager(this.craftingConfiguration);
@@ -260,8 +261,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
                 new CuboidController(this.clanService),
-                new CuboidHeartController(this.clanService, this),
-                new CuboidBorderController(this.clanService, this.protocolManager, this)
+                new CuboidHeartController(this.clanService, this, this.clanConfiguration),
+                new CuboidBorderController(this.clanService, this.protocolManager, this),
+                new CuboidBossBarController(this.clanService, this.protocolManager, this)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
@@ -271,7 +273,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
         new AfkZoneTask(this, afkZoneManager, this.lootCaseConfiguration, userService);
-        new LootCaseTask(this, this.lootCaseConfiguration);
         new ClanArmorTask(this, this.clanService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
