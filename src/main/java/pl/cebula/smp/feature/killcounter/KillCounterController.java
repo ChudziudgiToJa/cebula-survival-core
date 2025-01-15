@@ -54,7 +54,8 @@ public class KillCounterController implements Listener {
             case 2 -> MessageUtil.sendTitle(killer, "&b&lDouble Kill", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
             case 3 -> MessageUtil.sendTitle(killer, "&b&lTriple kill", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
             case 4 -> MessageUtil.sendTitle(killer, "&b&lQuadra kill", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
-            default -> MessageUtil.sendTitle(killer, "&b&lPENTA KILL", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
+            case 5 -> MessageUtil.sendTitle(killer, "&b&lPenta kill", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
+            default -> MessageUtil.sendTitle(killer, "&b&lmulti KILL", "&azabiłeś/aś gracza &f" + player.getName(), 20, 50, 20);
         }
         player.getLocation().getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f);
     }
