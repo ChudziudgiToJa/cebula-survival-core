@@ -27,13 +27,19 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
         this.clanService.getAllClans().forEach(clan -> {
             Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
             location.getWorld().getPlayers().stream()
-                    .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(location) < 80)
+                    .filter(nearbyPlayer -> {
+                        double dx = nearbyPlayer.getLocation().getX() - location.getX();
+                        double dz = nearbyPlayer.getLocation().getZ() - location.getZ();
+                        return Math.sqrt(dx * dx + dz * dz) < 80;
+                    })
                     .forEach(player -> {
                         if (clanService.isLocationOnClanCuboid(player.getLocation())) {
                             Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
                                 if (clan.getOwnerName().equals(player.getName()) || clan.getMemberArrayList().contains(player.getName())) {
                                     Location locationToBossBar = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), player.getLocation().getY(), clan.getLocation().getZ());
-                                    double distance = player.getLocation().distance(locationToBossBar);
+                                    double dx = player.getLocation().getX() - locationToBossBar.getX();
+                                    double dz = player.getLocation().getZ() - locationToBossBar.getZ();
+                                    double distance = Math.sqrt(dx * dx + dz * dz);
                                     double progress = Math.max(0, 1 - (distance / 20.0));
                                     String bossBarMessage = String.format(
                                             "§aᴊᴇsᴛᴇś ɴᴀ ᴛᴇʀᴇɴɪᴇ sᴡᴏᴊᴇɢᴏ ᴋʟᴀɴᴜ §8| §a§l%s §7(%.1f ᴍ ᴏᴅ sᴇʀᴄᴀ ᴋʟᴀɴᴜ)",
@@ -83,4 +89,5 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
                     });
         });
     }
+
 }

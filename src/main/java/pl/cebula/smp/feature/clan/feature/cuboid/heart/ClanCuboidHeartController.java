@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
 
@@ -109,7 +110,7 @@ public class ClanCuboidHeartController implements Listener {
         if (clan == null) return;
 
         Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
-        if (isNearClanHeart(blockLocation, clanHeart)) {
+        if (ClanManager.isNearClanHeart(blockLocation, clanHeart)) {
             MessageUtil.sendActionbar(player, "&cNie możesz stawiać bloków w pobliżu serca klanu!");
             event.setCancelled(true);
         }
@@ -125,7 +126,7 @@ public class ClanCuboidHeartController implements Listener {
         if (clan == null) return;
 
         Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
-        if (isNearClanHeart(blockLocation, clanHeart)) {
+        if (ClanManager.isNearClanHeart(blockLocation, clanHeart)) {
             MessageUtil.sendActionbar(player, "&cNie możesz niszczyć bloków w pobliżu serca klanu!");
             event.setCancelled(true);
         }
@@ -140,18 +141,10 @@ public class ClanCuboidHeartController implements Listener {
         Iterator<Block> iterator = event.blockList().iterator();
         while (iterator.hasNext()) {
             Location blockLocation = iterator.next().getLocation();
-            if (isNearClanHeart(blockLocation, new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ()))) {
+            if (ClanManager.isNearClanHeart(blockLocation, new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ()))) {
                 iterator.remove();
             }
         }
-    }
-
-    private boolean isNearClanHeart(Location blockLocation, Location clanHeart) {
-        if (!blockLocation.getWorld().equals(clanHeart.getWorld())) return false;
-        int dx = Math.abs(blockLocation.getBlockX() - clanHeart.getBlockX());
-        int dy = Math.abs(blockLocation.getBlockY() - clanHeart.getBlockY());
-        int dz = Math.abs(blockLocation.getBlockZ() - clanHeart.getBlockZ());
-        return dx <= 3 && dy <= 2 && dz <= 3;
     }
 }
 

@@ -1,6 +1,7 @@
 package pl.cebula.smp.feature.clan.manager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
@@ -46,5 +47,13 @@ public class ClanManager {
         }
 
         return formattedNames;
+    }
+
+    public static boolean isNearClanHeart(Location blockLocation, Location clanHeart) {
+        if (!blockLocation.getWorld().equals(clanHeart.getWorld())) return false;
+        int dx = Math.abs(blockLocation.getBlockX() - clanHeart.getBlockX());
+        int dy = Math.abs(blockLocation.getBlockY() - clanHeart.getBlockY());
+        int dz = Math.abs(blockLocation.getBlockZ() - clanHeart.getBlockZ());
+        return dx <= 3 && dy <= 2 && dz <= 3;
     }
 }
