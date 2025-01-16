@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.clan.Clan;
 
-public class CuboidBorderPacketHandler {
+public class ClanCuboidBorderPacketHandler {
 
     public static void sendBorderPacket(Player player, Clan clan, ProtocolManager protocolManager) {
         try {

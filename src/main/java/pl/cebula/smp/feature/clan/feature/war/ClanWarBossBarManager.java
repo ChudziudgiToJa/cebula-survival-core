@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.clan.feature.cuboid.bossbar;
+package pl.cebula.smp.feature.clan.feature.war;
 
 import org.bukkit.boss.BossBar;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CuboidBossBarManager {
+public class ClanWarBossBarManager {
     private static final Map<UUID, BossBar> bossBars = new HashMap<>();
 
     public static BossBar getBossBar(UUID uuid) {

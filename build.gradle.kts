@@ -29,7 +29,6 @@ repositories {
     maven("https://maven.citizensnpcs.co/repo")
     maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
     maven("https://repo.dmulloy2.net/repository/public/")
-    maven("https://repo.piotrulla.dev/releases")
 }
 
 dependencies {
@@ -39,6 +38,7 @@ dependencies {
     implementation("com.eternalcode:multification-bukkit:${eternalcodeVersion}")
     implementation("com.eternalcode:multification-okaeri:${eternalcodeVersion}")
     implementation("com.eternalcode:eternalcode-commons-adventure:${eternalcodeVersion}")
+    compileOnly("com.eternalcode:eternalcore-api:1.5.1")
 
 
     implementation("dev.rollczi:litecommands-bukkit:3.4.3")
@@ -76,9 +76,6 @@ dependencies {
     //Protocolib
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 
-    // TAB
-    compileOnly("com.github.NEZNAMY", "TAB-API", "5.0.3")
-
     implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -88,7 +85,7 @@ bukkit {
     version = "1.0-SNAPSHOT"
     apiVersion = "1.21"
     author = "Chudziudgi"
-    softDepend = listOf("PlaceholderAPI", "Citizens", "DecentHolograms", "Tab")
+    softDepend = listOf("PlaceholderAPI", "Citizens", "DecentHolograms")
     depend = listOf("Vault", "ProtocolLib")
     prefix = "cebulasmp-survival"
 }

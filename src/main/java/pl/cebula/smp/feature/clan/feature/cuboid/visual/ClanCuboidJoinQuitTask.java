@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.UUID;
 
 
-public class CuboidJoinQuitTask extends BukkitRunnable {
+public class ClanCuboidJoinQuitTask extends BukkitRunnable {
     private final ClanService clanService;
     private final HashMap<UUID, Boolean> map;
 
-    public CuboidJoinQuitTask(ClanService clanService, SurvivalPlugin survivalPlugin) {
+    public ClanCuboidJoinQuitTask(ClanService clanService, SurvivalPlugin survivalPlugin) {
         this.clanService = clanService;
         this.map = new HashMap<>();
         this.runTaskTimerAsynchronously(survivalPlugin, 20, 0);

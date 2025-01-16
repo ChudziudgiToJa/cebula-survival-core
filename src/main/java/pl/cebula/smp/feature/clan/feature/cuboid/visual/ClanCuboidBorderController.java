@@ -10,13 +10,13 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 
-public class CuboidBorderController implements Listener {
+public class ClanCuboidBorderController implements Listener {
 
     private final ClanService clanService;
     private final ProtocolManager protocolManager;
     private final SurvivalPlugin survivalPlugin;
 
-    public CuboidBorderController(ClanService clanService, ProtocolManager protocolManager, SurvivalPlugin survivalPlugin) {
+    public ClanCuboidBorderController(ClanService clanService, ProtocolManager protocolManager, SurvivalPlugin survivalPlugin) {
         this.clanService = clanService;
         this.protocolManager = protocolManager;
         this.survivalPlugin = survivalPlugin;
@@ -29,9 +29,9 @@ public class CuboidBorderController implements Listener {
         if (clan == null) return;
         Bukkit.getScheduler().runTaskLaterAsynchronously(this.survivalPlugin, () -> {
             if (this.clanService.isLocationOnClanCuboid(player.getLocation())) {
-                CuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
+                ClanCuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
             } else {
-                CuboidBorderPacketHandler.sendBorderPacket(player, player.getWorld(), this.protocolManager);
+                ClanCuboidBorderPacketHandler.sendBorderPacket(player, player.getWorld(), this.protocolManager);
             }
         }, 1L);
     }

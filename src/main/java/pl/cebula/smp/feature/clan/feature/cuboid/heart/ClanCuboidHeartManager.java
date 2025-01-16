@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CuboidHeartManager {
+public class ClanCuboidHeartManager {
 
     public static void createHearth(final Clan clan) {
         Location clanHeart = new Location(Bukkit.getWorlds().getFirst(), (int) clan.getLocation().getX(), (int) clan.getLocation().getY(), (int) clan.getLocation().getZ());

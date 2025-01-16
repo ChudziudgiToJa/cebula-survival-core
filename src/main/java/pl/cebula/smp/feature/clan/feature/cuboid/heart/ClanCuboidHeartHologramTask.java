@@ -10,11 +10,11 @@ import pl.cebula.smp.util.MessageUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CuboidHeartHologramTask extends BukkitRunnable {
+public class ClanCuboidHeartHologramTask extends BukkitRunnable {
 
     private final ClanService clanService;
 
-    public CuboidHeartHologramTask(SurvivalPlugin survivalPlugin, ClanService clanService) {
+    public ClanCuboidHeartHologramTask(SurvivalPlugin survivalPlugin, ClanService clanService) {
         this.clanService = clanService;
         this.runTaskTimerAsynchronously(survivalPlugin, 20*30, 20);
     }

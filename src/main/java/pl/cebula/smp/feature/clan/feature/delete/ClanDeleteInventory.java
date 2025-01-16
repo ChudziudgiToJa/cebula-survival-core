@@ -11,8 +11,8 @@ import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
-import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.CuboidBossBarManager;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.CuboidBorderPacketHandler;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
+import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
@@ -76,11 +76,11 @@ public class ClanDeleteInventory {
                     ClanArmorHandler.refreshArmorPacket(player, player1);
                     ClanArmorHandler.refreshArmorPacket(player1, player);
 
-                    BossBar bossBar = CuboidBossBarManager.getBossBar(player1.getUniqueId());
+                    BossBar bossBar = ClanCuboidBossBarManager.getBossBar(player1.getUniqueId());
                     if (bossBar == null) return;
                     bossBar.removePlayer(player1);
-                    CuboidBossBarManager.removeBossBar(player1.getUniqueId());
-                    CuboidBorderPacketHandler.sendBorderPacket(player1, player.getWorld(), this.protocolManager);
+                    ClanCuboidBossBarManager.removeBossBar(player1.getUniqueId());
+                    ClanCuboidBorderPacketHandler.sendBorderPacket(player1, player.getWorld(), this.protocolManager);
                 });
                 player.closeInventory();
                 MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20, 50, 20);

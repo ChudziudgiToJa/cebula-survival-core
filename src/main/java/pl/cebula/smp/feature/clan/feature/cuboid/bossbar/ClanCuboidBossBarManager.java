@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.clan.feature.cuboid.tnt;
+package pl.cebula.smp.feature.clan.feature.cuboid.bossbar;
 
 import org.bukkit.boss.BossBar;
 
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CuboidTntBossBarManager {
+public class ClanCuboidBossBarManager {
     private static final Map<UUID, BossBar> bossBars = new HashMap<>();
 
     public static BossBar getBossBar(UUID uuid) {
@@ -19,9 +19,5 @@ public class CuboidTntBossBarManager {
 
     public static void removeBossBar(UUID uuid) {
         bossBars.remove(uuid);
-    }
-
-    public static boolean containsKeyBossBar(UUID uuid) {
-        return  bossBars.containsKey(uuid);
     }
 }

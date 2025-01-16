@@ -3,8 +3,8 @@ package pl.cebula.smp.feature.clan.service;
 import org.bukkit.Location;
 import pl.cebula.smp.database.UpdateType;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.cuboid.CuboidHearthLocation;
-import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
+import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidHearthLocation;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartManager;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ public class ClanService {
 
     public void addClan(Clan clan) {
         this.clanConcurrentHashMap.put(clan.getId(), clan);
-        CuboidHeartManager.createHolo(clan);
+        ClanCuboidHeartManager.createHolo(clan);
     }
 
     public void createClan(Clan clan) {
@@ -73,7 +73,7 @@ public class ClanService {
         return this.clanConcurrentHashMap.values()
                 .stream()
                 .filter(clan -> {
-                    CuboidHearthLocation clanLocation = clan.getLocation();
+                    ClanCuboidHearthLocation clanLocation = clan.getLocation();
                     double minX = clanLocation.getX() - 20;
                     double maxX = clanLocation.getX() + 20;
                     double minZ = clanLocation.getZ() - 20;
@@ -100,7 +100,7 @@ public class ClanService {
 
     public boolean isNearAnotherClan(Location playerLocation) {
         return this.clanConcurrentHashMap.values().stream().anyMatch(existingClan -> {
-            CuboidHearthLocation clanLocation = existingClan.getLocation();
+            ClanCuboidHearthLocation clanLocation = existingClan.getLocation();
 
             double distanceSquared = Math.pow(clanLocation.getX() - playerLocation.getX(), 2)
                     + Math.pow(clanLocation.getZ() - playerLocation.getZ(), 2);
@@ -111,7 +111,7 @@ public class ClanService {
 
     public boolean isLocationOnClanCuboid(Location blockLocation) {
         for (Clan clan : clanConcurrentHashMap.values()) {
-            CuboidHearthLocation clanLocation = clan.getLocation();
+            ClanCuboidHearthLocation clanLocation = clan.getLocation();
             double minX = clanLocation.getX() - 20;
             double maxX = clanLocation.getX() + 20;
             double minZ = clanLocation.getZ() - 20;

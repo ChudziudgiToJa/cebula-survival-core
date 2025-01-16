@@ -1,6 +1,5 @@
 package pl.cebula.smp.feature.clan.command;
 
-import com.comphenix.protocol.ProtocolManager;
 import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
@@ -8,20 +7,18 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.units.qual.A;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
-import pl.cebula.smp.feature.clan.feature.cuboid.heart.CuboidHeartManager;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartManager;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
+import pl.cebula.smp.feature.clan.feature.war.ClanWarManager;
 import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
@@ -36,13 +33,15 @@ public class ClanCommand {
     private final ClanDeleteInventory clanDeleteInventory;
     private final ClanInviteService clanInviteService;
     private final ClanConfiguration clanConfiguration;
+    private final ClanWarManager clanWarManager;
 
-    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ClanConfiguration clanConfiguration) {
+    public ClanCommand(UserService userService, ClanService clanService, ClanDeleteInventory clanDeleteInventory, ClanInviteService clanInviteService, ClanConfiguration clanConfiguration, ClanWarManager clanWarManager) {
         this.userService = userService;
         this.clanService = clanService;
         this.clanDeleteInventory = clanDeleteInventory;
         this.clanInviteService = clanInviteService;
         this.clanConfiguration = clanConfiguration;
+        this.clanWarManager = clanWarManager;
     }
 
 
@@ -121,7 +120,7 @@ public class ClanCommand {
         user.setMoney(user.getMoney() - 3500);
         Clan newClan = new Clan(player, tag.toLowerCase());
         this.clanService.createClan(newClan);
-        CuboidHeartManager.createHearth(newClan);
+        ClanCuboidHeartManager.createHearth(newClan);
         Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
     }
 
@@ -308,11 +307,25 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
     }
 
+    @Execute(name = "dom")
+    void adminWar(@Context Player player) {
+        Clan clan = this.clanService.findClanByMember(player.getName());
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu.");
+            return;
+        }
+    }
 
     @Execute(name = "admin war")
     @Permission("cebulasmp.command.clan.admin")
     void adminWar(@Context Player player,@Arg boolean b) {
+        if (this.clanConfiguration.isWar() == b) {
+            MessageUtil.sendMessage(player, "&cWojna nie została zmieniona poniewarz ma juz ten status");
+            return;
+        }
         this.clanConfiguration.setWar(b);
+        this.clanConfiguration.save();
+        this.clanWarManager.toggleWarBossBar();
         MessageUtil.sendMessage(player, "&fUstawiono walke na: " + (b ? "&awłączoną" : "&cwyłączoną"));
     }
 }

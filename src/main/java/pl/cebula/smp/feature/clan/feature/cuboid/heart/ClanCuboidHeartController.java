@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,13 +21,13 @@ import pl.cebula.smp.util.MessageUtil;
 
 import java.util.Iterator;
 
-public class CuboidHeartController implements Listener {
+public class ClanCuboidHeartController implements Listener {
 
     private final ClanService clanService;
     private final SurvivalPlugin survivalPlugin;
     private final ClanConfiguration clanConfiguration;
 
-    public CuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
+    public ClanCuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
         this.clanService = clanService;
         this.survivalPlugin = survivalPlugin;
         this.clanConfiguration = clanConfiguration;

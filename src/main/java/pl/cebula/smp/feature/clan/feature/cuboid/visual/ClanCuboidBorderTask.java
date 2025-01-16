@@ -7,11 +7,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.service.ClanService;
 
-public class CuboidBorderTask extends BukkitRunnable {
+public class ClanCuboidBorderTask extends BukkitRunnable {
     private final ClanService clanService;
     private final ProtocolManager protocolManager;
 
-    public CuboidBorderTask(ClanService clanService, SurvivalPlugin survivalPlugin, ProtocolManager protocolManager) {
+    public ClanCuboidBorderTask(ClanService clanService, SurvivalPlugin survivalPlugin, ProtocolManager protocolManager) {
         this.clanService = clanService;
         this.protocolManager = protocolManager;
         this.runTaskTimerAsynchronously(survivalPlugin, 5, 0);
@@ -25,9 +25,9 @@ public class CuboidBorderTask extends BukkitRunnable {
                     .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(location) < 80)
                     .forEach(player -> {
                         if (this.clanService.isLocationOnClanCuboid(player.getLocation())) {
-                            CuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
+                            ClanCuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
                         } else {
-                            CuboidBorderPacketHandler.sendBorderPacket(player, player.getWorld(), this.protocolManager);
+                            ClanCuboidBorderPacketHandler.sendBorderPacket(player, player.getWorld(), this.protocolManager);
                         }
                     });
         });

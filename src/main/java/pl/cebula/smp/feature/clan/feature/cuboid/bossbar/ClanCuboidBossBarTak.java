@@ -10,12 +10,12 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
 
-public class CuboidBossBarTak extends BukkitRunnable {
+public class ClanCuboidBossBarTak extends BukkitRunnable {
 
     private final ClanService clanService;
     private final SurvivalPlugin survivalPlugin;
 
-    public CuboidBossBarTak(ClanService clanService, SurvivalPlugin survivalPlugin) {
+    public ClanCuboidBossBarTak(ClanService clanService, SurvivalPlugin survivalPlugin) {
         this.clanService = clanService;
         this.survivalPlugin = survivalPlugin;
         this.runTaskTimerAsynchronously(survivalPlugin, 20, 0);
@@ -39,7 +39,7 @@ public class CuboidBossBarTak extends BukkitRunnable {
                                             "§aᴊᴇsᴛᴇś ɴᴀ ᴛᴇʀᴇɴɪᴇ sᴡᴏᴊᴇɢᴏ ᴋʟᴀɴᴜ §8| §a§l%s §7(%.1f ᴍ ᴏᴅ sᴇʀᴄᴀ ᴋʟᴀɴᴜ)",
                                             clan.getTag(), distance
                                     );
-                                    BossBar bossBar = CuboidBossBarManager.getBossBar(player.getUniqueId());
+                                    BossBar bossBar = ClanCuboidBossBarManager.getBossBar(player.getUniqueId());
                                     if (bossBar == null) {
                                         bossBar = Bukkit.createBossBar(
                                                 MessageUtil.smallTextToColor(bossBarMessage),
@@ -47,7 +47,7 @@ public class CuboidBossBarTak extends BukkitRunnable {
                                                 BarStyle.SEGMENTED_10
                                         );
                                         bossBar.addPlayer(player);
-                                        CuboidBossBarManager.addBossBar(player.getUniqueId(), bossBar);
+                                        ClanCuboidBossBarManager.addBossBar(player.getUniqueId(), bossBar);
                                     }
 
                                     bossBar.setTitle(bossBarMessage);
@@ -57,26 +57,26 @@ public class CuboidBossBarTak extends BukkitRunnable {
                                             "§cᴊᴇsᴛᴇś ɴᴀ ᴛᴇʀᴇɴɪᴇ ᴡʀᴏɢɪᴇɢᴏ ᴋʟᴀɴᴜ §8| §4§l%s",
                                             clan.getTag()
                                     );
-                                    BossBar bossBar = CuboidBossBarManager.getBossBar(player.getUniqueId());
+                                    BossBar bossBar = ClanCuboidBossBarManager.getBossBar(player.getUniqueId());
                                     if (bossBar == null) {
                                         bossBar = Bukkit.createBossBar(
                                                 bossBarMessage,
-                                                BarColor.GREEN,
+                                                BarColor.RED,
                                                 BarStyle.SEGMENTED_10
                                         );
                                         bossBar.addPlayer(player);
-                                        CuboidBossBarManager.addBossBar(player.getUniqueId(), bossBar);
+                                        ClanCuboidBossBarManager.addBossBar(player.getUniqueId(), bossBar);
                                     }
                                     bossBar.setTitle(bossBarMessage);
                                     bossBar.setProgress(1);
                                 }
                             });
                         } else {
-                            BossBar bossBar = CuboidBossBarManager.getBossBar(player.getUniqueId());
+                            BossBar bossBar = ClanCuboidBossBarManager.getBossBar(player.getUniqueId());
                             Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
                                 if (bossBar != null) {
                                     bossBar.removePlayer(player);
-                                    CuboidBossBarManager.removeBossBar(player.getUniqueId());
+                                    ClanCuboidBossBarManager.removeBossBar(player.getUniqueId());
                                 }
                             });
                         }
