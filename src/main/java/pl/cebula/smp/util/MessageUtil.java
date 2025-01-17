@@ -129,6 +129,6 @@ public final class MessageUtil {
     }
 
     public static void sendActionbar(Player player, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(colored(message)));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(smallTextToColor(message)));
     }
 }

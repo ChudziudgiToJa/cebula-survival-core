@@ -23,8 +23,6 @@ public class ClanCuboidHeartHologramTask extends BukkitRunnable {
         this.runTaskTimerAsynchronously(survivalPlugin, 20*10, 20);
     }
 
-
-
     @Override
     public void run() {
         clanService.getAllClans().forEach(clan -> {

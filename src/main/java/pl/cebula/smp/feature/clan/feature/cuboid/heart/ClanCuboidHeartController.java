@@ -10,15 +10,19 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
 import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
+import pl.cebula.smp.feature.user.User;
+import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.util.Iterator;
@@ -28,11 +32,15 @@ public class ClanCuboidHeartController implements Listener {
     private final ClanService clanService;
     private final SurvivalPlugin survivalPlugin;
     private final ClanConfiguration clanConfiguration;
+    private final ClanCuboidHeartInventory clanCuboidHeartInventory;
+    private final UserService userService;
 
-    public ClanCuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
+    public ClanCuboidHeartController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration, ClanCuboidHeartInventory clanCuboidHeartInventory, UserService userService) {
         this.clanService = clanService;
         this.survivalPlugin = survivalPlugin;
         this.clanConfiguration = clanConfiguration;
+        this.clanCuboidHeartInventory = clanCuboidHeartInventory;
+        this.userService = userService;
     }
 
 
@@ -152,8 +160,6 @@ public class ClanCuboidHeartController implements Listener {
     }
 
 
-
-
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
         Clan clan = this.clanService.findClanByLocation(event.getLocation());
@@ -187,5 +193,29 @@ public class ClanCuboidHeartController implements Listener {
             MessageUtil.sendActionbar(event.getPlayer(), "Nie możesz stawiać tego bloku na terenie klanu!");
         }
     }
+
+
+    @EventHandler
+    public void onClickHeart(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        User user = userService.findUserByUUID(player.getUniqueId());
+        if (user == null) {
+            return;
+        }
+        Clan clan = clanService.findClanByLocation(player.getLocation());
+        if (clan == null) {
+            return;
+        }
+        if (clanConfiguration.isWar()) {
+            MessageUtil.sendActionbar(player, "&cNaprawa serca klanu jest wyłączona podczas wojny.");
+            return;
+        }
+        clanCuboidHeartInventory.showHealClanInventory(player, clan, user);
+    }
+
 }
 

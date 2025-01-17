@@ -34,6 +34,7 @@ import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartHologramTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartInventory;
 import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderController;
 import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidController;
@@ -200,6 +201,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         //Clan
         ClanDeleteInventory clanDeleteInventory = new ClanDeleteInventory(this, this.clanService, this.protocolManager);
         this.clanWarManager = new ClanWarManager(this.clanConfiguration);
+        ClanCuboidHeartInventory clanCuboidHeartInventory = new ClanCuboidHeartInventory(this);
 
         //Custom crafting
         CraftingManager craftingManager = new CraftingManager(this.craftingConfiguration);
@@ -268,7 +270,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
                 new ClanCuboidController(this.clanService, this.clanConfiguration),
-                new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration),
+                new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
                 new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
                 new ClanCuboidBossBarController(this.clanService,this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager)
