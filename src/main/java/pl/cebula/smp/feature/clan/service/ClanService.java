@@ -21,7 +21,6 @@ public class ClanService {
 
     public void addClan(Clan clan) {
         this.clanConcurrentHashMap.put(clan.getId(), clan);
-        ClanCuboidHeartManager.createHolo(clan);
     }
 
     public void createClan(Clan clan) {

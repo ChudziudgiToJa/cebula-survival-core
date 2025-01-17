@@ -32,15 +32,6 @@ public class ClanCuboidHeartManager {
         Location clanHeart = new Location(Bukkit.getWorlds().getFirst(), (int) clan.getLocation().getX(), (int) clan.getLocation().getY(), (int) clan.getLocation().getZ());
         pasteSchematic((int) clan.getLocation().getX(), (int) clan.getLocation().getY(), (int) clan.getLocation().getZ(), "cuboid.schem");
         clanHeart.getBlock().setType(Material.BEE_NEST);
-        createHolo(clan);
-    }
-
-    public static void createHolo(final Clan clan) {
-        List<String> description = new ArrayList<>();
-        description.add(MessageUtil.smallTextToColor(clan.getTag()));
-        description.add(MessageUtil.smallTextToColor("&a" + clan.getOnlineMembersCount() + "&8/&7" + (clan.getMemberArrayList().size() + 1) + " &f członków online"));
-        description.add(MessageUtil.smallTextToColor("&fżycie &d" + clan.getCuboidHearthValue()));
-        DHAPI.createHologram(clan.getTag(), new Location(Bukkit.getWorlds().getFirst(),clan.getLocation().getX() + 0.5,clan.getLocation().getY() + 2,clan.getLocation().getZ() + 0.5), false, description);
     }
 
 
