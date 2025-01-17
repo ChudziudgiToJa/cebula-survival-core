@@ -19,6 +19,7 @@ public class UsersSaveTask implements Runnable {
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             User user = this.userService.findUserByUUID(player.getUniqueId());
+            if (user == null) return;
             this.userService.saveUser(user);
         }
     }
