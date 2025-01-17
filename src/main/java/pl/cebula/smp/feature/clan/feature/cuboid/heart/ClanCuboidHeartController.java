@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,10 +16,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
 import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
-
 
 import java.util.Iterator;
 
@@ -69,12 +70,18 @@ public class ClanCuboidHeartController implements Listener {
                 targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
                 event.setCancelled(true);
 
+                for (Player online : Bukkit.getOnlinePlayers()) {
+                    if (targetClan.getMemberArrayList().contains(online.getName())) {
+                        MessageUtil.sendMessage(online, "&c" + player.getName() + " atakuje serce twojego klanu pozostało &4" + clan.getCuboidHearthValue() + " życia.");
+                    }
+                }
+
                 blockLocation.getBlock().setType(Material.BEDROCK);
                 Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
                     if (blockLocation.getBlock().getType() == Material.BEDROCK) {
                         blockLocation.getBlock().setType(Material.BEE_NEST);
                     }
-                }, 20);
+                }, 10);
 
                 clan.getMemberArrayList().forEach(string -> {
                     Player target = Bukkit.getPlayer(string);
@@ -85,6 +92,18 @@ public class ClanCuboidHeartController implements Listener {
 
                 MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
             } else {
+                blockLocation.getWorld().getPlayers().stream()
+                        .filter(nearbyPlayer -> {
+                            double dx = nearbyPlayer.getLocation().getX() - blockLocation.getX();
+                            double dz = nearbyPlayer.getLocation().getZ() - blockLocation.getZ();
+                            return Math.sqrt(dx * dx + dz * dz) < 80;
+                        })
+                        .forEach(nearbyPlayer -> {
+                                    BossBar bossbar = ClanCuboidBossBarManager.getBossBar(player.getUniqueId());
+                                    bossbar.removePlayer(player);
+                                    ClanCuboidBossBarManager.removeBossBar(player.getUniqueId());
+                                }
+                        );
                 DHAPI.removeHologram(targetClan.getTag());
                 this.clanService.removeClan(targetClan);
                 Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
@@ -133,6 +152,8 @@ public class ClanCuboidHeartController implements Listener {
     }
 
 
+
+
     @EventHandler
     public void onExplosion(EntityExplodeEvent event) {
         Clan clan = this.clanService.findClanByLocation(event.getLocation());
@@ -144,6 +165,26 @@ public class ClanCuboidHeartController implements Listener {
             if (ClanManager.isNearClanHeart(blockLocation, new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ()))) {
                 iterator.remove();
             }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+        Material material = block.getType();
+        boolean isRestrictedMaterial = material == Material.PISTON || material == Material.STICKY_PISTON || material == Material.OBSIDIAN || material == Material.CRYING_OBSIDIAN;
+
+        if (!isRestrictedMaterial) {
+            return;
+        }
+
+        Clan clan = this.clanService.findClanByLocation(block.getLocation());
+        if (clan == null) {
+            return;
+        }
+        if (this.clanService.isLocationOnClanCuboid(block.getLocation())) {
+            event.setCancelled(true);
+            MessageUtil.sendActionbar(event.getPlayer(), "Nie możesz stawiać tego bloku na terenie klanu!");
         }
     }
 }

@@ -24,11 +24,4 @@ public class JoinQuitListener implements Listener {
             this.userService.createUser(new User(player));
         }
     }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
-        this.userService.saveUser(user);
-        event.setQuitMessage(null);
-    }
 }

@@ -26,7 +26,7 @@ public class PetPotionEffectTask extends BukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             User user = this.userService.findUserByUUID(player.getUniqueId());
-            if (user.getPetDataArrayList().isEmpty()) return;
+            if (user == null || user.getPetDataArrayList().isEmpty()) return;
             List<PotionEffect> effects = user.getPetDataArrayList().stream()
                     .map(pet -> PotionEffectType.getById(pet.getPetData().getPotionEffect()))
                     .filter(Objects::nonNull)
