@@ -55,7 +55,6 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&a/klan opuść &7- Opuszcza obecny klan (jeśli nie jesteś właścicielem).");
         MessageUtil.sendMessage(player, "&a/klan wyrzuć <gracz> &7- Wyrzuca gracza z twojego klanu.");
         MessageUtil.sendMessage(player, "&a/klan pvp &7- Otwiera menu zmiany ustawień PvP klanu.");
-        MessageUtil.sendMessage(player, "&a/klan ulepszenia &7- Otwiera menu ulepszeń klanu.");
     }
 
 
@@ -307,14 +306,14 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
     }
 
-    @Execute(name = "dom")
-    void adminWar(@Context Player player) {
-        Clan clan = this.clanService.findClanByMember(player.getName());
-        if (clan == null) {
-            MessageUtil.sendMessage(player, "&cNie masz klanu.");
-            return;
-        }
-    }
+//    @Execute(name = "dom")
+//    void adminWar(@Context Player player) {
+//        Clan clan = this.clanService.findClanByMember(player.getName());
+//        if (clan == null) {
+//            MessageUtil.sendMessage(player, "&cNie masz klanu.");
+//            return;
+//        }
+//    }
 
     @Execute(name = "admin war")
     @Permission("cebulasmp.command.clan.admin")

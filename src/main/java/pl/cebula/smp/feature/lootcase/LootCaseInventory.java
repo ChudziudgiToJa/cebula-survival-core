@@ -46,6 +46,8 @@ public class LootCaseInventory {
         List<LootCaseChance> sortedLootItems = new ArrayList<>(lootCase.getDropItems());
         sortedLootItems.sort(Comparator.comparingDouble(LootCaseChance::getChance));
 
+        List<LootCaseChance> originalLootItems = lootCase.getDropItems();
+
         for (LootCaseChance lootCaseChance : sortedLootItems) {
             ItemStack lootItemStack = ItemStackSerializable.readItemStack(lootCaseChance.getItemStackInString());
             ItemMeta itemMeta = lootItemStack.getItemMeta();
@@ -55,12 +57,25 @@ public class LootCaseInventory {
                 lore.add(" ");
                 lore.add(MessageUtil.smallText("&7szansa na wylosowanie: &a" + lootCaseChance.getChance() + "%"));
 
+                if (player.hasPermission("cebulasmp.case.admin")) {
+                    int index = 0;
+                    for (LootCaseChance originalChance : originalLootItems) {
+                        if (originalChance.equals(lootCaseChance)) {
+                            lore.add(" ");
+                            lore.add(MessageUtil.smallText("&4ADMIN &fnr itemku: " + (index + 1)));
+                            break;
+                        }
+                        index++;
+                    }
+                }
+
                 itemMeta.setLore(lore);
                 lootItemStack.setItemMeta(itemMeta);
             }
 
             inventory.addItem(lootItemStack);
         }
+
 
         simpleInventory.click(event -> {
             event.setCancelled(true);

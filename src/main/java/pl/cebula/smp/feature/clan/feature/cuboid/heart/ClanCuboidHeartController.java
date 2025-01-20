@@ -199,11 +199,15 @@ public class ClanCuboidHeartController implements Listener {
     public void onClickHeart(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Action action = event.getAction();
+        Block block = event.getClickedBlock();
         if (action != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
         User user = userService.findUserByUUID(player.getUniqueId());
         if (user == null) {
+            return;
+        }
+        if (block == null) {
             return;
         }
         Clan clan = clanService.findClanByLocation(player.getLocation());
@@ -214,6 +218,8 @@ public class ClanCuboidHeartController implements Listener {
             MessageUtil.sendActionbar(player, "&cNaprawa serca klanu jest wyłączona podczas wojny.");
             return;
         }
+        Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
+        if (!location.equals(block.getLocation())) return;
         clanCuboidHeartInventory.showHealClanInventory(player, clan, user);
     }
 

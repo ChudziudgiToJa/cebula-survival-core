@@ -30,13 +30,13 @@ KitConfiguration extends OkaeriConfig {
                     "cebulasmp.kit.gracz",
                     List.of(
                             new ItemBuilder(Material.STONE_AXE)
-                                    .addEnchant(Enchantment.BINDING_CURSE, 1)
+                                    .addEnchant(Enchantment.VANISHING_CURSE, 1)
                                     .build(),
-                            new ItemBuilder(Material.STONE_PICKAXE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
-                            new ItemBuilder(Material.LEATHER_HELMET).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
-                            new ItemBuilder(Material.LEATHER_CHESTPLATE).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
-                            new ItemBuilder(Material.LEATHER_LEGGINGS).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
-                            new ItemBuilder(Material.LEATHER_BOOTS).addEnchant(Enchantment.BINDING_CURSE, 1).build(),
+                            new ItemBuilder(Material.STONE_PICKAXE).addEnchant(Enchantment.VANISHING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_HELMET).addEnchant(Enchantment.VANISHING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_CHESTPLATE).addEnchant(Enchantment.VANISHING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_LEGGINGS).addEnchant(Enchantment.VANISHING_CURSE, 1).build(),
+                            new ItemBuilder(Material.LEATHER_BOOTS).addEnchant(Enchantment.VANISHING_CURSE, 1).build(),
                             new ItemBuilder(Material.COOKED_BEEF, 16).build()
                     ),
                     List.of(
@@ -162,14 +162,14 @@ KitConfiguration extends OkaeriConfig {
             new Kit(
                     "maly",
                     86400000,
-                    new ItemBuilder(Material.NETHERITE_HELMET)
+                    new ItemBuilder(Material.OMINOUS_TRIAL_KEY)
                             .setName("&b&lmaly &fzestaw kluczy")
                             .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
                             .build(),
-                    "cebulasmp.kit.maly",
+                    "cebulasmp.kit.vip",
                     List.of(
                     ),
                     List.of(
@@ -178,14 +178,14 @@ KitConfiguration extends OkaeriConfig {
             new Kit(
                     "sredni",
                     86400000,
-                    new ItemBuilder(Material.NETHERITE_HELMET)
+                    new ItemBuilder(Material.OMINOUS_TRIAL_KEY)
                             .setName("&b&lsredni &fzestaw kluczy")
                             .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
                             .build(),
-                    "cebulasmp.kit.sredni",
+                    "cebulasmp.kit.mvip",
                     List.of(
                     ),
                     List.of(
@@ -194,14 +194,14 @@ KitConfiguration extends OkaeriConfig {
             new Kit(
                     "duzy",
                     86400000,
-                    new ItemBuilder(Material.NETHERITE_HELMET)
+                    new ItemBuilder(Material.OMINOUS_TRIAL_KEY)
                             .setName("&b&lduzy &fzestaw kluczy")
                             .setLore(
                                     "",
                                     "&aKliknij aby otworzyć podgląd."
                             )
                             .build(),
-                    "cebulasmp.kit.duzy",
+                    "cebulasmp.kit.cebulak",
                     List.of(
                     ),
                     List.of(

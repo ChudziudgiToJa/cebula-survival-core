@@ -54,6 +54,6 @@ public class ClanManager {
         int dx = Math.abs(blockLocation.getBlockX() - clanHeart.getBlockX());
         int dy = Math.abs(blockLocation.getBlockY() - clanHeart.getBlockY());
         int dz = Math.abs(blockLocation.getBlockZ() - clanHeart.getBlockZ());
-        return dx <= 4 && dy <= 2 && dz <= 4;
+        return dx <= 4 && dy <= 3 && dz <= 4;
     }
 }

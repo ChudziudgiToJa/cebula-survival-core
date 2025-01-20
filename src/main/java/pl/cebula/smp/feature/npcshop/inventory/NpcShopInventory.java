@@ -50,7 +50,7 @@ public class NpcShopInventory {
                     .setLore(
                             " ",
                             "&e&lppm &7- &ekliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
-                            "&6&lppm + shift &7- &akliknij aby sprzedać "+ itemToInteract.getItemStack().getMaxStackSize() +" za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getBuyPrice()) + " monet",
+                            "&6&lppm + shift &7- &akliknij aby sprzedać "+ itemToInteract.getItemStack().getMaxStackSize() +" za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getSellPrice()) + " monet",
                             "&6&lq &7- &akliknij aby sprzedać całe eq",
                             "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet",
                             "&2&llpm + shift &7- &akliknij aby kupić " +itemToInteract.getItemStack().getMaxStackSize() +" za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getBuyPrice()) + " monet"

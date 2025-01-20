@@ -115,7 +115,7 @@ public class KitCommand {
 
 
     @Permission("cebula.kit.command.toggle")
-    @Execute(name = "toggle")
+    @Execute(name = "admin toggle")
     void toggle (@Context CommandSender commandSender) {
         this.kitConfiguration.kitStatus = !this.kitConfiguration.kitStatus;
         MessageUtil.sendMessage(commandSender, "&bkity zostały: " + (this.kitConfiguration.kitStatus ? "&awłączone" : "&cwyłączone"));
