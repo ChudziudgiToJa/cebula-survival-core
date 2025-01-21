@@ -116,13 +116,6 @@ public class ClanCuboidHeartController implements Listener {
                 this.clanService.removeClan(targetClan);
                 Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
                 player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
-
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    if (targetClan.getMemberArrayList().contains(online.getName())) {
-                        MessageUtil.sendTitle(online, "", "&ctwój klan został podbity", 20, 50, 20);
-                    }
-                    MessageUtil.sendMessage(online, "&4⚠ &fklan: &a&l" + clan.getTag() + " &fpodbił klan: &c&l" + targetClan.getTag());
-                }
             }
         }
     }

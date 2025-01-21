@@ -31,6 +31,7 @@ import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.blocker.ClanCuboidCommandBlocker;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartHologramTask;
@@ -79,6 +80,7 @@ import pl.cebula.smp.feature.pet.PetController;
 import pl.cebula.smp.feature.pet.PetInventory;
 import pl.cebula.smp.feature.pet.task.PetMoveTask;
 import pl.cebula.smp.feature.pet.task.PetPotionEffectTask;
+import pl.cebula.smp.feature.pet.task.PetRemoveBuggyPetsTask;
 import pl.cebula.smp.feature.statistic.StatisticCommand;
 import pl.cebula.smp.feature.statistic.StatisticController;
 import pl.cebula.smp.feature.statistic.StatisticInventory;
@@ -273,7 +275,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
                 new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
                 new ClanCuboidBossBarController(this.clanService,this),
-                new ClanWarController(this.clanConfiguration, this.clanWarManager)
+                new ClanWarController(this.clanConfiguration, this.clanWarManager),
+                new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
@@ -290,6 +293,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanCuboidJoinQuitTask(this.clanService, this);
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);
+        new PetRemoveBuggyPetsTask(this, this.userService);
     }
 
     @Override

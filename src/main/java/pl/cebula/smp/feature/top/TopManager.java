@@ -17,14 +17,14 @@ public class TopManager {
 
 
     public List<User> get16UsersMoneyTop() {
-        return userService.usersByNickName.values().stream()
+        return userService.userConcurrentHashMap.values().stream()
                 .sorted(Comparator.comparingDouble(User::getMoney).reversed())
                 .limit(16)
                 .collect(Collectors.toList());
     }
 
     public List<User> get16UsersSpendTime() {
-        return userService.usersByNickName.values().stream()
+        return userService.userConcurrentHashMap.values().stream()
                 .sorted(Comparator.comparingInt(User::getSpentTime).reversed())
                 .limit(16)
                 .collect(Collectors.toList());

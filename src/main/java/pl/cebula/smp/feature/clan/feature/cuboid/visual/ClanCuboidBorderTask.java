@@ -22,14 +22,16 @@ public class ClanCuboidBorderTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Clan clan : this.clanService.getAllClans()) {
-            Location location = new Location(
-                    Bukkit.getWorlds().get(0),
+            Location clanLocation = new Location(
+                    Bukkit.getWorlds().getFirst(),
                     clan.getLocation().getX(),
                     clan.getLocation().getY(),
                     clan.getLocation().getZ()
             );
-            for (Player player : location.getWorld().getPlayers()) {
-                if (player.getLocation().distance(location) < 80) {
+            for (Player player : clanLocation.getWorld().getPlayers()) {
+                double distanceSquared = Math.pow(player.getLocation().getX() - clanLocation.getX(), 2)
+                        + Math.pow(player.getLocation().getZ() - clanLocation.getZ(), 2);
+                if (distanceSquared < Math.pow(80, 2)) {
                     if (this.clanService.isLocationOnClanCuboid(player.getLocation())) {
                         ClanCuboidBorderPacketHandler.sendBorderPacket(player, clan, this.protocolManager);
                     } else {
@@ -39,5 +41,4 @@ public class ClanCuboidBorderTask extends BukkitRunnable {
             }
         }
     }
-
 }

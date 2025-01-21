@@ -1,6 +1,5 @@
 package pl.cebula.smp.feature.user;
 
-import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.database.UpdateType;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 
@@ -11,18 +10,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class UserService {
     private final UserRepository userRepository;
 
-    public final Map<UUID, User> usersByNickName = new ConcurrentHashMap<>();
+    public final Map<UUID, User> userConcurrentHashMap = new ConcurrentHashMap<>();
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public void addUser(User user) {
-        this.usersByNickName.put(UUID.fromString(user.getUuid()), user);
+        this.userConcurrentHashMap.put(UUID.fromString(user.getUuid()), user);
     }
 
     public void createUser(User user){
-        this.usersByNickName.put(UUID.fromString(user.getUuid()), user);
+        this.userConcurrentHashMap.put(UUID.fromString(user.getUuid()), user);
         userRepository.update(user, user.getId(), UpdateType.CREATE);
     }
 
@@ -31,11 +30,11 @@ public class UserService {
     }
 
     public void removeUser(User user) {
-        this.usersByNickName.remove(user.getId());
+        this.userConcurrentHashMap.remove(user.getId());
     }
 
     public User findUserByNickName(String nickName){
-        return this.usersByNickName.values()
+        return this.userConcurrentHashMap.values()
                 .stream()
                 .filter(user -> user.getNickName().contains(nickName))
                 .findFirst()
@@ -43,10 +42,10 @@ public class UserService {
     }
 
     public User findUserByUUID(UUID uuid){
-        return this.usersByNickName.get(uuid);
+        return this.userConcurrentHashMap.get(uuid);
     }
 
     public Map<UUID, User> getUsersByNickname() {
-        return this.usersByNickName;
+        return this.userConcurrentHashMap;
     }
 }
