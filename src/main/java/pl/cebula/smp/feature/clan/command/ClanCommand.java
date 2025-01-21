@@ -306,15 +306,6 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
     }
 
-//    @Execute(name = "dom")
-//    void adminWar(@Context Player player) {
-//        Clan clan = this.clanService.findClanByMember(player.getName());
-//        if (clan == null) {
-//            MessageUtil.sendMessage(player, "&cNie masz klanu.");
-//            return;
-//        }
-//    }
-
     @Execute(name = "admin war")
     @Permission("cebulasmp.command.clan.admin")
     void adminWar(@Context Player player,@Arg boolean b) {
@@ -326,5 +317,20 @@ public class ClanCommand {
         this.clanConfiguration.save();
         this.clanWarManager.toggleWarBossBar();
         MessageUtil.sendMessage(player, "&fUstawiono walke na: " + (b ? "&awłączoną" : "&cwyłączoną"));
+    }
+
+
+    @Execute(name = "admin delete")
+    @Permission("cebulasmp.command.clan.admin")
+    void adminDelete(@Context Player player,@Arg String tag) {
+        Clan clan = this.clanService.findClanByTag(tag);
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
+            return;
+        }
+
+        this.clanService.removeClan(clan);
+        MessageUtil.sendMessage(player, "&aUsunięto klan &f" + tag);
     }
 }

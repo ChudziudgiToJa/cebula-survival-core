@@ -22,7 +22,12 @@ public class ClanCuboidBorderTask extends BukkitRunnable {
     @Override
     public void run() {
         for (Clan clan : this.clanService.getAllClans()) {
-            Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
+            Location location = new Location(
+                    Bukkit.getWorlds().get(0),
+                    clan.getLocation().getX(),
+                    clan.getLocation().getY(),
+                    clan.getLocation().getZ()
+            );
             for (Player player : location.getWorld().getPlayers()) {
                 if (player.getLocation().distance(location) < 80) {
                     if (this.clanService.isLocationOnClanCuboid(player.getLocation())) {
