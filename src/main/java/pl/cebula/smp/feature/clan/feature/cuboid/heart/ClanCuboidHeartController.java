@@ -26,6 +26,7 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class ClanCuboidHeartController implements Listener {
 
@@ -45,81 +46,40 @@ public class ClanCuboidHeartController implements Listener {
 
 
     @EventHandler
-    public void onDamageClan(BlockBreakEvent event) {
+    public void onClanHeartAttack(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlock().getLocation();
-        Clan targetClan = this.clanService.findClanByLocation(blockLocation);
-        Clan clan = this.clanService.findClanByMember(player.getName());
+        Clan targetClan = clanService.findClanByLocation(blockLocation);
+        Clan playerClan = clanService.findClanByMember(player.getName());
 
-        if (targetClan == null) {
+        if (targetClan == null || !event.getBlock().getType().equals(Material.BEE_NEST)) {
             return;
         }
 
-        if (event.getBlock().getType().equals(Material.BEE_NEST)) {
-            if (clan == null) {
-                MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu bez własnego klanu.");
-                event.setCancelled(true);
-                return;
-            }
+        if (playerClan == null) {
+            MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu bez własnego klanu.");
+            event.setCancelled(true);
+            return;
+        }
 
-            if (clan.equals(targetClan)) {
-                event.setCancelled(true);
-                MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
-                return;
-            }
+        if (playerClan.equals(targetClan)) {
+            MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
+            event.setCancelled(true);
+            return;
+        }
 
-            if (!this.clanConfiguration.isWar()) {
-                MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu gdy nie ma włączonych wojen!");
-                event.setCancelled(true);
-                return;
-            }
+        if (!clanConfiguration.isWar()) {
+            MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu gdy nie ma włączonych wojen!");
+            event.setCancelled(true);
+            return;
+        }
 
-            if (targetClan.getCuboidHearthValue() > 1) {
-                targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
-                event.setCancelled(true);
-
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    if (targetClan.getMemberArrayList().contains(online.getName())) {
-                        MessageUtil.sendMessage(online, "&c" + player.getName() + " atakuje serce twojego klanu pozostało &4" + clan.getCuboidHearthValue() + " życia.");
-                    }
-                }
-
-                blockLocation.getBlock().setType(Material.BEDROCK);
-                Bukkit.getScheduler().runTaskLater(this.survivalPlugin, () -> {
-                    if (blockLocation.getBlock().getType() == Material.BEDROCK) {
-                        blockLocation.getBlock().setType(Material.BEE_NEST);
-                    }
-                }, 10);
-
-                clan.getMemberArrayList().forEach(string -> {
-                    Player target = Bukkit.getPlayer(string);
-                    if (target != null) {
-                        MessageUtil.sendMessage(target, "&4⚠ &4&lUWAGA &cktoś atakuje twoje serce klanu!");
-                    }
-                });
-
-                MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
-            } else {
-                blockLocation.getWorld().getPlayers().stream()
-                        .filter(nearbyPlayer -> {
-                            double dx = nearbyPlayer.getLocation().getX() - blockLocation.getX();
-                            double dz = nearbyPlayer.getLocation().getZ() - blockLocation.getZ();
-                            return Math.sqrt(dx * dx + dz * dz) < 80;
-                        })
-                        .forEach(nearbyPlayer -> {
-                                    BossBar bossbar = ClanCuboidBossBarManager.getBossBar(player.getUniqueId());
-                                    bossbar.removePlayer(player);
-                                    ClanCuboidBossBarManager.removeBossBar(player.getUniqueId());
-                                }
-                        );
-                DHAPI.removeHologram(targetClan.getTag());
-                this.clanService.removeClan(targetClan);
-                Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
-                player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
-            }
+        if (targetClan.getCuboidHearthValue() > 1) {
+            ClanCuboidHeartManager.handleClanHeartDamage(player, blockLocation, targetClan, this.survivalPlugin);
+        } else {
+            ClanCuboidHeartManager.handleClanHeartDestruction(player, blockLocation, targetClan, this.clanService);
         }
     }
-
 
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
@@ -167,26 +127,6 @@ public class ClanCuboidHeartController implements Listener {
         }
     }
 
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Block block = event.getBlock();
-        Material material = block.getType();
-        boolean isRestrictedMaterial = material == Material.PISTON || material == Material.STICKY_PISTON || material == Material.OBSIDIAN || material == Material.CRYING_OBSIDIAN;
-
-        if (!isRestrictedMaterial) {
-            return;
-        }
-
-        Clan clan = this.clanService.findClanByLocation(block.getLocation());
-        if (clan == null) {
-            return;
-        }
-        if (this.clanService.isLocationOnClanCuboid(block.getLocation())) {
-            event.setCancelled(true);
-            MessageUtil.sendActionbar(event.getPlayer(), "Nie możesz stawiać tego bloku na terenie klanu!");
-        }
-    }
-
 
     @EventHandler
     public void onClickHeart(PlayerInteractEvent event) {
@@ -205,6 +145,11 @@ public class ClanCuboidHeartController implements Listener {
         }
         Clan clan = clanService.findClanByLocation(player.getLocation());
         if (clan == null) {
+            return;
+        }
+
+        if (clan.getCuboidHearthValue() < 200) {
+            MessageUtil.sendActionbar(player, "&cSerce posiada max życia.");
             return;
         }
         if (clanConfiguration.isWar()) {

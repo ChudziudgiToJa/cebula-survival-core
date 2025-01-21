@@ -16,8 +16,13 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
+import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.io.File;
@@ -25,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ClanCuboidHeartManager {
 
@@ -61,5 +67,47 @@ public class ClanCuboidHeartManager {
 
         } catch (IOException ignored) {
         }
+    }
+
+    public static void handleClanHeartDamage(Player player, Location blockLocation, Clan targetClan, SurvivalPlugin survivalPlugin) {
+        targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
+        blockLocation.getBlock().setType(Material.BEDROCK);
+
+        Bukkit.getScheduler().runTaskLater(survivalPlugin, () -> {
+            if (blockLocation.getBlock().getType() == Material.BEDROCK) {
+                blockLocation.getBlock().setType(Material.BEE_NEST);
+            }
+        }, 10L);
+
+        targetClan.getMemberArrayList().stream()
+                .map(Bukkit::getPlayer)
+                .filter(Objects::nonNull)
+                .forEach(target -> MessageUtil.sendMessage(target, "&4⚠ &4&lUWAGA &cktoś atakuje twoje serce klanu!"));
+
+        MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
+    }
+
+    public static void handleClanHeartDestruction(Player player, Location blockLocation, Clan targetClan, ClanService clanService) {
+        blockLocation.getWorld().getPlayers().stream()
+                .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(blockLocation) < 80)
+                .forEach(nearbyPlayer -> {
+                    BossBar bossBar = ClanCuboidBossBarManager.getBossBar(nearbyPlayer.getUniqueId());
+                    if (bossBar != null) {
+                        bossBar.removePlayer(nearbyPlayer);
+                        ClanCuboidBossBarManager.removeBossBar(nearbyPlayer.getUniqueId());
+                    }
+                });
+
+        Clan clan1 = clanService.findClanByMember(player.getName());
+
+        Bukkit.getOnlinePlayers().forEach(player1 -> {
+            MessageUtil.sendMessage(player1, "&4⚠ &2&l" + clan1.getTag() + " &cpodbija: &4" + targetClan.getTag());
+        });
+
+        DHAPI.removeHologram(targetClan.getTag());
+        clanService.removeClan(targetClan);
+
+        Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
+        player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
     }
 }

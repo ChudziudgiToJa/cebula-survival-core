@@ -3,6 +3,7 @@ package pl.cebula.smp.feature.clan.feature.cuboid.visual;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
@@ -33,12 +34,16 @@ public class ClanCuboidJoinQuitTask extends BukkitRunnable {
                 if (!map.containsKey(player.getUniqueId()) || !map.get(player.getUniqueId())) {
                     map.put(player.getUniqueId(), true);
                     MessageUtil.sendTitle(player, "", "&fwchodzisz na teren klanu&8: &a" + clan.getTag(), 20,20,20);
+                    clan.getMemberArrayList().forEach(string -> {
+                        Player clanTarget = Bukkit.getPlayer(string);
+                        if (clanTarget == null) return;
+                        MessageUtil.sendActionbar(clanTarget, "&c" + player.getName() + " wchodzi na teren twojego klanu!");
+                    });
                 }
             } else {
                 if (map.containsKey(player.getUniqueId()) && map.get(player.getUniqueId())) {
                     map.put(player.getUniqueId(), false);
                     MessageUtil.sendTitle(player, "", "&cwchodzisz z terenu klanu", 20,20,20);
-
                 }
             }
         });

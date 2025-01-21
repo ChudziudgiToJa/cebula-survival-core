@@ -32,7 +32,7 @@ public class ClanCuboidCommandBlocker implements Listener {
 
         if (this.clanConfiguration.blockCommandList.contains(command)) {
             event.setCancelled(true);
-            MessageUtil.sendTitle(player, "", "&akomenda jest zablokowana na terenie klanu.", 20, 50, 20);
+            MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana na terenie klanu.", 20, 50, 20);
         }
     }
 }
