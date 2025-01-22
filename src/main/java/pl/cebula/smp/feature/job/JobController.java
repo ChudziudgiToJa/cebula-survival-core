@@ -6,7 +6,10 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +21,7 @@ import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -33,6 +37,10 @@ public class JobController implements Listener {
 
     @EventHandler
     public void onEntityKill(EntityDeathEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         if (event.getEntity().getKiller() == null) return;
         Player killer = event.getEntity().getKiller();
         User user = this.userService.findUserByNickName(killer.getName());
@@ -47,6 +55,10 @@ public class JobController implements Listener {
 
     @EventHandler
     public void onBlockBreakOre(BlockBreakEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
@@ -58,54 +70,56 @@ public class JobController implements Listener {
         if (user.getJobType() == JobType.MINER) {
             if (ore.contains(blockType) && random.nextDouble() < 0.20) {
                 user.addMoney(15);
-                MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20,50,20);
+                MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20, 50, 20);
             }
         }
     }
 
     @EventHandler
     public void onBlockBreakLog(BlockBreakEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
 
         if (user.getJobType() == JobType.LUMBERJACK) {
-            if (log.contains (blockType) && random.nextDouble() < 0.10) {
-                user.addMoney(5);
-                MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20,50,20);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBlockBreakFarm(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-        Material blockType = event.getBlock().getType();
-        User user = this.userService.findUserByNickName(player.getName());
-
-        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
-        if (regionManager != null) {
-            ApplicableRegionSet regions = regionManager.getApplicableRegions(BlockVector3.at(
-                    event.getBlock().getX(),
-                    event.getBlock().getY(),
-                    event.getBlock().getZ()
-            ));
-            if (regions.getRegions().stream().anyMatch(region -> region.getId().equalsIgnoreCase("spawn"))) {
-                return;
-            }
-        }
-
-        if (user.getJobType() == JobType.FARMER) {
-            if (crop.contains(blockType) && random.nextDouble() < 0.20) {
+            if (log.contains(blockType) && random.nextDouble() < 0.10) {
                 user.addMoney(5);
                 MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20, 50, 20);
             }
         }
     }
 
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        Block block = event.getBlock();
+        Material material = block.getType();
+        User user = this.userService.findUserByNickName(player.getName());
+        if (user.getJobType() == JobType.FARMER && cropMaxAge.containsKey(material)) {
+            if (block.getBlockData() instanceof Ageable ageable) {
+                int maxAge = cropMaxAge.get(material);
+                if (ageable.getAge() == maxAge) {
+                    user.addMoney(10);
+                    MessageUtil.sendTitle(player, "", "&2+&a10 monet", 20, 50, 20);
+                }
+            }
+        }
+    }
 
     @EventHandler()
     public void onPlayerFish(PlayerFishEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -141,14 +155,14 @@ public class JobController implements Listener {
             Material.STRIPPED_CRIMSON_STEM, Material.STRIPPED_WARPED_STEM
     );
 
-
-    private final Set<Material> crop = Set.of(
-            Material.WHEAT, Material.CARROTS, Material.POTATOES, Material.BEETROOTS,
-            Material.MELON_STEM, Material.PUMPKIN_STEM, Material.SWEET_BERRY_BUSH,
-            Material.NETHER_WART, Material.COCOA, Material.BAMBOO_SAPLING,
-            Material.CACTUS, Material.SUGAR_CANE, Material.KELP, Material.KELP_PLANT,
-            Material.SEAGRASS, Material.TALL_SEAGRASS, Material.TWISTING_VINES,
-            Material.WEEPING_VINES, Material.CHORUS_PLANT, Material.CHORUS_FLOWER
+    private final Map<Material, Integer> cropMaxAge = Map.of(
+            Material.WHEAT, 7,
+            Material.CARROTS, 7,
+            Material.POTATOES, 7,
+            Material.BEETROOTS, 3,
+            Material.MELON_STEM, 7,
+            Material.PUMPKIN_STEM, 7,
+            Material.COCOA, 2
     );
 
 }

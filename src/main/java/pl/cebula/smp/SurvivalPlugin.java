@@ -76,6 +76,7 @@ import pl.cebula.smp.feature.lootcase.*;
 import pl.cebula.smp.feature.nether.NetherCommand;
 import pl.cebula.smp.feature.nether.NetherController;
 import pl.cebula.smp.feature.nether.NetherManager;
+import pl.cebula.smp.feature.nether.NetherTask;
 import pl.cebula.smp.feature.npcshop.controller.NpcShopController;
 import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.pet.PetCommand;
@@ -304,11 +305,12 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);
         new PetRemoveBuggyPetsTask(this, this.userService);
+        new NetherTask(this, this.netherConfiguration);
     }
 
     @Override
     public void onDisable() {
-
+        this.protocolManager.removePacketListeners(this);
         if (this.liteCommands != null) {
             this.liteCommands.unregister();
         }
