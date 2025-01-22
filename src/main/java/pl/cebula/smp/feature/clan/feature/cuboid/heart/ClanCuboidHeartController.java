@@ -52,7 +52,11 @@ public class ClanCuboidHeartController implements Listener {
         Clan targetClan = clanService.findClanByLocation(blockLocation);
         Clan playerClan = clanService.findClanByMember(player.getName());
 
-        if (targetClan == null || !event.getBlock().getType().equals(Material.BEE_NEST)) {
+        if (targetClan == null) {
+            return;
+        }
+
+        if (targetClan.equals(playerClan)) {
             return;
         }
 
@@ -62,7 +66,9 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        if (playerClan.equals(targetClan)) {
+        final Location location = new Location(Bukkit.getWorlds().getFirst(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
+
+        if (blockLocation.equals(location)) {
             MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
             event.setCancelled(true);
             return;
@@ -102,10 +108,12 @@ public class ClanCuboidHeartController implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         Clan clan = this.clanService.findClanByLocation(blockLocation);
 
-        if (event.getBlock().getType().equals(Material.BEE_NEST)) return;
+
         if (clan == null) return;
 
         Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
+        if (blockLocation.equals(clanHeart)) return;
+
         if (ClanManager.isNearClanHeart(blockLocation, clanHeart)) {
             MessageUtil.sendActionbar(player, "&cNie możesz niszczyć bloków w pobliżu serca klanu!");
             event.setCancelled(true);

@@ -25,13 +25,9 @@ import java.util.Random;
 public class ClanCuboidController implements Listener {
 
     private final ClanService clanService;
-    private final ClanConfiguration clanConfiguration;
-    private final Random random;
 
-    public ClanCuboidController(ClanService clanService, ClanConfiguration clanConfiguration, Random random) {
+    public ClanCuboidController(ClanService clanService) {
         this.clanService = clanService;
-        this.clanConfiguration = clanConfiguration;
-        this.random = random;
     }
 
     @EventHandler

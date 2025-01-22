@@ -22,6 +22,7 @@ public class NetherTask extends BukkitRunnable {
         Bukkit.getWorlds().forEach(world -> {
             if (world.getName().equalsIgnoreCase("nether_world")) {
                 world.getPlayers().forEach(player -> {
+                    if (player.hasPermission("cebulasmp.nether.admin")) return;
                     if (!this.netherConfiguration.NetherJoinStatus) {
                         MessageUtil.sendTitle(player, "", "&cNether został zamknięty", 20,60,20);
                         Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {

@@ -57,12 +57,10 @@ public class PetInventory {
                             player.closeInventory();
                             return;
                         }
-
                         DHAPI.removeHologram(Pet.getUuid().toString());
                         user.getPetDataArrayList().remove(Pet);
-                        player.closeInventory();
-                        MessageUtil.sendTitle(player, "&7", "&aZwierzak został ściągnięty", 20, 50, 20);
                         player.getInventory().addItem(PetUtil.createItemStackPet(Pet.getPetData()));
+                        player.openInventory(inventory);
                         break;
                     }
             }

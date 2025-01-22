@@ -50,6 +50,7 @@ import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.command.DiscordCommand;
+import pl.cebula.smp.feature.command.ReloadConfigurationCommand;
 import pl.cebula.smp.feature.command.TrashCommand;
 import pl.cebula.smp.feature.crafting.CraftingCommand;
 import pl.cebula.smp.feature.crafting.CraftingInventory;
@@ -257,7 +258,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
                         new CraftingCommand(craftingInventory),
                         new DiscordCommand(this.pluginConfiguration),
-                        new NetherCommand(this.netherManager, this.netherConfiguration)
+                        new NetherCommand(this.netherManager, this.netherConfiguration),
+                        new ReloadConfigurationCommand(configService)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -281,7 +283,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new PetController(this.userService, this.petconfiguration, this),
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
-                new ClanCuboidController(this.clanService, this.clanConfiguration, this.random),
+                new ClanCuboidController(this.clanService),
                 new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
                 new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
                 new ClanCuboidBossBarController(this.clanService,this),
@@ -301,7 +303,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
         new ClanCuboidBorderTask(this.clanService, this, this.protocolManager);
-        new ClanCuboidJoinQuitTask(this.clanService, this);
+        new ClanCuboidJoinQuitTask(this.clanService, this, this.userService);
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);
         new PetRemoveBuggyPetsTask(this, this.userService);

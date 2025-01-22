@@ -99,10 +99,22 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     0.1
                             ),
                             new ItemToInteract(
-                                    new ItemBuilder(Material.DEEPSLATE).build(),
+                                    new ItemBuilder(Material.COBBLED_DEEPSLATE).build(),
                                     28,
                                     1.5,
                                     0.1
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.WATER_BUCKET).build(),
+                                    28,
+                                    200,
+                                    10
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.LAVA_BUCKET).build(),
+                                    28,
+                                    350,
+                                    20
                             )
                     )
             ),

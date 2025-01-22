@@ -7,6 +7,7 @@ import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.optional.OptionalArg;
 import dev.rollczi.litecommands.annotations.permission.Permission;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.configuration.implementation.NetherConfiguration;
 import pl.cebula.smp.util.MessageUtil;
@@ -26,7 +27,7 @@ public class NetherCommand {
 
     @Execute(name = "status")
     @Permission("cebulasmp.nether.admin")
-    void toggleNetherStatus(@Context Player player, @Arg boolean b) {
+    void toggleNetherStatus(@Context CommandSender player, @Arg boolean b) {
         this.netherConfiguration.NetherJoinStatus = b;
         this.netherConfiguration.save();
         this.netherManager.toggleNetherBossBar();
@@ -36,6 +37,10 @@ public class NetherCommand {
     @Execute(name = "tp")
     @Permission("cebulasmp.nether.admin")
     void tpNether(@Context Player player, @OptionalArg Player target) {
+        if (this.netherConfiguration.netherSpawnLocation == null) {
+            MessageUtil.sendMessage(player, "&cLokalizacja spawnu w nether nie jest ustawiona");
+            return;
+        }
         Location netherSpawnLocation = this.netherConfiguration.getNetherSpawnLocation();
         Player toTeleport = target != null ? target : player;
         toTeleport.teleport(netherSpawnLocation);
@@ -45,4 +50,15 @@ public class NetherCommand {
         }
     }
 
+    @Execute(name = "setspawn")
+    @Permission("cebulasmp.nether.admin")
+    void setNetherSpawn(@Context Player player) {
+        if (!player.getWorld().getName().equalsIgnoreCase("world_nether")) {
+            MessageUtil.sendMessage(player, "&cMusisz być w świecie Nether, aby ustawić spawn Nether!");
+            return;
+        }
+        this.netherConfiguration.setNetherSpawnLocation(player.getLocation());
+        this.netherConfiguration.save();
+        MessageUtil.sendMessage(player, "&aSpawn Nether został ustawiony na twoją aktualną lokalizację!");
+    }
 }

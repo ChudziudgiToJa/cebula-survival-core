@@ -48,7 +48,7 @@ public class NetherController implements Listener {
         if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) return;
         event.setCancelled(true);
 
-        if (!this.netherConfiguration.NetherJoinStatus) {
+        if (!this.netherConfiguration.NetherJoinStatus && !player.hasPermission("cebulasmp.nether.admin")) {
             MessageUtil.sendTitle(player, "", "&cNether aktualnie jest wyłączony", 20,50,20);
             return;
         }

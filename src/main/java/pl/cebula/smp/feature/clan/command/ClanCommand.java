@@ -11,6 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
@@ -74,6 +75,11 @@ public class ClanCommand {
 
         if (!tag.matches("[a-zA-Z]+")) {
             MessageUtil.sendMessage(player, "&cTag klanu może zawierać tylko litery alfabetu (bez cyfr i znaków specjalnych)");
+            return;
+        }
+
+        if (player.getWorld() != Bukkit.getWorlds().getFirst()) {
+            MessageUtil.sendMessage(player, "&cMusisz być w normalnym świecie aby stworzyć klanu");
             return;
         }
 
@@ -308,7 +314,7 @@ public class ClanCommand {
 
     @Execute(name = "admin war")
     @Permission("cebulasmp.command.clan.admin")
-    void adminWar(@Context Player player,@Arg boolean b) {
+    void adminWar(@Context CommandSender player,@Arg boolean b) {
         if (this.clanConfiguration.isWar() == b) {
             MessageUtil.sendMessage(player, "&cWojna nie została zmieniona poniewarz ma juz ten status");
             return;
@@ -322,7 +328,7 @@ public class ClanCommand {
 
     @Execute(name = "admin delete")
     @Permission("cebulasmp.command.clan.admin")
-    void adminDelete(@Context Player player,@Arg String tag) {
+    void adminDelete(@Context CommandSender player, @Arg String tag) {
         Clan clan = this.clanService.findClanByTag(tag);
 
         if (clan == null) {
