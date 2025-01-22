@@ -37,6 +37,7 @@ public class ClanCuboidJoinQuitTask extends BukkitRunnable {
                     clan.getMemberArrayList().forEach(string -> {
                         Player clanTarget = Bukkit.getPlayer(string);
                         if (clanTarget == null) return;
+                        if (string.equalsIgnoreCase(player.getName())) return;
                         MessageUtil.sendActionbar(clanTarget, "&c" + player.getName() + " wchodzi na teren twojego klanu!");
                     });
                 }

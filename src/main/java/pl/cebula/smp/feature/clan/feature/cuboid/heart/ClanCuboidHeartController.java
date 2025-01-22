@@ -148,7 +148,10 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        if (clan.getCuboidHearthValue() < 200) {
+        Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
+        if (!location.equals(block.getLocation())) return;
+
+        if (clan.getCuboidHearthValue() <= 200) {
             MessageUtil.sendActionbar(player, "&cSerce posiada max życia.");
             return;
         }
@@ -156,8 +159,6 @@ public class ClanCuboidHeartController implements Listener {
             MessageUtil.sendActionbar(player, "&cNaprawa serca klanu jest wyłączona podczas wojny.");
             return;
         }
-        Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
-        if (!location.equals(block.getLocation())) return;
         clanCuboidHeartInventory.showHealClanInventory(player, clan, user);
     }
 

@@ -1,5 +1,10 @@
 package pl.cebula.smp.feature.job;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -78,15 +83,28 @@ public class JobController implements Listener {
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
 
+        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+        if (regionManager != null) {
+            ApplicableRegionSet regions = regionManager.getApplicableRegions(BlockVector3.at(
+                    event.getBlock().getX(),
+                    event.getBlock().getY(),
+                    event.getBlock().getZ()
+            ));
+            if (regions.getRegions().stream().anyMatch(region -> region.getId().equalsIgnoreCase("spawn"))) {
+                return;
+            }
+        }
+
         if (user.getJobType() == JobType.FARMER) {
             if (crop.contains(blockType) && random.nextDouble() < 0.20) {
-                user.addMoney(10);
-                MessageUtil.sendTitle(player, "", "&2+&a10 monet", 20,50,20);
+                user.addMoney(5);
+                MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20, 50, 20);
             }
         }
     }
 
-    @EventHandler
+
+    @EventHandler()
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
         User user = this.userService.findUserByNickName(player.getName());

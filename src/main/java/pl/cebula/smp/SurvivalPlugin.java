@@ -73,6 +73,9 @@ import pl.cebula.smp.feature.killcounter.KillCounterController;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
 import pl.cebula.smp.feature.lootcase.*;
+import pl.cebula.smp.feature.nether.NetherCommand;
+import pl.cebula.smp.feature.nether.NetherController;
+import pl.cebula.smp.feature.nether.NetherManager;
 import pl.cebula.smp.feature.npcshop.controller.NpcShopController;
 import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.pet.PetCommand;
@@ -123,11 +126,13 @@ public final class SurvivalPlugin extends JavaPlugin {
     private ItemShopConfiguration itemShopConfiguration;
     private NpcShopConfiguration npcShopConfiguration;
     private CraftingConfiguration craftingConfiguration;
+    private NetherConfiguration netherConfiguration;
     private PetConfiguration petconfiguration;
     private UserService userService;
     private ClanService clanService;
     private ProtocolManager protocolManager;
     private ClanWarManager clanWarManager;
+    private NetherManager netherManager;
     private TopManager topManager;
     private LiteCommands<CommandSender> liteCommands;
 
@@ -168,6 +173,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.craftingConfiguration = configService.create(CraftingConfiguration.class, new File(dataFolder, "crafting.yml"));
         this.petconfiguration = configService.create(PetConfiguration.class, new File(dataFolder, "pet.yml"));
         this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
+        this.netherConfiguration = configService.create(NetherConfiguration.class, new File(dataFolder, "nether.yml"));
 
 
 
@@ -218,6 +224,8 @@ public final class SurvivalPlugin extends JavaPlugin {
         //Crafting
         CraftingInventory craftingInventory = new CraftingInventory(this, this.craftingConfiguration);
 
+        //Nether
+        this.netherManager = new NetherManager(this.netherConfiguration);
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
@@ -247,7 +255,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new VanishCommand(this.userService, this.vanishHandler, this),
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
                         new CraftingCommand(craftingInventory),
-                        new DiscordCommand(this.pluginConfiguration)
+                        new DiscordCommand(this.pluginConfiguration),
+                        new NetherCommand(this.netherManager, this.netherConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -276,7 +285,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
                 new ClanCuboidBossBarController(this.clanService,this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),
-                new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration)
+                new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
+                new NetherController(this.netherConfiguration,this.netherManager)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

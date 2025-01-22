@@ -18,6 +18,8 @@ import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class ClanCuboidController implements Listener {
@@ -42,6 +44,19 @@ public class ClanCuboidController implements Listener {
         if (clan.getOwnerName().equals(player.getName())) return;
         if (player.hasPermission("cebulasmp.clan.admin")) return;
         MessageUtil.sendActionbar(player, "&cNie możesz stawiać bloków na terenie obcego klanu!");
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        Location blockLocation = event.getBlock().getLocation();
+        Clan clan = this.clanService.findClanByLocation(blockLocation);
+        if (clan == null) return;
+        if (clan.getMemberArrayList().contains(player.getName())) return;
+        if (clan.getOwnerName().equals(player.getName())) return;
+        if (player.hasPermission("cebulasmp.clan.admin")) return;
+        MessageUtil.sendActionbar(player, "&cNie możesz niszczyć bloków na terenie obcego klanu!");
         event.setCancelled(true);
     }
 
@@ -92,19 +107,20 @@ public class ClanCuboidController implements Listener {
     }
 
     @EventHandler
-    public void onEntityExplode(EntityExplodeEvent event) {
-        event.blockList().forEach(this::tryDestroyBlock);
-    }
+    public void antiHeartBlocker(BlockPlaceEvent event) {
+        Block block = event.getBlock();
+        Player player = event.getPlayer();
 
-    @EventHandler
-    public void onBlockExplode(BlockExplodeEvent event) {
-        event.blockList().forEach(this::tryDestroyBlock);
-    }
-
-    private void tryDestroyBlock(Block block) {
-        if (this.clanConfiguration.getBlockBreakList().contains(block.getType())) {
-            if (random.nextInt(100) < 20) {
-                block.setType(Material.AIR);
+        List<Material> bannedBlocks = Arrays.asList(
+                Material.OBSIDIAN,
+                Material.CRYING_OBSIDIAN,
+                Material.ENCHANTING_TABLE
+        );
+        if (block.getY() < 44) {
+            Clan clan = this.clanService.findClanByLocation(block.getLocation());
+            if (clan != null && bannedBlocks.contains(block.getType())) {
+                event.setCancelled(true);
+                MessageUtil.sendActionbar(player, "&cTen blok można stawiac tylko od 45 kratki w górę na terenie klanu");
             }
         }
     }

@@ -35,6 +35,7 @@ public class Clan implements Serializable, Identifiable<String> {
         this.cuboidHearthValue = 200;
 
         this.memberArrayList = new ArrayList<>();
+        this.memberArrayList.add(player.getName());
 
         this.pvp = false;
     }
