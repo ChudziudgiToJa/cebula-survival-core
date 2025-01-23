@@ -14,21 +14,17 @@ public class NetherTask extends BukkitRunnable {
     public NetherTask(final SurvivalPlugin survivalPlugin, NetherConfiguration netherConfiguration) {
         this.netherConfiguration = netherConfiguration;
         this.survivalPlugin = survivalPlugin;
-        this.runTaskTimerAsynchronously(survivalPlugin, 20 * 10, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 20, 0);
     }
 
     @Override
     public void run() {
-        Bukkit.getWorlds().forEach(world -> {
-            if (world.getName().equalsIgnoreCase("nether_world")) {
-                world.getPlayers().forEach(player -> {
-                    if (player.hasPermission("cebulasmp.nether.admin")) return;
-                    if (!this.netherConfiguration.NetherJoinStatus) {
-                        MessageUtil.sendTitle(player, "", "&cNether został zamknięty", 20,60,20);
-                        Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
-                            player.teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());
-                        });
-                    }
+        Bukkit.getWorlds().get(1).getPlayers().forEach(player -> {
+            if (player.hasPermission("cebulasmp.nether.admin")) return;
+            if (!this.netherConfiguration.NetherJoinStatus) {
+                MessageUtil.sendTitle(player, "", "&cNether został zamknięty", 20,60,20);
+                Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
+                    player.teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());
                 });
             }
         });

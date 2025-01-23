@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.npcshop.controller;
+package pl.cebula.smp.feature.shop.npcshop.controller;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Sound;
@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import pl.cebula.smp.configuration.implementation.NpcShopConfiguration;
-import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
-import pl.cebula.smp.feature.npcshop.object.Shop;
+import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
+import pl.cebula.smp.feature.shop.npcshop.object.Shop;
 
 public class NpcShopController implements Listener {
 

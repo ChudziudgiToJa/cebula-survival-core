@@ -2,8 +2,8 @@ package pl.cebula.smp.configuration.implementation;
 
 import eu.okaeri.configs.OkaeriConfig;
 import org.bukkit.Material;
-import pl.cebula.smp.feature.npcshop.object.ItemToInteract;
-import pl.cebula.smp.feature.npcshop.object.Shop;
+import pl.cebula.smp.feature.shop.npcshop.object.ItemToInteract;
+import pl.cebula.smp.feature.shop.npcshop.object.Shop;
 import pl.cebula.smp.util.ItemBuilder;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 public class NpcShopConfiguration extends OkaeriConfig {
     public List<Shop> shops = List.of(
             new Shop(
-                    "&0&lGornik",
+                    "Gornik",
                     9,
                     List.of(
                             new ItemToInteract(
@@ -83,7 +83,7 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.NETHERITE_SCRAP).build(),
                                     23,
-                                    500.0,
+                                    4000.0,
                                     300.0
                             ),
                             new ItemToInteract(
@@ -112,14 +112,14 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LAVA_BUCKET).build(),
-                                    28,
+                                    29,
                                     350,
                                     20
                             )
                     )
             ),
             new Shop(
-                    "&0&lFarmer",
+                    "Farmer",
                     10,
                     List.of(
                             new ItemToInteract(
@@ -191,7 +191,7 @@ public class NpcShopConfiguration extends OkaeriConfig {
                     )
             ),
             new Shop(
-                    "&0&lZabójca",
+                    "Zabójca",
                     15,
                     List.of(
                             new ItemToInteract(
@@ -241,11 +241,17 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     19,
                                     2.5,
                                     1.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.GUNPOWDER).build(),
+                                    20,
+                                    400,
+                                    8.1
                             )
                     )
             ),
             new Shop(
-                    "&0&lWędkarz",
+                    "Wędkarz",
                     8,
                     List.of(
                             new ItemToInteract(
@@ -275,8 +281,8 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.NAME_TAG).build(),
                                     14,
-                                    37.5, // Sprzedaż (75.0 / 2)
-                                    35.0
+                                    12000,
+                                    120.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SADDLE).build(),
@@ -299,7 +305,7 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.BOWL).build(),
                                     20,
-                                    2.5, // Sprzedaż (5.0 / 2)
+                                    1.5, // Sprzedaż (5.0 / 2)
                                     2.5
                             ),
                             new ItemToInteract(
@@ -317,7 +323,7 @@ public class NpcShopConfiguration extends OkaeriConfig {
                     )
             ),
             new Shop(
-                    "&0&lDrwal",
+                    "Drwal",
                     30,
                     List.of(
                             new ItemToInteract(

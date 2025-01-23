@@ -78,8 +78,10 @@ import pl.cebula.smp.feature.nether.NetherCommand;
 import pl.cebula.smp.feature.nether.NetherController;
 import pl.cebula.smp.feature.nether.NetherManager;
 import pl.cebula.smp.feature.nether.NetherTask;
-import pl.cebula.smp.feature.npcshop.controller.NpcShopController;
-import pl.cebula.smp.feature.npcshop.inventory.NpcShopInventory;
+import pl.cebula.smp.feature.shop.ShopCommand;
+import pl.cebula.smp.feature.shop.ShopInventory;
+import pl.cebula.smp.feature.shop.npcshop.controller.NpcShopController;
+import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.pet.PetCommand;
 import pl.cebula.smp.feature.pet.PetController;
 import pl.cebula.smp.feature.pet.PetInventory;
@@ -180,13 +182,15 @@ public final class SurvivalPlugin extends JavaPlugin {
 
 
         // topki
+
         this.topManager = new TopManager(this.userService);
 
         // help menu
         HelpInventory helpInventory = new HelpInventory(this);
 
         // shop Menu
-        NpcShopInventory npcShopInventory = new NpcShopInventory(this, userService);
+        NpcShopInventory npcShopInventory = new NpcShopInventory(this, userService, this.npcShopConfiguration);
+        ShopInventory shopInventory = new ShopInventory(this, npcShopInventory);
 
         // job Menu
         JobInventory jobInventory = new JobInventory(this, this.userService);
@@ -259,7 +263,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new CraftingCommand(craftingInventory),
                         new DiscordCommand(this.pluginConfiguration),
                         new NetherCommand(this.netherManager, this.netherConfiguration),
-                        new ReloadConfigurationCommand(configService)
+                        new ReloadConfigurationCommand(configService),
+                        new ShopCommand(shopInventory)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(

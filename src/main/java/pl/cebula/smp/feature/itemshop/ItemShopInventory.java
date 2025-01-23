@@ -48,6 +48,7 @@ public class ItemShopInventory {
 
         inventory.setItem(49, new ItemBuilder(Material.GOLD_INGOT)
                         .setName("&fTwoje saldo&8: &a" + DecimalUtil.getFormat(user.getVpln()) + " vpln")
+                        .setLore("","&fdoładuj vpln na &7-> &2&ncebulasmp.pl")
                 .build());
 
         for (ItemShop itemShop : this.itemShopConfiguration.shops) {
