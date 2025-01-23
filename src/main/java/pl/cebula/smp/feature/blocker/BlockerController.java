@@ -1,11 +1,13 @@
 package pl.cebula.smp.feature.blocker;
 
+import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
@@ -58,5 +60,4 @@ public class BlockerController implements Listener {
             event.setCancelled(true);
         }
     }
-
 }

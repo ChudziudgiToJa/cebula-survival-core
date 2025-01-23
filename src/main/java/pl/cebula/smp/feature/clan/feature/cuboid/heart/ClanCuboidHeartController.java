@@ -66,12 +66,14 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        final Location location = new Location(Bukkit.getWorlds().getFirst(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
+        if (playerClan.equals(targetClan)) {
+            final Location location = new Location(Bukkit.getWorlds().getFirst(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
 
-        if (blockLocation.equals(location)) {
-            MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
-            event.setCancelled(true);
-            return;
+            if (blockLocation.equals(location)) {
+                MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
+                event.setCancelled(true);
+                return;
+            }
         }
 
         if (!clanConfiguration.isWar()) {

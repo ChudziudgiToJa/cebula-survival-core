@@ -106,13 +106,13 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.WATER_BUCKET).build(),
-                                    28,
+                                    29,
                                     200,
                                     10
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LAVA_BUCKET).build(),
-                                    29,
+                                    30,
                                     350,
                                     20
                             )

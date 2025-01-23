@@ -50,17 +50,17 @@ public class PetInventory {
                 }
 
                 String itemName = clickedItem.getItemMeta().getDisplayName();
-                for (Pet Pet : user.getPetDataArrayList())
-                    if (itemName.equals(PetUtil.createItemStackPet(Pet.getPetData()).getItemMeta().getDisplayName())) {
+                for (Pet pet : user.getPetDataArrayList())
+                    if (itemName.equals(PetUtil.createItemStackPet(pet.getPetData()).getItemMeta().getDisplayName())) {
                         if (player.getInventory().firstEmpty() == -1) {
                             MessageUtil.sendTitle(player, "&c", "&cNie masz miejsca w ekwipunku, aby ściągnąć zwierzaka!", 20, 50, 20);
                             player.closeInventory();
                             return;
                         }
-                        DHAPI.removeHologram(Pet.getUuid().toString());
-                        user.getPetDataArrayList().remove(Pet);
-                        player.getInventory().addItem(PetUtil.createItemStackPet(Pet.getPetData()));
-                        player.openInventory(inventory);
+                        DHAPI.removeHologram(pet.getUuid().toString());
+                        user.getPetDataArrayList().remove(pet);
+                        showPetInventory(survivalPlugin, player, user);
+                        player.getInventory().addItem(PetUtil.createItemStackPet(pet.getPetData()));
                         break;
                     }
             }
