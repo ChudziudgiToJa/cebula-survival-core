@@ -71,12 +71,12 @@ public class ClanCuboidHeartManager {
 
     public static void handleClanHeartDamage(Player player, Location blockLocation, Clan targetClan, SurvivalPlugin survivalPlugin) {
         targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() - 1);
-        blockLocation.getBlock().setType(Material.BEDROCK);
+        Bukkit.getScheduler().runTask(survivalPlugin, () -> {
+            blockLocation.getBlock().setType(Material.BEDROCK);
+        });
 
         Bukkit.getScheduler().runTaskLater(survivalPlugin, () -> {
-            if (blockLocation.getBlock().getType() == Material.BEDROCK) {
                 blockLocation.getBlock().setType(Material.BEE_NEST);
-            }
         }, 10L);
 
         targetClan.getMemberArrayList().stream()

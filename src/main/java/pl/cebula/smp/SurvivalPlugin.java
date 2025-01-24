@@ -31,16 +31,14 @@ import pl.cebula.smp.feature.blocker.BlockerController;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidController;
 import pl.cebula.smp.feature.clan.feature.cuboid.blocker.ClanCuboidCommandBlocker;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarController;
+import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarTak;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartController;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartHologramTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartInventory;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderController;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderTask;
-import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidController;
-import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarTak;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidJoinQuitTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidAlertTask;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpController;
@@ -52,6 +50,7 @@ import pl.cebula.smp.feature.clan.task.ClanSaveTask;
 import pl.cebula.smp.feature.command.DiscordCommand;
 import pl.cebula.smp.feature.command.ReloadConfigurationCommand;
 import pl.cebula.smp.feature.command.TrashCommand;
+import pl.cebula.smp.feature.command.VplnCommand;
 import pl.cebula.smp.feature.crafting.CraftingCommand;
 import pl.cebula.smp.feature.crafting.CraftingInventory;
 import pl.cebula.smp.feature.crafting.CraftingManager;
@@ -66,28 +65,30 @@ import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
 import pl.cebula.smp.feature.itemshop.ItemShopInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopManager;
-import pl.cebula.smp.feature.command.VplnCommand;
 import pl.cebula.smp.feature.job.JobCommand;
 import pl.cebula.smp.feature.job.JobController;
 import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.killcounter.KillCounterController;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
-import pl.cebula.smp.feature.lootcase.*;
+import pl.cebula.smp.feature.lootcase.LootCaseCommand;
+import pl.cebula.smp.feature.lootcase.LootCaseController;
+import pl.cebula.smp.feature.lootcase.LootCaseHandler;
+import pl.cebula.smp.feature.lootcase.LootCaseInventory;
 import pl.cebula.smp.feature.nether.NetherCommand;
 import pl.cebula.smp.feature.nether.NetherController;
 import pl.cebula.smp.feature.nether.NetherManager;
 import pl.cebula.smp.feature.nether.NetherTask;
-import pl.cebula.smp.feature.shop.ShopCommand;
-import pl.cebula.smp.feature.shop.ShopInventory;
-import pl.cebula.smp.feature.shop.npcshop.controller.NpcShopController;
-import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.pet.PetCommand;
 import pl.cebula.smp.feature.pet.PetController;
 import pl.cebula.smp.feature.pet.PetInventory;
 import pl.cebula.smp.feature.pet.task.PetMoveTask;
 import pl.cebula.smp.feature.pet.task.PetPotionEffectTask;
 import pl.cebula.smp.feature.pet.task.PetRemoveBuggyPetsTask;
+import pl.cebula.smp.feature.shop.ShopCommand;
+import pl.cebula.smp.feature.shop.ShopInventory;
+import pl.cebula.smp.feature.shop.npcshop.controller.NpcShopController;
+import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
 import pl.cebula.smp.feature.statistic.StatisticCommand;
 import pl.cebula.smp.feature.statistic.StatisticController;
 import pl.cebula.smp.feature.statistic.StatisticInventory;
@@ -178,7 +179,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.petconfiguration = configService.create(PetConfiguration.class, new File(dataFolder, "pet.yml"));
         this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
         this.netherConfiguration = configService.create(NetherConfiguration.class, new File(dataFolder, "nether.yml"));
-
 
 
         // topki
@@ -288,13 +288,13 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new PetController(this.userService, this.petconfiguration, this),
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
-                new ClanCuboidController(this.clanService),
+                new ClanCuboidController(this.clanService, this, this.clanConfiguration),
                 new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
-                new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
-                new ClanCuboidBossBarController(this.clanService,this),
+//                new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
+                new ClanCuboidBossBarController(this.clanService, this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),
                 new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
-                new NetherController(this.netherConfiguration,this.netherManager)
+                new NetherController(this.netherConfiguration, this.netherManager)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks
@@ -307,8 +307,8 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanArmorTask(this, this.clanService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
-        new ClanCuboidBorderTask(this.clanService, this, this.protocolManager);
-        new ClanCuboidJoinQuitTask(this.clanService, this, this.userService);
+//        new ClanCuboidBorderTask(this.clanService, this, this.protocolManager);
+        new ClanCuboidAlertTask(this.clanService, this, this.userService);
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);
         new PetRemoveBuggyPetsTask(this, this.userService);

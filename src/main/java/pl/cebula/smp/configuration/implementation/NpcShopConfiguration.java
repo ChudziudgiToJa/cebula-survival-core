@@ -305,8 +305,8 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.BOWL).build(),
                                     20,
-                                    1.5, // Sprzedaż (5.0 / 2)
-                                    2.5
+                                    4.5,
+                                    1.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.TRIPWIRE_HOOK).build(),

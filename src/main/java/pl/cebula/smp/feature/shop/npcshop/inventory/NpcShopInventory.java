@@ -81,13 +81,15 @@ public class NpcShopInventory {
 
 
         Integer[] glassBlueSlots = new Integer[]{
-                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
                 new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE)
                         .setName(" ")
                         .build()));
+
+        inventory.setItem(49, new ItemBuilder(Material.BARRIER).setName("&cOtwórz wszystkie sklepy.").setLore("", "&akliknij aby otworzyć").build());
 
         for (ItemToInteract itemToInteract : shop.getItemToInteracts()) {
 
@@ -108,6 +110,11 @@ public class NpcShopInventory {
 
         simpleInventory.click(event -> {
             event.setCancelled(true);
+
+            if (event.getSlot() == 49) {
+                showAllShops(player);
+                return;
+            }
 
             for (ItemToInteract itemToInteract : shop.getItemToInteracts()) {
 

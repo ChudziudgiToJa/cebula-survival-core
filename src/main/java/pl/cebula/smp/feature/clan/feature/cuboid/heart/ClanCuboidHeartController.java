@@ -1,24 +1,22 @@
 package pl.cebula.smp.feature.clan.feature.cuboid.heart;
 
-import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
 import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.user.User;
@@ -26,7 +24,6 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 public class ClanCuboidHeartController implements Listener {
 
@@ -49,6 +46,7 @@ public class ClanCuboidHeartController implements Listener {
     public void onClanHeartAttack(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlock().getLocation();
+
         Clan targetClan = clanService.findClanByLocation(blockLocation);
         Clan playerClan = clanService.findClanByMember(player.getName());
 
@@ -56,7 +54,14 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        if (targetClan.equals(playerClan)) {
+        if (!blockLocation.equals(targetClan.getClanLocation())) {
+            return;
+        }
+
+
+        if (!clanConfiguration.isWar()) {
+            MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu, gdy nie ma włączonych wojen!");
+            event.setCancelled(true);
             return;
         }
 
@@ -66,26 +71,17 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        if (playerClan.equals(targetClan)) {
-            final Location location = new Location(Bukkit.getWorlds().getFirst(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
 
-            if (blockLocation.equals(location)) {
-                MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (!clanConfiguration.isWar()) {
-            MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu gdy nie ma włączonych wojen!");
+        if (targetClan.equals(playerClan)) {
+            MessageUtil.sendActionbar(player, "&cNie możesz zniszczyć serca własnego klanu.");
             event.setCancelled(true);
             return;
         }
 
         if (targetClan.getCuboidHearthValue() > 1) {
-            ClanCuboidHeartManager.handleClanHeartDamage(player, blockLocation, targetClan, this.survivalPlugin);
+            ClanCuboidHeartManager.handleClanHeartDamage(player, targetClan.getClanLocation(), targetClan, this.survivalPlugin);
         } else {
-            ClanCuboidHeartManager.handleClanHeartDestruction(player, blockLocation, targetClan, this.clanService);
+            ClanCuboidHeartManager.handleClanHeartDestruction(player, targetClan.getClanLocation(), targetClan, this.clanService);
         }
     }
 
@@ -172,5 +168,48 @@ public class ClanCuboidHeartController implements Listener {
         clanCuboidHeartInventory.showHealClanInventory(player, clan, user);
     }
 
+
+    @EventHandler
+    public void onLiquidFlow(BlockFromToEvent event) {
+        Block block = event.getBlock();
+        Block toBlock = event.getToBlock();
+
+        Location toLocation = toBlock.getLocation();
+        Clan clan = this.clanService.findClanByLocation(block.getLocation());
+
+        if (clan == null) {
+            return;
+        }
+
+        if (ClanManager.isNearClanHeart(toLocation, clan.getClanLocation())) {
+            event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+        Player player = event.getPlayer();
+        Location location = event.getBlock().getLocation();
+
+        Clan clan = this.clanService.findClanByLocation(location);
+        if (clan == null) return;
+        if (ClanManager.isNearClanHeart(location, clan.getClanLocation())) {
+            event.setCancelled(true);
+            return;
+        }
+    }
+
+    @EventHandler
+    public void onBucketFill(PlayerBucketFillEvent event) {
+        Location location = event.getBlock().getLocation();
+
+        Clan clan = this.clanService.findClanByLocation(location);
+        if (clan == null) return;
+        if (ClanManager.isNearClanHeart(location, clan.getClanLocation())) {
+            event.setCancelled(true);
+            return;
+        }
+    }
 }
 

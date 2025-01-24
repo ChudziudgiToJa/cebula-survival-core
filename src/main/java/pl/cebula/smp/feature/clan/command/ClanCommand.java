@@ -212,7 +212,6 @@ public class ClanCommand {
     }
 
 
-
     @Execute(name = "opuść")
     void quitClan(@Context Player player) {
         Clan clan = this.clanService.findClanByMember(player.getName());
@@ -314,7 +313,7 @@ public class ClanCommand {
 
     @Execute(name = "admin war")
     @Permission("cebulasmp.command.clan.admin")
-    void adminWar(@Context CommandSender player,@Arg boolean b) {
+    void adminWar(@Context CommandSender player, @Arg boolean b) {
         if (this.clanConfiguration.isWar() == b) {
             MessageUtil.sendMessage(player, "&cWojna nie została zmieniona poniewarz ma juz ten status");
             return;
@@ -338,5 +337,28 @@ public class ClanCommand {
 
         this.clanService.removeClan(clan);
         MessageUtil.sendMessage(player, "&aUsunięto klan &f" + tag);
+    }
+
+    @Execute(name = "admin teleport")
+    @Permission("cebulasmp.command.clan.teleport")
+    void clanTeleport(@Context Player player, @Arg String tag) {
+        Clan clan = this.clanService.findClanByTag(tag);
+
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
+            return;
+        }
+
+        player.teleport(clan.getClanLocation());
+        MessageUtil.sendMessage(player, "&aPrzeteleportowano do klanu &f" + tag);
+    }
+
+    @Execute(name = "admin lista")
+    @Permission("cebulasmp.command.clan.lista")
+    void clanList(@Context Player player) {
+        MessageUtil.sendMessage(player, "&fLista klanów: &8->");
+        this.clanService.getAllClans().forEach(clan -> {
+            MessageUtil.sendMessage(player, clan.getTag());
+        });
     }
 }

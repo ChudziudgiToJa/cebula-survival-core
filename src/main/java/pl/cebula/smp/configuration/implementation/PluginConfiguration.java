@@ -19,7 +19,8 @@ public class PluginConfiguration extends OkaeriConfig {
         @Comment("Lista zablokowanych przedmiotów do craftingów  interackjci")
         public List<Material> materials = List.of(
                 Material.WRITABLE_BOOK,
-                Material.ARMOR_STAND
+                Material.ARMOR_STAND,
+                Material.TNT_MINECART
         );
     }
 }

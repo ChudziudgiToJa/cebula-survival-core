@@ -1,33 +1,32 @@
 package pl.cebula.smp.feature.clan.feature.cuboid;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
+import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 public class ClanCuboidController implements Listener {
 
     private final ClanService clanService;
+    private final SurvivalPlugin survivalPlugin;
+    private final ClanConfiguration clanConfiguration;
 
-    public ClanCuboidController(ClanService clanService) {
+    public ClanCuboidController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
         this.clanService = clanService;
+        this.survivalPlugin = survivalPlugin;
+        this.clanConfiguration = clanConfiguration;
     }
 
     @EventHandler
@@ -98,27 +97,24 @@ public class ClanCuboidController implements Listener {
 
         if (toClan != null && fromClan == null) {
             event.setCancelled(true);
-            return;
         }
     }
 
     @EventHandler
-    public void antiHeartBlocker(BlockPlaceEvent event) {
-        Block block = event.getBlock();
-        Player player = event.getPlayer();
-
-        List<Material> bannedBlocks = Arrays.asList(
-                Material.OBSIDIAN,
-                Material.CRYING_OBSIDIAN,
-                Material.ENCHANTING_TABLE
-        );
-        if (block.getY() < 44) {
-            Clan clan = this.clanService.findClanByLocation(block.getLocation());
-            if (clan != null && bannedBlocks.contains(block.getType())) {
-                event.setCancelled(true);
-                MessageUtil.sendActionbar(player, "&cTen blok można stawiac tylko od 45 kratki w górę na terenie klanu");
+    public void onExplode(EntityExplodeEvent event) {
+        Location explosionLocation = event.getLocation();
+        int radius = 2;
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    Block affectedBlock = explosionLocation.getBlock().getRelative(x, y, z);
+                    if (this.clanConfiguration.getBlockBreakList().contains(affectedBlock.getType())) {
+                        if (Math.random() < 0.4) {
+                            affectedBlock.breakNaturally();
+                        }
+                    }
+                }
             }
         }
     }
 }
-

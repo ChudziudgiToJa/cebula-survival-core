@@ -3,6 +3,7 @@ package pl.cebula.smp.feature.clan;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
 import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidHearthLocation;
@@ -61,5 +62,9 @@ public class Clan implements Serializable, Identifiable<String> {
         }
 
         return onlineCount;
+    }
+
+    public Location getClanLocation() {
+        return new Location(Bukkit.getWorlds().getFirst(), this.getLocation().getX(),this.getLocation().getY(), this.getLocation().getZ());
     }
 }

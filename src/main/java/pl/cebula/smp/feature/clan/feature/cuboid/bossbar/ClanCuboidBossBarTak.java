@@ -5,10 +5,14 @@ import org.bukkit.Location;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClanCuboidBossBarTak extends BukkitRunnable {
 
@@ -26,7 +30,9 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
     public void run() {
         this.clanService.getAllClans().forEach(clan -> {
             Location location = new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
-            location.getWorld().getPlayers().stream()
+            List<Player> players = new ArrayList<>(location.getWorld().getPlayers());
+
+            players.stream()
                     .filter(nearbyPlayer -> {
                         double dx = nearbyPlayer.getLocation().getX() - location.getX();
                         double dz = nearbyPlayer.getLocation().getZ() - location.getZ();
@@ -55,7 +61,6 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
                                         bossBar.addPlayer(player);
                                         ClanCuboidBossBarManager.addBossBar(player.getUniqueId(), bossBar);
                                     }
-
                                     bossBar.setTitle(bossBarMessage);
                                     bossBar.setProgress(progress);
                                 } else {

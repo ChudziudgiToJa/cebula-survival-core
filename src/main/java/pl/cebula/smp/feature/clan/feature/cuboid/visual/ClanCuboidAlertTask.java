@@ -18,12 +18,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 
-public class ClanCuboidJoinQuitTask extends BukkitRunnable {
+public class ClanCuboidAlertTask extends BukkitRunnable {
     private final ClanService clanService;
     private final Map<UUID, Boolean> playerClanStatusMap;
     private final UserService userService;
 
-    public ClanCuboidJoinQuitTask(ClanService clanService, SurvivalPlugin survivalPlugin, UserService userService) {
+    public ClanCuboidAlertTask(ClanService clanService, SurvivalPlugin survivalPlugin, UserService userService) {
         this.clanService = clanService;
         this.userService = userService;
         this.playerClanStatusMap = new HashMap<>();
@@ -41,20 +41,27 @@ public class ClanCuboidJoinQuitTask extends BukkitRunnable {
 
             if (isInClanTerritory && !wasInClanTerritory) {
                 playerClanStatusMap.put(player.getUniqueId(), true);
+
                 User user = userService.findUserByUUID(player.getUniqueId());
                 if (user == null || user.isVanish()) {
-                    return;
+                    continue;
                 }
 
                 String playerName = player.getName();
+
                 clan.getMemberArrayList().stream()
+                        .filter(memberName -> !memberName.equals(playerName))
                         .map(Bukkit::getPlayer)
                         .filter(Objects::nonNull)
-                        .filter(clanMember -> !clanMember.getName().equalsIgnoreCase(playerName))
-                        .forEach(clanMember -> MessageUtil.sendActionbar(clanMember, "&c" + playerName + " wchodzi na teren twojego klanu!"));
-            } else if (!isInClanTerritory && wasInClanTerritory) {
+                        .forEach(clanMember -> {
+                            if (clan.getOwnerName().equals(playerName)) return; // Pomijamy właściciela klanu
+                            MessageUtil.sendActionbar(clanMember, "&c" + playerName + " wchodzi na teren twojego klanu!");
+                        });
+            }
+            else if (!isInClanTerritory && wasInClanTerritory) {
                 playerClanStatusMap.put(player.getUniqueId(), false);
             }
         }
     }
+
 }

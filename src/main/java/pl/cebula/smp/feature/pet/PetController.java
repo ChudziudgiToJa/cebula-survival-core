@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PetConfiguration;
@@ -20,6 +21,7 @@ import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.MessageUtil;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class PetController implements Listener {
@@ -90,33 +92,37 @@ public class PetController implements Listener {
 
     @EventHandler
     public void onClickPet(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack item = event.getItem();
-        if (item == null || item.getType() != Material.PLAYER_HEAD || item.getItemMeta() == null) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
+
+        Player player = event.getPlayer();
+        ItemStack item = event.getItem();
+        if (item == null) return;
+        if (item.getType() != Material.PLAYER_HEAD || item.getItemMeta() == null) {
+            return;
+        }
+
         PetData petData = PetUtil.getPetFromItem(this.petconfiguration, event.getItem().getItemMeta().getDisplayName());
 
         if (petData != null) {
             event.setCancelled(true);
             User user = this.userService.findUserByUUID(player.getUniqueId());
             int petCount = user.getPetDataArrayList().size();
-
             if (petCount >= 2) {
                 MessageUtil.sendTitle(player, "&cLimit petów", "&cNie możesz mieć więcej niż &42 &cpetów!", 20, 60, 20);
                 return;
             }
-
             if (item.getAmount() > 1) {
                 item.setAmount(item.getAmount() - 1);
             } else {
                 player.getInventory().removeItem(event.getItem());
             }
-
-            final Pet Pet = new Pet(petData, UUID.randomUUID());
-            user.getPetDataArrayList().add(Pet);
-            PetHologramHandler.create(player, user, Pet);
+            final Pet pet = new Pet(petData, UUID.randomUUID());
+            user.getPetDataArrayList().add(pet);
+            PetHologramHandler.create(player, user, pet);
             MessageUtil.sendTitle(player, "&a", "&fPomyślnie dodano &a" + petData.getName() + "&f do Twojej kolekcji!", 20, 60, 20);
         }
     }
+
 }
