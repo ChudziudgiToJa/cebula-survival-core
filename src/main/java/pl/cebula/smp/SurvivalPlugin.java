@@ -28,6 +28,7 @@ import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blacksmith.BlacksmithController;
 import pl.cebula.smp.feature.blacksmith.BlacksmithInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.bordercollection.BorderCollectionInventory;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
@@ -133,6 +134,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private CraftingConfiguration craftingConfiguration;
     private NetherConfiguration netherConfiguration;
     private PetConfiguration petconfiguration;
+    private BorderCollectionConfiguration borderCollectionConfiguration;
     private UserService userService;
     private ClanService clanService;
     private ProtocolManager protocolManager;
@@ -179,6 +181,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.petconfiguration = configService.create(PetConfiguration.class, new File(dataFolder, "pet.yml"));
         this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
         this.netherConfiguration = configService.create(NetherConfiguration.class, new File(dataFolder, "nether.yml"));
+        this.borderCollectionConfiguration = configService.create(BorderCollectionConfiguration.class, new File(dataFolder, "border.yml"));
 
 
         // topki
@@ -232,6 +235,9 @@ public final class SurvivalPlugin extends JavaPlugin {
 
         //Nether
         this.netherManager = new NetherManager(this.netherConfiguration);
+
+        BorderCollectionInventory borderCollectionInventory = new BorderCollectionInventory(this, this.borderCollectionConfiguration, this.userService);
+        Bukkit.getWorlds().getFirst().getWorldBorder().setSize(this.borderCollectionConfiguration.getWorldSize());
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
