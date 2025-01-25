@@ -28,6 +28,7 @@ import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blacksmith.BlacksmithController;
 import pl.cebula.smp.feature.blacksmith.BlacksmithInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.bordercollection.BorderCollectionController;
 import pl.cebula.smp.feature.bordercollection.BorderCollectionInventory;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
@@ -86,6 +87,8 @@ import pl.cebula.smp.feature.pet.PetInventory;
 import pl.cebula.smp.feature.pet.task.PetMoveTask;
 import pl.cebula.smp.feature.pet.task.PetPotionEffectTask;
 import pl.cebula.smp.feature.pet.task.PetRemoveBuggyPetsTask;
+import pl.cebula.smp.feature.randomteleport.RandomTeleportCommand;
+import pl.cebula.smp.feature.randomteleport.RandomTeleportController;
 import pl.cebula.smp.feature.shop.ShopCommand;
 import pl.cebula.smp.feature.shop.ShopInventory;
 import pl.cebula.smp.feature.shop.npcshop.controller.NpcShopController;
@@ -270,7 +273,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new DiscordCommand(this.pluginConfiguration),
                         new NetherCommand(this.netherManager, this.netherConfiguration),
                         new ReloadConfigurationCommand(configService),
-                        new ShopCommand(shopInventory)
+                        new ShopCommand(shopInventory),
+                        new RandomTeleportCommand(this.pluginConfiguration)
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -300,7 +304,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanCuboidBossBarController(this.clanService, this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),
                 new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
-                new NetherController(this.netherConfiguration, this.netherManager)
+                new NetherController(this.netherConfiguration, this.netherManager),
+                new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
+                new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

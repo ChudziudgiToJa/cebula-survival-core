@@ -30,9 +30,16 @@ public class ClanCuboidCommandBlocker implements Listener {
 
         String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
 
-        if (this.clanConfiguration.blockCommandList.contains(command)) {
-            event.setCancelled(true);
-            MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana na terenie klanu.", 20, 50, 20);
+        if (clan.getMemberArrayList().contains(player.getName()) || clan.getOwnerName().equals(player.getName())) {
+            if (this.clanConfiguration.blockCommandListForClan.contains(command)) {
+                event.setCancelled(true);
+                MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana na terenie klanu.", 20, 50, 20);
+            }
+        } else {
+            if (this.clanConfiguration.blockCommandList.contains(command)) {
+                event.setCancelled(true);
+                MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana na terenie klanu.", 20, 50, 20);
+            }
         }
     }
 }

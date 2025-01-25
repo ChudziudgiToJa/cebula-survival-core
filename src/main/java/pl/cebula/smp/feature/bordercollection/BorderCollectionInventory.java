@@ -87,23 +87,25 @@ public class BorderCollectionInventory {
 
         simpleInventory.click(event -> {
             event.setCancelled(true);
+            if (event.getCurrentItem() == null) return;
             if (event.getSlot() == 12) {
-                showDeleteInventory(player, 5000, 1);
+                areYouSure(player, 5000, 1);
                 return;
             }
             if (event.getSlot() == 13) {
-                showDeleteInventory(player, 10000, 2);
+                areYouSure(player, 10000, 2);
                 return;
             }
             if (event.getSlot() == 14) {
-                showDeleteInventory(player, 15000, 3);
+                areYouSure(player, 15000, 3);
+                return;
             }
         });
 
         player.openInventory(inventory);
     }
 
-    public void showDeleteInventory(final Player player, final int cost, final int borderMore) {
+    public void areYouSure(final Player player, final int cost, final int borderMore) {
         SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 3, MessageUtil.smallText("&7czy na pewno?"));
         Inventory inventory = simpleInventory.getInventory();
 

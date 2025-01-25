@@ -1,6 +1,9 @@
 package pl.cebula.smp.feature.bordercollection;
 
-import net.citizensnpcs.api.event.NPCClickEvent;
+
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import pl.cebula.smp.configuration.implementation.BorderCollectionConfiguration;
@@ -15,10 +18,14 @@ public class BorderCollectionController implements Listener {
         this.borderCollectionInventory = borderCollectionInventory;
     }
 
+
     @EventHandler
-    public void onClickNpc(NPCClickEvent event) {
-        if (event.getNPC().getId() == this.borderCollectionConfiguration.npcId) {
-            this.borderCollectionInventory.show(event.getClicker());
+    public void onClickNpc(NPCRightClickEvent event) {
+        Player player = event.getClicker();
+        if (event.getNPC().getId() == this.borderCollectionConfiguration.getNpcId()) {
+            this.borderCollectionInventory.show(player);
+            player.playSound(player, Sound.BLOCK_BARREL_OPEN, 5 ,5);
+            event.setCancelled(true);
         }
     }
 }

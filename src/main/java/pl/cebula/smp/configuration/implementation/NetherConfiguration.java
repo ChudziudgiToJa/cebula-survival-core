@@ -14,5 +14,5 @@ public class NetherConfiguration extends OkaeriConfig {
 
     public boolean NetherJoinStatus;
     public Location netherSpawnLocation = new Location(Bukkit.getWorld("world_nether"), 0 ,100 ,0);
-    public List<String> blockedCommandsOnNether = List.of("spawn", "warp", "tpa", "tpaccept", "tpaccept");
+    public List<String> blockedCommandsOnNether = List.of("spawn", "warp", "tpa", "tpaccept", "tpaccept", "home", "sethome");
 }

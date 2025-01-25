@@ -1,6 +1,5 @@
 package pl.cebula.smp.feature.nether;
 
-import com.eternalcode.core.EternalCoreApi;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -8,10 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import pl.cebula.smp.configuration.implementation.NetherConfiguration;
 import pl.cebula.smp.util.MessageUtil;
 
@@ -49,7 +45,7 @@ public class NetherController implements Listener {
         event.setCancelled(true);
 
         if (!this.netherConfiguration.NetherJoinStatus && !player.hasPermission("cebulasmp.nether.admin")) {
-            MessageUtil.sendTitle(player, "", "&cNether aktualnie jest wyłączony", 20,50,20);
+            MessageUtil.sendTitle(player, "", "&cNether aktualnie jest wyłączony", 20, 50, 20);
             return;
         }
 
@@ -79,6 +75,18 @@ public class NetherController implements Listener {
         if (event.getBlock().getType().equals(Material.WITHER_SKELETON_SKULL)) {
             event.setCancelled(true);
             MessageUtil.sendMessage(event.getPlayer(), "&cStawianie tego przedmiotu jest tylko możliwe w netherze.");
+        }
+    }
+
+    @EventHandler
+    public void onSendCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
+        if (player.getWorld().equals(Bukkit.getWorlds().get(1))) {
+            if (this.netherConfiguration.blockedCommandsOnNether.contains(command)) {
+                event.setCancelled(true);
+                MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana w netherze.", 20, 50, 20);
+            }
         }
     }
 }
