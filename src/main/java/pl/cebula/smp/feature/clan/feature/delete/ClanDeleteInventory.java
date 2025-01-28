@@ -12,7 +12,6 @@ import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
 import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderPacketHandler;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
@@ -80,7 +79,6 @@ public class ClanDeleteInventory {
                     if (bossBar == null) return;
                     bossBar.removePlayer(player1);
                     ClanCuboidBossBarManager.removeBossBar(player1.getUniqueId());
-                    ClanCuboidBorderPacketHandler.sendBorderPacket(player1, player.getWorld(), this.protocolManager);
                 });
                 player.closeInventory();
                 MessageUtil.sendTitle(player, "", "&aUsunięto klan.", 20, 50, 20);

@@ -1,5 +1,7 @@
 package pl.cebula.smp.feature.user.controller;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,8 +21,8 @@ public class JoinQuitListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        event.setJoinMessage(null);
-        if(this.userService.findUserByNickName(player.getName()) == null) {
+        event.joinMessage(null);
+        if (this.userService.findUserByUUID(player.getUniqueId()) == null) {
             this.userService.createUser(new User(player));
         }
     }

@@ -1,17 +1,11 @@
 package pl.cebula.smp.feature.clan.feature.cuboid.heart;
 
-import eu.decentsoftware.holograms.api.DHAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.armor.ClanArmorHandler;
-import pl.cebula.smp.feature.clan.feature.cuboid.bossbar.ClanCuboidBossBarManager;
-import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderPacketHandler;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
