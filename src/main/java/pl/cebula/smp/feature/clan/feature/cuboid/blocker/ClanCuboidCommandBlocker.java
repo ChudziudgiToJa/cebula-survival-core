@@ -27,8 +27,19 @@ public class ClanCuboidCommandBlocker implements Listener {
         if (clan == null) {
             return;
         }
+        if (player.hasPermission("cebulasmp.clan.admin")) return;
 
         String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
+
+        if (command.equals("tpaaccept") || command.equals("tpaccept")) {
+            String[] args = event.getMessage().split(" ");
+            if (args.length > 1) {
+                String targetPlayerName = args[1];
+                if (clan.getMemberArrayList().contains(targetPlayerName) || clan.getOwnerName().equals(targetPlayerName)) {
+                    return;
+                }
+            }
+        }
 
         if (clan.getMemberArrayList().contains(player.getName()) || clan.getOwnerName().equals(player.getName())) {
             if (this.clanConfiguration.blockCommandListForClan.contains(command)) {

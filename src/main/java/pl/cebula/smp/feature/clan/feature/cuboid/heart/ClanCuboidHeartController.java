@@ -50,6 +50,8 @@ public class ClanCuboidHeartController implements Listener {
         Clan targetClan = clanService.findClanByLocation(blockLocation);
         Clan playerClan = clanService.findClanByMember(player.getName());
 
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
         if (targetClan == null) {
             return;
         }
@@ -91,6 +93,7 @@ public class ClanCuboidHeartController implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         Clan clan = this.clanService.findClanByLocation(blockLocation);
 
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
         if (clan == null) return;
 
         Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
@@ -106,7 +109,7 @@ public class ClanCuboidHeartController implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         Clan clan = this.clanService.findClanByLocation(blockLocation);
 
-
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
         if (clan == null) return;
 
         Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
@@ -139,6 +142,7 @@ public class ClanCuboidHeartController implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
         Block block = event.getClickedBlock();
+
         if (action != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
@@ -149,6 +153,9 @@ public class ClanCuboidHeartController implements Listener {
         if (block == null) {
             return;
         }
+
+        if (!block.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
         Clan clan = clanService.findClanByLocation(player.getLocation());
         if (clan == null) {
             return;
@@ -173,6 +180,10 @@ public class ClanCuboidHeartController implements Listener {
     public void onLiquidFlow(BlockFromToEvent event) {
         Block block = event.getBlock();
         Block toBlock = event.getToBlock();
+        if (!toBlock.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+        if (!block.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
+
 
         Location toLocation = toBlock.getLocation();
         Clan clan = this.clanService.findClanByLocation(block.getLocation());
@@ -191,6 +202,8 @@ public class ClanCuboidHeartController implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         Location location = event.getBlock().getLocation();
+        if (!location.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
 
         Clan clan = this.clanService.findClanByLocation(location);
         if (clan == null) return;
@@ -203,6 +216,7 @@ public class ClanCuboidHeartController implements Listener {
     @EventHandler
     public void onBucketFill(PlayerBucketFillEvent event) {
         Location location = event.getBlock().getLocation();
+        if (!location.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
 
         Clan clan = this.clanService.findClanByLocation(location);
         if (clan == null) return;

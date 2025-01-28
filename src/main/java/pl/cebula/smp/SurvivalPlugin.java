@@ -41,6 +41,8 @@ import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartController
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartHologramTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.heart.ClanCuboidHeartInventory;
 import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidAlertTask;
+import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderController;
+import pl.cebula.smp.feature.clan.feature.cuboid.visual.ClanCuboidBorderTask;
 import pl.cebula.smp.feature.clan.feature.delete.ClanDeleteInventory;
 import pl.cebula.smp.feature.clan.feature.invite.ClanInviteService;
 import pl.cebula.smp.feature.clan.feature.pvp.ClanPvpController;
@@ -300,7 +302,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
                 new ClanCuboidController(this.clanService, this, this.clanConfiguration),
                 new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
-//                new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
+                new ClanCuboidBorderController(this.clanService, this.protocolManager, this),
                 new ClanCuboidBossBarController(this.clanService, this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),
                 new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
@@ -319,7 +321,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanArmorTask(this, this.clanService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
-//        new ClanCuboidBorderTask(this.clanService, this, this.protocolManager);
+        new ClanCuboidBorderTask(this.clanService, this, this.protocolManager);
         new ClanCuboidAlertTask(this.clanService, this, this.userService);
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);

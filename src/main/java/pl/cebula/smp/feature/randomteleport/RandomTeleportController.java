@@ -1,7 +1,6 @@
 package pl.cebula.smp.feature.randomteleport;
 
 import com.eternalcode.core.EternalCoreApi;
-import com.sk89q.worldguard.bukkit.event.block.BreakBlockEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -10,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.MessageUtil;
 
@@ -27,6 +27,20 @@ public class RandomTeleportController implements Listener {
 
 
     @EventHandler
+    public void onFirstJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.hasPlayedBefore()) {
+            CompletableFuture<Location> randomLocationFuture = this.eternalCoreApi.getRandomTeleportService().getSafeRandomLocationInWorldBorder(player.getWorld(), 5);
+            randomLocationFuture.thenAccept(randomLocation -> {
+                if (randomLocation != null) {
+                    player.teleport(randomLocation);
+                }
+            });
+        }
+    }
+
+    @EventHandler
     public void onClickButton(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
@@ -37,9 +51,9 @@ public class RandomTeleportController implements Listener {
             randomLocationFuture.thenAccept(randomLocation -> {
                 if (randomLocation != null) {
                     player.teleport(randomLocation);
-                    MessageUtil.sendTitle(player, "", "&aZostałeś przeteleportowany w losowe miejsce!", 20,50,20);
+                    MessageUtil.sendTitle(player, "", "&aZostałeś przeteleportowany w losowe miejsce!", 20, 50, 20);
                 } else {
-                    MessageUtil.sendTitle(player, "", "&cNie udało się znaleźć bezpiecznej lokalizacji do teleportacji.", 20,50,20);
+                    MessageUtil.sendTitle(player, "", "&cNie udało się znaleźć bezpiecznej lokalizacji do teleportacji.", 20, 50, 20);
                 }
             });
         }

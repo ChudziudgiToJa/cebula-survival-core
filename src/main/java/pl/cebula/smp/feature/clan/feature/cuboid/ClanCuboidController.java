@@ -1,5 +1,6 @@
 package pl.cebula.smp.feature.clan.feature.cuboid;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -33,6 +34,7 @@ public class ClanCuboidController implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlock().getLocation();
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
         Clan clan = this.clanService.findClanByLocation(blockLocation);
         if (clan == null) return;
         if (clan.getMemberArrayList().contains(player.getName())) return;
@@ -46,6 +48,7 @@ public class ClanCuboidController implements Listener {
     public void onBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlock().getLocation();
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
         Clan clan = this.clanService.findClanByLocation(blockLocation);
         if (clan == null) return;
         if (clan.getMemberArrayList().contains(player.getName())) return;
@@ -59,6 +62,8 @@ public class ClanCuboidController implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlockClicked().getLocation().add(event.getBlockFace().getDirection());
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
         Clan clan = this.clanService.findClanByLocation(blockLocation);
         if (clan == null) return;
         if (clan.getMemberArrayList().contains(player.getName())) return;
@@ -72,6 +77,8 @@ public class ClanCuboidController implements Listener {
     public void onBucketFill(PlayerBucketFillEvent event) {
         Player player = event.getPlayer();
         Location blockLocation = event.getBlockClicked().getLocation();
+        if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+
         Clan clan = this.clanService.findClanByLocation(blockLocation);
         if (clan == null) return;
         if (clan.getMemberArrayList().contains(player.getName())) return;
@@ -85,6 +92,8 @@ public class ClanCuboidController implements Listener {
     public void onLiquidFlow(BlockFromToEvent event) {
         Block block = event.getBlock();
         Block toBlock = event.getToBlock();
+        if (!toBlock.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
+        if (!block.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
 
         Location toLocation = toBlock.getLocation();
         Clan fromClan = this.clanService.findClanByLocation(block.getLocation());

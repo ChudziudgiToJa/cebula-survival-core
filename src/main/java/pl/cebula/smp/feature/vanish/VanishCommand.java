@@ -26,28 +26,27 @@ public class VanishCommand {
         this.survivalPlugin = survivalPlugin;
     }
 
-
     @Execute
     void own(@Context Player player) {
-        User user = this.userService.findUserByUUID(player.getUniqueId());
+        User user = userService.findUserByUUID(player.getUniqueId());
         if (user == null) {
             MessageUtil.sendMessage(player, "&cNie odnaleziono Twojego użytkownika w bazie danych.");
             return;
         }
-        vanishHandler.toggleVanish(player, user, this.survivalPlugin);
+        vanishHandler.toggleVanish(player, user, survivalPlugin);
     }
 
     @Execute
-    void target(@Context Player player, @OptionalArg String s) {
-        if (s == null || s.isEmpty()) {
+    void target(@Context Player player, @OptionalArg String targetName) {
+        if (targetName == null || targetName.isEmpty()) {
             MessageUtil.sendMessage(player, "&cPodaj nick gracza, aby zmienić jego status vanish.");
             return;
         }
-        User user = this.userService.findUserByNickName(s);
+        User user = userService.findUserByNickName(targetName);
         if (user == null) {
-            MessageUtil.sendMessage(player, "&cNie odnaleziono Twojego użytkownika w bazie danych.");
+            MessageUtil.sendMessage(player, "&cNie odnaleziono użytkownika w bazie danych.");
             return;
         }
-        vanishHandler.toggleVanish(player, user, this.survivalPlugin);
+        vanishHandler.toggleVanish(player, user, survivalPlugin);
     }
 }

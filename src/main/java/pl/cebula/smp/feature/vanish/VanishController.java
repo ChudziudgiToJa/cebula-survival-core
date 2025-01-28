@@ -29,7 +29,7 @@ public class VanishController implements Listener {
         Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
             User onlineUser = userService.findUserByUUID(onlinePlayer.getUniqueId());
             if (onlineUser != null && onlineUser.isVanish() && !joiningPlayer.hasPermission("cebulasmp.vanish.see")) {
-                joiningPlayer.hidePlayer(onlinePlayer);
+                joiningPlayer.hidePlayer(survivalPlugin, onlinePlayer); // Dodano plugin jako argument
             }
         });
 
@@ -43,19 +43,21 @@ public class VanishController implements Listener {
             joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, true));
             Bukkit.getOnlinePlayers().forEach(player -> {
                 if (!player.hasPermission("cebulasmp.vanish.see")) {
-                    player.hidePlayer(joiningPlayer);
+                    player.hidePlayer(survivalPlugin, joiningPlayer); // Dodano plugin jako argument
                 }
             });
             MessageUtil.sendMessage(joiningPlayer, "&b&lV &ajest aktywny");
+        } else {
+            joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, false));
         }
-        joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, false));
     }
-
 
     @EventHandler
     public void onSendMessage(AsyncChatEvent event) {
-        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
-        if (user == null) return;
+        User user = userService.findUserByUUID(event.getPlayer().getUniqueId());
+        if (user == null) {
+            return;
+        }
         if (user.isVanish()) {
             event.setCancelled(true);
             MessageUtil.sendMessage(event.getPlayer(), "&b&lV &cNie możesz pisać na chacie, aby się nie ujawniać");

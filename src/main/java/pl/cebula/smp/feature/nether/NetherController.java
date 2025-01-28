@@ -82,6 +82,7 @@ public class NetherController implements Listener {
     public void onSendCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
+        if (player.hasPermission("cebulasmp.nether.admin")) return;
         if (player.getWorld().equals(Bukkit.getWorlds().get(1))) {
             if (this.netherConfiguration.blockedCommandsOnNether.contains(command)) {
                 event.setCancelled(true);

@@ -197,8 +197,8 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.STRING).build(),
                                     10,
-                                    4.0, // Sprzedaż
-                                    2.0  // Zakup
+                                    4.0,
+                                    2.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SPIDER_EYE).build(),
@@ -209,8 +209,8 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.ENDER_PEARL).build(),
                                     12,
-                                    100.0,
-                                    50.0
+                                    590.0,
+                                    9.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.ROTTEN_FLESH).build(),
@@ -245,8 +245,80 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.GUNPOWDER).build(),
                                     20,
-                                    400,
+                                    300,
                                     8.1
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.ARROW).build(),
+                                    21,
+                                    1.0,
+                                    0.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.SLIME_BALL).build(),
+                                    22,
+                                    5.0,
+                                    2.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.GHAST_TEAR).build(),
+                                    24,
+                                    50.0,
+                                    25.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.MAGMA_CREAM).build(),
+                                    25,
+                                    15.0,
+                                    7.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.LEATHER).build(),
+                                    26,
+                                    3.0,
+                                    1.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.RABBIT_HIDE).build(),
+                                    27,
+                                    2.0,
+                                    1.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.RABBIT_FOOT).build(),
+                                    28,
+                                    10.0,
+                                    5.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.PRISMARINE_SHARD).build(),
+                                    29,
+                                    8.0,
+                                    4.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.PRISMARINE_CRYSTALS).build(),
+                                    30,
+                                    12.0,
+                                    6.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.NAUTILUS_SHELL).build(),
+                                    31,
+                                    30.0,
+                                    15.0
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.PHANTOM_MEMBRANE).build(),
+                                    32,
+                                    25.0,
+                                    12.5
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.DRAGON_BREATH).build(),
+                                    34,
+                                    5400.0,
+                                    50.0
                             )
                     )
             ),
@@ -257,25 +329,25 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.COD).build(),
                                     10,
-                                    6.0, // Sprzedaż (12.0 / 2)
-                                    8.0  // Zakup
+                                    60.0,
+                                    8.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.SALMON).build(),
                                     11,
-                                    7.0, // Sprzedaż (14.0 / 2)
+                                    70.0, // Sprzedaż (14.0 / 2)
                                     9.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.TROPICAL_FISH).build(),
                                     12,
-                                    5.0, // Sprzedaż (10.0 / 2)
+                                    50.0, // Sprzedaż (10.0 / 2)
                                     6.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.PUFFERFISH).build(),
                                     13,
-                                    9.0, // Sprzedaż (18.0 / 2)
+                                    90.0, // Sprzedaż (18.0 / 2)
                                     12.0
                             ),
                             new ItemToInteract(
@@ -287,37 +359,37 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             new ItemToInteract(
                                     new ItemBuilder(Material.SADDLE).build(),
                                     15,
-                                    30.0, // Sprzedaż (60.0 / 2)
+                                    300.0, // Sprzedaż (60.0 / 2)
                                     30.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LILY_PAD).build(),
                                     16,
-                                    4.0, // Sprzedaż (8.0 / 2)
+                                    40.0, // Sprzedaż (8.0 / 2)
                                     4.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.INK_SAC).build(),
                                     19,
-                                    5.0, // Sprzedaż (10.0 / 2)
+                                    50.0, // Sprzedaż (10.0 / 2)
                                     4.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.BOWL).build(),
                                     20,
-                                    4.5,
+                                    40.5,
                                     1.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.TRIPWIRE_HOOK).build(),
                                     21,
-                                    20.0, // Sprzedaż (40.0 / 2)
+                                    200.0, // Sprzedaż (40.0 / 2)
                                     15.0
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LEATHER).build(),
                                     22,
-                                    3.5,
+                                    30.5,
                                     3.0
                             )
                     )
