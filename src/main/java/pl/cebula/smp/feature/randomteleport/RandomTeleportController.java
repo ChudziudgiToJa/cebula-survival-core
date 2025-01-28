@@ -25,21 +25,6 @@ public class RandomTeleportController implements Listener {
         this.eternalCoreApi = eternalCoreApi;
     }
 
-
-    @EventHandler
-    public void onFirstJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        if (!player.hasPlayedBefore()) {
-            CompletableFuture<Location> randomLocationFuture = this.eternalCoreApi.getRandomTeleportService().getSafeRandomLocationInWorldBorder(player.getWorld(), 5);
-            randomLocationFuture.thenAccept(randomLocation -> {
-                if (randomLocation != null) {
-                    player.teleport(randomLocation);
-                }
-            });
-        }
-    }
-
     @EventHandler
     public void onClickButton(PlayerInteractEvent event) {
         Player player = event.getPlayer();

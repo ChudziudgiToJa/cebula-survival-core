@@ -187,6 +187,12 @@ public class NpcShopConfiguration extends OkaeriConfig {
                                     22,
                                     3.4,
                                     0.9
+                            ),
+                            new ItemToInteract(
+                                    new ItemBuilder(Material.EGG).build(),
+                                    23,
+                                    7,
+                                    4.0
                             )
                     )
             ),
@@ -274,13 +280,13 @@ public class NpcShopConfiguration extends OkaeriConfig {
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.LEATHER).build(),
-                                    26,
+                                    23,
                                     3.0,
                                     1.5
                             ),
                             new ItemToInteract(
                                     new ItemBuilder(Material.RABBIT_HIDE).build(),
-                                    27,
+                                    33,
                                     2.0,
                                     1.0
                             ),

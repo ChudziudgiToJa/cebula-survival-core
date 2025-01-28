@@ -51,10 +51,7 @@ import pl.cebula.smp.feature.clan.feature.war.ClanWarManager;
 import pl.cebula.smp.feature.clan.repository.ClanRepository;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.feature.clan.task.ClanSaveTask;
-import pl.cebula.smp.feature.command.DiscordCommand;
-import pl.cebula.smp.feature.command.ReloadConfigurationCommand;
-import pl.cebula.smp.feature.command.TrashCommand;
-import pl.cebula.smp.feature.command.VplnCommand;
+import pl.cebula.smp.feature.command.*;
 import pl.cebula.smp.feature.crafting.CraftingCommand;
 import pl.cebula.smp.feature.crafting.CraftingInventory;
 import pl.cebula.smp.feature.crafting.CraftingManager;
@@ -66,6 +63,7 @@ import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.economy.PayCommand;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
+import pl.cebula.smp.feature.itemcooldown.ItemCooldownController;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
 import pl.cebula.smp.feature.itemshop.ItemShopInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopManager;
@@ -276,7 +274,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new NetherCommand(this.netherManager, this.netherConfiguration),
                         new ReloadConfigurationCommand(configService),
                         new ShopCommand(shopInventory),
-                        new RandomTeleportCommand(this.pluginConfiguration)
+                        new RandomTeleportCommand(this.pluginConfiguration),
+                        new LiveCommand()
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .invalidUsage(
@@ -308,7 +307,8 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
                 new NetherController(this.netherConfiguration, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
-                new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi)
+                new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
+                new ItemCooldownController()
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
 
         // load Tasks

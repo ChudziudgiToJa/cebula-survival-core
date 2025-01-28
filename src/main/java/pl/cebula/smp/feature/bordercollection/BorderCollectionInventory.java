@@ -69,6 +69,8 @@ public class BorderCollectionInventory {
                         "",
                         "&7Koszt: &a10,000 monet",
                         "",
+                        "&7Aktualny rozmiar świata: &a" + borderCollectionConfiguration.getWorldSize(),
+                        "",
                         "&akliknij aby kupić"
                 )
                 .build());
