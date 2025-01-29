@@ -112,9 +112,10 @@ public class ClanService {
         for (Clan clan : clanConcurrentHashMap.values()) {
             ClanCuboidHearthLocation clanLocation = clan.getLocation();
             double minX = clanLocation.getX() - 20;
-            double maxX = clanLocation.getX() + 20;
+            double maxX = clanLocation.getX() + 21;
             double minZ = clanLocation.getZ() - 20;
-            double maxZ = clanLocation.getZ() + 20;
+            double maxZ = clanLocation.getZ() + 21;
+
             if (blockLocation.getX() >= minX && blockLocation.getX() <= maxX
                     && blockLocation.getZ() >= minZ && blockLocation.getZ() <= maxZ) {
                 return true;
@@ -122,5 +123,6 @@ public class ClanService {
         }
         return false;
     }
+
 }
 

@@ -8,27 +8,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.feature.clan.Clan;
-import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidHearthLocation;
 import pl.cebula.smp.feature.clan.service.ClanService;
 
 public class ClanCuboidBorderParticleTask extends BukkitRunnable {
 
     private final ClanService clanService;
-    private final SurvivalPlugin survivalPlugin;
 
-    public ClanCuboidBorderParticleTask(ClanService clanService, SurvivalPlugin survivalPlugin) {
+    public ClanCuboidBorderParticleTask(ClanService clanService, final SurvivalPlugin survivalPlugin) {
         this.clanService = clanService;
-        this.survivalPlugin = survivalPlugin;
-        this.runTaskTimerAsynchronously(survivalPlugin, 30, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 20 * 4, 0);
     }
 
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             for (Clan clan : clanService.getAllClans()) {
-                ClanCuboidHearthLocation clanLocation = clan.getLocation();
-                Location playerLocation = player.getLocation();
-                if (isWithinDistance(playerLocation, clanLocation)) {
+                Location clanLocation = clan.getClanLocation();
+                if (isPlayerNearClan(player, clan.getClanLocation())) {
                     double centerX = clanLocation.getX();
                     double centerZ = clanLocation.getZ();
                     double size = 20;
@@ -40,7 +36,13 @@ public class ClanCuboidBorderParticleTask extends BukkitRunnable {
                     }
                 }
             }
-        }
+            }
+    }
+
+    private boolean isPlayerNearClan(Player player, Location clanCenter) {
+        double dx = player.getLocation().getX() - clanCenter.getX();
+        double dz = player.getLocation().getZ() - clanCenter.getZ();
+        return Math.sqrt(dx * dx + dz * dz) < 30;
     }
 
     private void spawnParticle(Player player, Clan clan, double x, double z) {
@@ -53,11 +55,5 @@ public class ClanCuboidBorderParticleTask extends BukkitRunnable {
             player.spawnParticle(Particle.DUST, particleLocation, 1, 0, 0, 0, 0,
                     new Particle.DustOptions(Color.fromRGB(255, 0, 0), 1));
         }
-    }
-
-    private boolean isWithinDistance(Location playerLocation, ClanCuboidHearthLocation clanLocation) {
-        double dx = clanLocation.getX() - playerLocation.getX();
-        double dz = clanLocation.getZ() - playerLocation.getZ();
-        return dx * dx + dz * dz <= (double) 50 * (double) 50;
     }
 }

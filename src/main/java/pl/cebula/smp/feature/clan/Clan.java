@@ -65,6 +65,6 @@ public class Clan implements Serializable, Identifiable<String> {
     }
 
     public Location getClanLocation() {
-        return new Location(Bukkit.getWorlds().getFirst(), this.getLocation().getX(),this.getLocation().getY(), this.getLocation().getZ());
+        return new Location(Bukkit.getWorlds().getFirst(), this.getLocation().getX() + 0.5,this.getLocation().getY(), this.getLocation().getZ() + 0.5);
     }
 }

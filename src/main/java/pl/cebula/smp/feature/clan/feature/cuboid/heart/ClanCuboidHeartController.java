@@ -96,8 +96,7 @@ public class ClanCuboidHeartController implements Listener {
         if (!blockLocation.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
         if (clan == null) return;
 
-        Location clanHeart = new Location(player.getWorld(), clan.getLocation().getX(), clan.getLocation().getY(), clan.getLocation().getZ());
-        if (ClanManager.isNearClanHeart(blockLocation, clanHeart)) {
+        if (ClanManager.isNearClanHeart(blockLocation, clan.getClanLocation())) {
             MessageUtil.sendActionbar(player, "&cNie możesz stawiać bloków w pobliżu serca klanu!");
             event.setCancelled(true);
         }
