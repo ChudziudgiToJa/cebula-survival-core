@@ -30,7 +30,7 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
     public void run() {
         this.clanService.getAllClans().forEach(clan -> {
             Location clanCenter = new Location(
-                    Bukkit.getWorlds().getFirst(), // Zakładam, że używasz pierwszego świata
+                    Bukkit.getWorlds().getFirst(),
                     clan.getLocation().getX(),
                     clan.getLocation().getY(),
                     clan.getLocation().getZ()
@@ -38,7 +38,7 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
             List<Player> players = new ArrayList<>(clanCenter.getWorld().getPlayers());
 
             players.stream()
-                    .filter(player -> player.getLocation().distance(clanCenter) <= 80) // Sprawdza graczy w promieniu 80 bloków
+                    .filter(player -> player.getLocation().distance(clanCenter) <= 80)
                     .forEach(player -> {
                         if (clanService.isLocationOnClanCuboid(player.getLocation())) {
                             Bukkit.getScheduler().runTask(this.survivalPlugin, () -> {
@@ -57,8 +57,7 @@ public class ClanCuboidBossBarTak extends BukkitRunnable {
     }
 
     private void handleBossBarForMember(Player player, Clan clan) {
-        Location clanCenter = clan.getClanLocation();
-        double distance = player.getLocation().distance(clanCenter);
+        double distance = player.getLocation().distance(new Location(Bukkit.getWorlds().getFirst(), clan.getLocation().getX(), player.getLocation().getY(), clan.getLocation().getZ()));
         double progress = Math.max(0, 1 - (distance / 20.0));
 
         String bossBarMessage = String.format(

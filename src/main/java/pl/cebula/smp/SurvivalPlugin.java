@@ -298,7 +298,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new PetController(this.userService, this.petconfiguration, this),
                 new ChatCharController(),
                 new BlacksmithController(blacksmithInventory, this.pluginConfiguration),
-                new ClanCuboidController(this.clanService, this, this.clanConfiguration),
+                new ClanCuboidController(this.clanService, this.clanConfiguration),
                 new ClanCuboidHeartController(this.clanService, this, this.clanConfiguration, clanCuboidHeartInventory, this.userService),
                 new ClanCuboidBossBarController(this.clanService, this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),

@@ -21,12 +21,10 @@ import pl.cebula.smp.util.MessageUtil;
 public class ClanCuboidController implements Listener {
 
     private final ClanService clanService;
-    private final SurvivalPlugin survivalPlugin;
     private final ClanConfiguration clanConfiguration;
 
-    public ClanCuboidController(ClanService clanService, SurvivalPlugin survivalPlugin, ClanConfiguration clanConfiguration) {
+    public ClanCuboidController(ClanService clanService, ClanConfiguration clanConfiguration) {
         this.clanService = clanService;
-        this.survivalPlugin = survivalPlugin;
         this.clanConfiguration = clanConfiguration;
     }
 

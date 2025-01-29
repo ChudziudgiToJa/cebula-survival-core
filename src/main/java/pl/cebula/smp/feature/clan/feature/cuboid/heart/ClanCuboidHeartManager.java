@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.SurvivalPlugin;
@@ -103,9 +104,13 @@ public class ClanCuboidHeartManager {
         Bukkit.getOnlinePlayers().forEach(player1 -> {
             MessageUtil.sendMessage(player1, "&4⚠ &2&l" + clan1.getTag() + " &cpodbija: &4" + targetClan.getTag());
         });
+        Block block = blockLocation.getBlock();
 
+        block.setType(Material.AIR);
         DHAPI.removeHologram(targetClan.getTag());
         clanService.removeClan(targetClan);
+
+        targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() + 50);
 
         Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
         player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);

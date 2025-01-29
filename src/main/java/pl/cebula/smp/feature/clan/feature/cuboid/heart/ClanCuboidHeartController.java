@@ -56,10 +56,9 @@ public class ClanCuboidHeartController implements Listener {
             return;
         }
 
-        if (!blockLocation.equals(targetClan.getClanLocation())) {
+        if (!targetClan.getClanLocation().equals(blockLocation)) {
             return;
         }
-
 
         if (!clanConfiguration.isWar()) {
             MessageUtil.sendActionbar(player, "&cNie możesz atakować wrogiego klanu, gdy nie ma włączonych wojen!");
@@ -82,7 +81,9 @@ public class ClanCuboidHeartController implements Listener {
 
         if (targetClan.getCuboidHearthValue() > 1) {
             ClanCuboidHeartManager.handleClanHeartDamage(player, targetClan.getClanLocation(), targetClan, this.survivalPlugin);
+            event.setCancelled(true);
         } else {
+            event.setCancelled(true);
             ClanCuboidHeartManager.handleClanHeartDestruction(player, targetClan.getClanLocation(), targetClan, this.clanService);
         }
     }
@@ -183,7 +184,6 @@ public class ClanCuboidHeartController implements Listener {
         if (!block.getWorld().equals(Bukkit.getWorlds().getFirst())) return;
 
 
-
         Location toLocation = toBlock.getLocation();
         Clan clan = this.clanService.findClanByLocation(block.getLocation());
 
@@ -208,7 +208,6 @@ public class ClanCuboidHeartController implements Listener {
         if (clan == null) return;
         if (ClanManager.isNearClanHeart(location, clan.getClanLocation())) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -221,7 +220,6 @@ public class ClanCuboidHeartController implements Listener {
         if (clan == null) return;
         if (ClanManager.isNearClanHeart(location, clan.getClanLocation())) {
             event.setCancelled(true);
-            return;
         }
     }
 }
