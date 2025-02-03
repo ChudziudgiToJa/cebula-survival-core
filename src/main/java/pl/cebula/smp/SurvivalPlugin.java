@@ -28,6 +28,7 @@ import pl.cebula.smp.feature.backup.BackupInventory;
 import pl.cebula.smp.feature.blacksmith.BlacksmithController;
 import pl.cebula.smp.feature.blacksmith.BlacksmithInventory;
 import pl.cebula.smp.feature.blocker.BlockerController;
+import pl.cebula.smp.feature.blocker.MobChunkLimitTask;
 import pl.cebula.smp.feature.bordercollection.BorderCollectionController;
 import pl.cebula.smp.feature.bordercollection.BorderCollectionInventory;
 import pl.cebula.smp.feature.chat.ChatCharController;
@@ -325,6 +326,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new PetRemoveBuggyPetsTask(this, this.userService);
         new NetherTask(this, this.netherConfiguration);
         new ClanCuboidBorderParticleTask(this.clanService, this);
+        new MobChunkLimitTask(this);
     }
 
     @Override
