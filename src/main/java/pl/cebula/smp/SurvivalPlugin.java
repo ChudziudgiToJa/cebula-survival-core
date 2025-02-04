@@ -61,6 +61,7 @@ import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.economy.PayCommand;
+import pl.cebula.smp.feature.equipItem.EquipItemController;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemcooldown.ItemCooldownController;
@@ -307,9 +308,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new NetherController(this.netherConfiguration, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
                 new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
-                new ItemCooldownController()
+                new ItemCooldownController(),
+                new EquipItemController()
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
-
         // load Tasks
         new UsersSaveTask(this, this.userService);
         new ClanSaveTask(this, this.clanService);

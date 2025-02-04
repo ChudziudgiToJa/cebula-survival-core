@@ -16,14 +16,15 @@ public class PluginConfiguration extends OkaeriConfig {
 
     public int freePlnNpcID = 16;
     public int blackSmithID = 31;
-    public String discordUrl = "https://discord.gg/Y5v5JSMFkN";
+    public String discordUrl = "https://dc.cebulasmp.pl/";
 
     public static class BlockerSettings extends OkaeriConfig {
         @Comment("Lista zablokowanych przedmiotów do craftingów  interackjci")
         public List<Material> materials = List.of(
                 Material.WRITABLE_BOOK,
                 Material.ARMOR_STAND,
-                Material.TNT_MINECART
+                Material.TNT_MINECART,
+                Material.ARMOR_STAND
         );
     }
 
