@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.shop.npcshop.controller;
+package pl.cebula.smp.feature.shop.npc.controller;
 
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Sound;
@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import pl.cebula.smp.configuration.implementation.NpcShopConfiguration;
-import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
-import pl.cebula.smp.feature.shop.npcshop.object.Shop;
+import pl.cebula.smp.feature.shop.npc.inventory.NpcShopInventory;
+import pl.cebula.smp.feature.shop.npc.object.NpcShop;
 
 public class NpcShopController implements Listener {
 
@@ -23,9 +23,9 @@ public class NpcShopController implements Listener {
     public void click(NPCRightClickEvent event) {
         Player player = event.getClicker();
 
-        for (Shop shop : this.npcShopConfiguration.shops) {
-            if (event.getNPC().getId() == shop.getNpcId()) {
-                npcShopInventory.show(player, shop);
+        for (NpcShop npcShop : this.npcShopConfiguration.npcShops) {
+            if (event.getNPC().getId() == npcShop.getNpcId()) {
+                npcShopInventory.show(player, npcShop);
                 player.playSound(player, Sound.BLOCK_BARREL_OPEN, 5 ,5);
                 event.setCancelled(true);
             }

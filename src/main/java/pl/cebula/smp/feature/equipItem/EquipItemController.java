@@ -28,6 +28,7 @@ public class EquipItemController implements Listener {
             MessageUtil.sendMessage(player, "Nie możesz założyć tego przedmiotu, ponieważ masz już coś na głowie!");
             return;
         }
+        player.getInventory().removeItem(itemStack);
         player.getInventory().setHelmet(itemStack);
     }
 }

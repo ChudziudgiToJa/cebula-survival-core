@@ -1,17 +1,14 @@
-package pl.cebula.smp.feature.shop.npcshop.inventory;
+package pl.cebula.smp.feature.shop.npc.inventory;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.NpcShopConfiguration;
-import pl.cebula.smp.feature.shop.npcshop.object.ItemToInteract;
-import pl.cebula.smp.feature.shop.npcshop.object.Shop;
+import pl.cebula.smp.feature.shop.npc.object.NpcShopItemToInteract;
+import pl.cebula.smp.feature.shop.npc.object.NpcShop;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.DecimalUtil;
@@ -53,9 +50,9 @@ public class NpcShopInventory {
                         .setName(" ")
                         .build()));
 
-        for (Shop shop : this.npcShopConfiguration.shops) {
-            inventory.addItem(new ItemBuilder(shop.getItemToInteracts().getFirst().getItemStack().getType())
-                    .setName("&fSklep u: &a" + shop.getName())
+        for (NpcShop npcShop : this.npcShopConfiguration.npcShops) {
+            inventory.addItem(new ItemBuilder(npcShop.getNpcShopItemToInteracts().getFirst().getItemStack().getType())
+                    .setName("&fSklep u: &a" + npcShop.getName())
                     .setLore("", "&akliknij aby otworzyć")
                     .build()
             );
@@ -64,9 +61,9 @@ public class NpcShopInventory {
         simpleInventory.click(event -> {
             event.setCancelled(true);
             if (event.getCurrentItem() == null) return;
-            for (Shop shop : this.npcShopConfiguration.shops) {
-                if (event.getCurrentItem().getType().equals(shop.getItemToInteracts().getFirst().getItemStack().getType())) {
-                    show(player, shop);
+            for (NpcShop npcShop : this.npcShopConfiguration.npcShops) {
+                if (event.getCurrentItem().getType().equals(npcShop.getNpcShopItemToInteracts().getFirst().getItemStack().getType())) {
+                    show(player, npcShop);
                 }
             }
         });
@@ -74,8 +71,8 @@ public class NpcShopInventory {
         player.openInventory(inventory);
     }
 
-    public void show(final Player player, final Shop shop) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallText("&fsklep: " + shop.getName()));
+    public void show(final Player player, final NpcShop npcShop) {
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 54, MessageUtil.smallText("&fsklep: " + npcShop.getName()));
         Inventory inventory = simpleInventory.getInventory();
         User user = userService.findUserByNickName(player.getName());
 
@@ -91,21 +88,21 @@ public class NpcShopInventory {
 
         inventory.setItem(49, new ItemBuilder(Material.BARRIER).setName("&cOtwórz wszystkie sklepy.").setLore("", "&akliknij aby otworzyć").build());
 
-        for (ItemToInteract itemToInteract : shop.getItemToInteracts()) {
+        for (NpcShopItemToInteract npcShopItemToInteract : npcShop.getNpcShopItemToInteracts()) {
 
-            ItemStack itemBuilder = new ItemBuilder(itemToInteract.getItemStack().getType())
-                    .setName("&l&f" + itemToInteract.getItemStack().getType())
+            ItemStack itemBuilder = new ItemBuilder(npcShopItemToInteract.getItemStack().getType())
+                    .setName("&l&f" + npcShopItemToInteract.getItemStack().getType())
                     .setLore(
                             " ",
-                            "&e&lppm &7- &ckliknij aby sprzedać za &f" + DecimalUtil.getFormat(itemToInteract.getSellPrice()) + " monet",
-                            "&6&lppm + shift &7- &4kliknij aby sprzedać " + itemToInteract.getItemStack().getMaxStackSize() + " za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getSellPrice()) + " monet",
+                            "&e&lppm &7- &ckliknij aby sprzedać za &f" + DecimalUtil.getFormat(npcShopItemToInteract.getSellPrice()) + " monet",
+                            "&6&lppm + shift &7- &4kliknij aby sprzedać " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " za &f" + DecimalUtil.getFormat(npcShopItemToInteract.getItemStack().getMaxStackSize() * npcShopItemToInteract.getSellPrice()) + " monet",
                             "&6&lq &7- &dkliknij aby sprzedać całe eq",
-                            "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(itemToInteract.getBuyPrice()) + " monet",
-                            "&2&llpm + shift &7- &2kliknij aby kupić " + itemToInteract.getItemStack().getMaxStackSize() + " za &f" + DecimalUtil.getFormat(itemToInteract.getItemStack().getMaxStackSize() * itemToInteract.getBuyPrice()) + " monet"
+                            "&a&llpm &7- &akliknij aby kupić za &f" + DecimalUtil.getFormat(npcShopItemToInteract.getBuyPrice()) + " monet",
+                            "&2&llpm + shift &7- &2kliknij aby kupić " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " za &f" + DecimalUtil.getFormat(npcShopItemToInteract.getItemStack().getMaxStackSize() * npcShopItemToInteract.getBuyPrice()) + " monet"
                     )
                     .build();
 
-            inventory.setItem(itemToInteract.getItemSlot(), itemBuilder);
+            inventory.setItem(npcShopItemToInteract.getItemSlot(), itemBuilder);
         }
 
         simpleInventory.click(event -> {
@@ -116,21 +113,21 @@ public class NpcShopInventory {
                 return;
             }
 
-            for (ItemToInteract itemToInteract : shop.getItemToInteracts()) {
+            for (NpcShopItemToInteract npcShopItemToInteract : npcShop.getNpcShopItemToInteracts()) {
 
-                if (event.getSlot() == itemToInteract.getItemSlot()) {
+                if (event.getSlot() == npcShopItemToInteract.getItemSlot()) {
 
                     if (event.getClick().equals(ClickType.LEFT)) {
-                        if (user.getMoney() >= itemToInteract.getBuyPrice()) {
-                            user.setMoney(user.getMoney() - itemToInteract.getBuyPrice());
-                            ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), 1);
+                        if (user.getMoney() >= npcShopItemToInteract.getBuyPrice()) {
+                            user.setMoney(user.getMoney() - npcShopItemToInteract.getBuyPrice());
+                            ItemStack item = new ItemStack(npcShopItemToInteract.getItemStack().getType(), 1);
 
                             HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
                             if (!leftover.isEmpty()) {
                                 player.getWorld().dropItemNaturally(player.getLocation(), item);
                             }
 
-                            MessageUtil.sendMessage(player, "&aKupiłeś przedmiot: " + item.getType() + " za " + itemToInteract.getBuyPrice() + "!");
+                            MessageUtil.sendMessage(player, "&aKupiłeś przedmiot: " + item.getType() + " za " + npcShopItemToInteract.getBuyPrice() + "!");
                         } else {
                             MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić ten przedmiot.", 20, 50, 20);
                             player.closeInventory();
@@ -139,30 +136,30 @@ public class NpcShopInventory {
                     }
 
                     if (event.getClick().equals(ClickType.SHIFT_LEFT)) {
-                        double totalPrice = itemToInteract.getBuyPrice() * itemToInteract.getItemStack().getMaxStackSize();
+                        double totalPrice = npcShopItemToInteract.getBuyPrice() * npcShopItemToInteract.getItemStack().getMaxStackSize();
                         if (user.getMoney() >= totalPrice) {
                             user.setMoney(user.getMoney() - totalPrice);
-                            ItemStack item = new ItemStack(itemToInteract.getItemStack().getType(), itemToInteract.getItemStack().getMaxStackSize());
+                            ItemStack item = new ItemStack(npcShopItemToInteract.getItemStack().getType(), npcShopItemToInteract.getItemStack().getMaxStackSize());
 
                             HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(item);
                             if (!leftover.isEmpty()) {
                                 leftover.values().forEach(remaining -> player.getWorld().dropItemNaturally(player.getLocation(), remaining));
                             }
 
-                            MessageUtil.sendMessage(player, "&aKupiłeś " + itemToInteract.getItemStack().getMaxStackSize() + " przedmioty: " + item.getType() + " za " + totalPrice + "!");
+                            MessageUtil.sendMessage(player, "&aKupiłeś " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " przedmioty: " + item.getType() + " za " + totalPrice + "!");
                         } else {
-                            MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić " + itemToInteract.getItemStack().getMaxStackSize() + " przedmioty.", 20, 50, 20);
+                            MessageUtil.sendTitle(player, "", "&cNie masz wystarczająco pieniędzy, aby kupić " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " przedmioty.", 20, 50, 20);
                             player.closeInventory();
                         }
                         return;
                     }
 
                     if (event.getClick().equals(ClickType.RIGHT)) {
-                        ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), 1);
+                        ItemStack itemToSell = new ItemStack(npcShopItemToInteract.getItemStack().getType(), 1);
                         if (player.getInventory().containsAtLeast(itemToSell, 1)) {
                             player.getInventory().removeItem(itemToSell);
-                            user.setMoney(user.getMoney() + itemToInteract.getSellPrice());
-                            MessageUtil.sendMessage(player, "&aSprzedałeś przedmiot: " + itemToSell.getType() + " za " + itemToInteract.getSellPrice() + "!");
+                            user.setMoney(user.getMoney() + npcShopItemToInteract.getSellPrice());
+                            MessageUtil.sendMessage(player, "&aSprzedałeś przedmiot: " + itemToSell.getType() + " za " + npcShopItemToInteract.getSellPrice() + "!");
                         } else {
                             MessageUtil.sendTitle(player, "", "&cNie masz tego przedmiotu w ekwipunku, aby go sprzedać.", 20, 50, 20);
                             player.closeInventory();
@@ -171,20 +168,20 @@ public class NpcShopInventory {
                     }
 
                     if (event.getClick().equals(ClickType.SHIFT_RIGHT)) {
-                        ItemStack itemToSell = new ItemStack(itemToInteract.getItemStack().getType(), itemToInteract.getItemStack().getMaxStackSize());
-                        if (player.getInventory().containsAtLeast(itemToSell, itemToInteract.getItemStack().getMaxStackSize())) {
+                        ItemStack itemToSell = new ItemStack(npcShopItemToInteract.getItemStack().getType(), npcShopItemToInteract.getItemStack().getMaxStackSize());
+                        if (player.getInventory().containsAtLeast(itemToSell, npcShopItemToInteract.getItemStack().getMaxStackSize())) {
                             player.getInventory().removeItem(itemToSell);
-                            double totalPrice = itemToInteract.getSellPrice() * itemToInteract.getItemStack().getMaxStackSize();
+                            double totalPrice = npcShopItemToInteract.getSellPrice() * npcShopItemToInteract.getItemStack().getMaxStackSize();
                             user.setMoney(user.getMoney() + totalPrice);
-                            MessageUtil.sendMessage(player, "&aSprzedałeś " + itemToInteract.getItemStack().getMaxStackSize() + " przedmioty: " + itemToSell.getType() + " za " + totalPrice + "!");
+                            MessageUtil.sendMessage(player, "&aSprzedałeś " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " przedmioty: " + itemToSell.getType() + " za " + totalPrice + "!");
                         } else {
-                            MessageUtil.sendTitle(player, "", "&cNie masz " + itemToInteract.getItemStack().getMaxStackSize() + " tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
+                            MessageUtil.sendTitle(player, "", "&cNie masz " + npcShopItemToInteract.getItemStack().getMaxStackSize() + " tych przedmiotów w ekwipunku, aby je sprzedać.", 20, 50, 20);
                             player.closeInventory();
                         }
                         return;
                     }
                     if (event.getClick().equals(ClickType.DROP)) {
-                        ItemStack itemStackToSell = itemToInteract.getItemStack();
+                        ItemStack itemStackToSell = npcShopItemToInteract.getItemStack();
                         Material itemTypeToSell = itemStackToSell.getType();
                         int totalAmount = 0;
                         for (ItemStack item : player.getInventory().getContents()) {
@@ -194,7 +191,7 @@ public class NpcShopInventory {
                         }
                         if (totalAmount > 0) {
                             player.getInventory().remove(itemTypeToSell);
-                            double totalPrice = itemToInteract.getSellPrice() * totalAmount;
+                            double totalPrice = npcShopItemToInteract.getSellPrice() * totalAmount;
                             user.setMoney(user.getMoney() + totalPrice);
                             MessageUtil.sendMessage(player, "&aSprzedałeś " + totalAmount + " przedmiotów: " + itemTypeToSell + " za " + totalPrice + "!");
                         } else {

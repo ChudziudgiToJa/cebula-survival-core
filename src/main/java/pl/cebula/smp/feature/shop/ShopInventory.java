@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import pl.cebula.smp.SurvivalPlugin;
-import pl.cebula.smp.feature.shop.npcshop.inventory.NpcShopInventory;
+import pl.cebula.smp.feature.shop.npc.inventory.NpcShopInventory;
 import pl.cebula.smp.util.ItemBuilder;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
