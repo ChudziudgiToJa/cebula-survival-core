@@ -28,6 +28,7 @@ public class DailyVplnController implements Listener {
     public void click(NPCRightClickEvent event) {
         Player player = event.getClicker();
         User user = this.userService.findUserByNickName(player.getName());
+        if (user == null) return;
 
         if (event.getNPC().getId() == this.pluginConfiguration.freePlnNpcID) {
             if (user.getDailyFreeVpln() > System.currentTimeMillis()) {

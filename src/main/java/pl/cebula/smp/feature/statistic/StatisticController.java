@@ -3,9 +3,9 @@ package pl.cebula.smp.feature.statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -20,34 +20,49 @@ public class StatisticController implements Listener {
 
     @EventHandler
     public void onKill(EntityDeathEvent event) {
-        if (event.getEntity() instanceof Player victim) {
-            if (victim.getKiller() != null) {
-                Player killer = victim.getKiller();
-                User user = this.userService.findUserByNickName(killer.getName());
-                user.setKill(user.getKill() + 1);
-            }
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (event.isCancelled()) return;
+
+        Player killer = victim.getKiller();
+        if (killer == null) return;
+
+        User user = this.userService.findUserByNickName(killer.getName());
+        if (user != null) {
+            user.setKill(user.getKill() + 1);
         }
     }
 
     @EventHandler
     public void onDead(PlayerDeathEvent event) {
         Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
         User user = this.userService.findUserByNickName(player.getName());
-        user.setDead(user.getDead() + 1);
+        if (user != null) {
+            user.setDead(user.getDead() + 1);
+        }
     }
 
     @EventHandler
     public void onPlaceBlock(BlockPlaceEvent event) {
         Player player = event.getPlayer();
+        if (event.isCancelled()) return;
+
         User user = this.userService.findUserByNickName(player.getName());
-        user.setPlaceBlock(user.getPlaceBlock() + 1);
+        if (user != null) {
+            user.setPlaceBlock(user.getPlaceBlock() + 1);
+        }
     }
 
     @EventHandler
     public void onBreakBlock(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        User user = this.userService.findUserByNickName(player.getName());
-        user.setBreakBlock(user.getPlaceBlock() + 1);
-    }
+        if (event.isCancelled()) return;
 
+        User user = this.userService.findUserByNickName(player.getName());
+        if (user != null) {
+            user.setBreakBlock(user.getBreakBlock() + 1);
+        }
+    }
 }
+

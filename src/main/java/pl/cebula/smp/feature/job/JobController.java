@@ -114,21 +114,21 @@ public class JobController implements Listener {
         }
     }
 
-    @EventHandler()
+    @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
-        if (event.isCancelled()) {
+        if (event.isCancelled() || event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
         }
 
         Player player = event.getPlayer();
         User user = this.userService.findUserByNickName(player.getName());
 
-        if (user.getJobType() == JobType.FISHER) {
-            if (event.getCaught() != null && random.nextDouble() < 0.20) {
-                user.addMoney(20);
-                MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20,50,20);            }
+        if (user.getJobType() == JobType.FISHER && random.nextDouble() < 0.20) {
+            user.addMoney(20);
+            MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20, 50, 20);
         }
     }
+
 
     private static final Set<Material> ore = Set.of(
             Material.DIAMOND_ORE, Material.DEEPSLATE_DIAMOND_ORE,
