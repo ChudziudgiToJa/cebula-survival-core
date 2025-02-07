@@ -16,7 +16,10 @@ public class LiveCommand {
     @Execute
     void onCommand(@Context Player player, @Arg String s) {
         Bukkit.getOnlinePlayers().forEach(player1 -> {
-            MessageUtil.sendMessage(player1, "&d&lLIVE: &7" + s);
+            player1.sendMessage("");
+            MessageUtil.sendMessage(player1, "&d&lLIVE: &7gracza &f" + player.getName() + " &4&l⬇");
+            player1.sendMessage(s);
+            player1.sendMessage("");
         });
     }
 

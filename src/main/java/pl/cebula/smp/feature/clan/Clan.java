@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.database.repository.Identifiable;
 import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidHearthLocation;
@@ -27,12 +28,12 @@ public class Clan implements Serializable, Identifiable<String> {
 
     private boolean pvp;
 
-    public Clan(Player player, String tag) {
+    public Clan(Player player, String tag, Block block) {
         this.uuid = player.getUniqueId().toString();
         this.ownerName = player.getName();
         this.tag = tag.toUpperCase();
 
-        this.location = new ClanCuboidHearthLocation(player.getLocation().getX() - 1.5, player.getLocation().getY(), player.getLocation().getZ() - 1.5);
+        this.location = new ClanCuboidHearthLocation(block.getX(), block.getY(), block.getZ());
         this.cuboidHearthValue = 200;
 
         this.memberArrayList = new ArrayList<>();

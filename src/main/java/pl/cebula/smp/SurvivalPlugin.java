@@ -32,6 +32,7 @@ import pl.cebula.smp.feature.blocker.MobChunkLimitTask;
 import pl.cebula.smp.feature.bordercollection.BorderCollectionController;
 import pl.cebula.smp.feature.bordercollection.BorderCollectionInventory;
 import pl.cebula.smp.feature.chat.ChatCharController;
+import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidController;

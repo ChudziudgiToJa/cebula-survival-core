@@ -18,6 +18,6 @@ public class ClanConfiguration extends OkaeriConfig {
     public List<String> blockCommandListForClan = List.of("tpaaccept","tpaccept");
     public List<String> blockCommandList = List.of("tpaaccept","tpaccept", "sethome", "ec", "enderchest");
 
-    public List<Material> blockBreakList = List.of(Material.OBSIDIAN, Material.CRYING_OBSIDIAN, Material.ENCHANTING_TABLE);
+    public List<Material> blockBreakList = List.of(Material.OBSIDIAN, Material.CRYING_OBSIDIAN, Material.ENCHANTING_TABLE, Material.ANCIENT_DEBRIS, Material.NETHERITE_BLOCK, Material.RESPAWN_ANCHOR, Material.ENDER_CHEST, Material.WATER, Material.LAVA);
 }
 

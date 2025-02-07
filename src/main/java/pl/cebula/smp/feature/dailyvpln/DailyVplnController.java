@@ -25,24 +25,26 @@ public class DailyVplnController implements Listener {
     }
 
     @EventHandler
-    public void click(NPCRightClickEvent event) {
+    public void onNPCRightClick(NPCRightClickEvent event) {
         Player player = event.getClicker();
         User user = this.userService.findUserByNickName(player.getName());
         if (user == null) return;
 
-        if (event.getNPC().getId() == this.pluginConfiguration.freePlnNpcID) {
-            if (user.getDailyFreeVpln() > System.currentTimeMillis()) {
-                MessageUtil.sendTitle(player, "", "&cmożesz odebrać za: " + DurationUtil.getTimeFormat(user.getDailyFreeVpln() - System.currentTimeMillis()), 20, 50, 20);
-                player.closeInventory();
-                player.playSound(player, Sound.ENTITY_BEE_HURT, 5, 5);
-                return;
-            }
+        if (event.getNPC().getId() != this.pluginConfiguration.freePlnNpcID) return;
 
-            double pln = this.dailyVplnManager.getRandomValueForPlayer(player);
-            user.setVpln(user.getVpln() + pln);
-            user.setDailyFreeVpln(86400000 + System.currentTimeMillis());
-            MessageUtil.sendTitle(player, "", "&aOdebrano darmowe: " + DecimalUtil.getFormat(pln) + " vpln", 20,50,20);
-            player.playSound(player, Sound.ENTITY_VILLAGER_YES, 5 ,5);
+        long currentTime = System.currentTimeMillis();
+        if (user.getDailyFreeVpln() > currentTime) {
+            MessageUtil.sendTitle(player, "", "&cMożesz odebrać za: " + DurationUtil.getTimeFormat(user.getDailyFreeVpln() - currentTime), 20, 50, 20);
+            player.closeInventory();
+            player.playSound(player, Sound.ENTITY_BEE_HURT, 5, 5);
+            return;
         }
+
+        double vpln = this.dailyVplnManager.getRandomValueForPlayer(player);
+        user.setVpln(user.getVpln() + vpln);
+        user.setDailyFreeVpln(currentTime + 86400000);
+
+        MessageUtil.sendTitle(player, "", "&aOdebrano darmowe: " + DecimalUtil.getFormat(vpln) + " vpln", 20, 50, 20);
+        player.playSound(player, Sound.ENTITY_VILLAGER_YES, 5, 5);
     }
 }

@@ -11,6 +11,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
@@ -62,6 +63,7 @@ public class ClanCommand {
     @Execute(name = "stwórz")
     void create(@Context Player player, @Arg String tag) {
         Clan clan = this.clanService.findClanByOwner(player.getName());
+        Block block = player.getLocation().getBlock();
 
         if (clan != null) {
             MessageUtil.sendMessage(player, "&cPosiadasz juz klan.");
@@ -123,7 +125,7 @@ public class ClanCommand {
         }
 
         user.setMoney(user.getMoney() - 3500);
-        Clan newClan = new Clan(player, tag.toLowerCase());
+        Clan newClan = new Clan(player, tag.toLowerCase(), block);
         this.clanService.createClan(newClan);
         ClanCuboidHeartManager.createHearth(newClan);
         Bukkit.getOnlinePlayers().forEach(player1 -> MessageUtil.sendMessage(player1, player.getName() + " &astworzył nowy klan &2" + tag.toUpperCase()));
@@ -294,7 +296,7 @@ public class ClanCommand {
                 return;
             }
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
-            MessageUtil.sendMessage(player, "&fkordy: &7 x" + clan.getLocation().getX() + " z" + clan.getLocation().getZ());
+            MessageUtil.sendMessage(player, "&fkordy: &7 x" + String.format("%.2f",clan.getClanLocation().getX()) + " z" + String.format("%.2f",clan.getLocation().getZ()));
             MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
             MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
             return;
@@ -341,16 +343,16 @@ public class ClanCommand {
 
     @Execute(name = "admin teleport")
     @Permission("cebulasmp.command.clan.teleport")
-    void clanTeleport(@Context Player player, @Arg String tag) {
-        Clan clan = this.clanService.findClanByTag(tag);
+    void clanTeleport(@Context Player player, @Arg String string) {
+        Clan targetClan = this.clanService.findClanByTag(string);
 
-        if (clan == null) {
+        if (targetClan == null) {
             MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
             return;
         }
 
-        player.teleport(clan.getClanLocation());
-        MessageUtil.sendMessage(player, "&aPrzeteleportowano do klanu &f" + tag);
+        player.teleport(targetClan.getClanLocation());
+        MessageUtil.sendMessage(player, "&aPrzeteleportowano do klanu &f" + targetClan.getTag());
     }
 
     @Execute(name = "admin lista")
