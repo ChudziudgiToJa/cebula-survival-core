@@ -33,6 +33,11 @@ public class PayCommand {
             return;
         }
 
+        if (targetUser == null) {
+            MessageUtil.sendMessage(player, "&cNie znaleziono docelowego użytkownika.");
+            return;
+        }
+
         if (user.getMoney() < payout) {
             MessageUtil.sendMessage(player, "&cNie masz wystarczająco dużo pieniędzy.");
             return;
@@ -46,15 +51,11 @@ public class PayCommand {
         user.setMoney(user.getMoney() - payout);
         targetUser.setMoney(targetUser.getMoney() + payout);
 
-        this.userService.saveUser(user);
-        this.userService.saveUser(targetUser);
+        MessageUtil.sendMessage(player, "&aPrzelew na kwotę " + payout + " do gracza " + targetUser.getNickName() + " zakończony sukcesem.");
 
-        MessageUtil.sendMessage(player, "&aPrzelew na kwotę " + payout + " do gracza " + user.getNickName() + " zakończony sukcesem.");
-
-        Player player1 = Bukkit.getPlayer(user.getNickName());
-        if (player1 != null) {
-            MessageUtil.sendMessage(player1, "&aOtrzymałeś przelew w wysokości " + payout + " od gracza " + player.getName() + ".");
+        Player targetPlayer = Bukkit.getPlayer(targetUser.getNickName());
+        if (targetPlayer != null && targetPlayer.isOnline()) {
+            MessageUtil.sendMessage(targetPlayer, "&aOtrzymałeś przelew w wysokości " + payout + " od gracza " + player.getName() + ".");
         }
     }
 }
-
