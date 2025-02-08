@@ -34,6 +34,7 @@ import pl.cebula.smp.feature.bordercollection.BorderCollectionInventory;
 import pl.cebula.smp.feature.chat.ChatCharController;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.command.ClanCommand;
+import pl.cebula.smp.feature.clan.command.ClanCommandArgument;
 import pl.cebula.smp.feature.clan.feature.armor.ClanArmorTask;
 import pl.cebula.smp.feature.clan.feature.cuboid.ClanCuboidController;
 import pl.cebula.smp.feature.clan.feature.cuboid.blocker.ClanCuboidCommandBlocker;
@@ -65,7 +66,6 @@ import pl.cebula.smp.feature.economy.PayCommand;
 import pl.cebula.smp.feature.equipItem.EquipItemController;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
-import pl.cebula.smp.feature.itemcooldown.ItemCooldownController;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
 import pl.cebula.smp.feature.itemshop.ItemShopInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopManager;
@@ -100,7 +100,10 @@ import pl.cebula.smp.feature.statistic.StatisticController;
 import pl.cebula.smp.feature.statistic.StatisticInventory;
 import pl.cebula.smp.feature.top.TopCitizenTask;
 import pl.cebula.smp.feature.top.TopManager;
+import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.feature.user.command.UserCommand;
+import pl.cebula.smp.feature.user.command.UserCommandArgument;
 import pl.cebula.smp.feature.user.controller.JoinQuitListener;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 import pl.cebula.smp.feature.user.task.SpentTimeTask;
@@ -261,7 +264,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new EconomyCommand(this.userService),
                         new JobCommand(jobInventory),
                         new KitCommand(kitInventory, this.kitConfiguration, this.userService),
-                        new BackupCommand(backupInventory),
+                        new BackupCommand(backupInventory, this.userService),
                         new VplnCommand(this.userService),
                         new ItemShopCommand(itemShopInventory),
                         new LootCaseCommand(this.lootCaseConfiguration),
@@ -277,9 +280,13 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new ReloadConfigurationCommand(configService),
                         new ShopCommand(shopInventory),
                         new RandomTeleportCommand(this.pluginConfiguration),
-                        new LiveCommand()
+                        new LiveCommand(),
+                        new UserCommand(this.userService)
+
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
+                .argument(User.class, new UserCommandArgument(this.userService))
+                .argument(Clan.class, new ClanCommandArgument(this.clanService))
                 .invalidUsage(
                         new InvalidCommandHandle()
                 )
@@ -309,7 +316,6 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new NetherController(this.netherConfiguration, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
                 new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
-                new ItemCooldownController(),
                 new EquipItemController()
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
         // load Tasks

@@ -1,8 +1,10 @@
 package pl.cebula.smp.feature.user;
 
 import pl.cebula.smp.database.UpdateType;
+import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.user.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,8 +14,14 @@ public class UserService {
 
     public final Map<UUID, User> userConcurrentHashMap = new ConcurrentHashMap<>();
 
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+
+    public Collection<User> users() {
+        return this.userConcurrentHashMap.values();
     }
 
     public void addUser(User user) {

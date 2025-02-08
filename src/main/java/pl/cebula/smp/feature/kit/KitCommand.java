@@ -61,18 +61,11 @@ public class KitCommand {
 
     @Permission("cebula.kit.command.give")
     @Execute(name = "cleartime")
-    void execute(@Context Player player, @Arg String targetName, @Arg String kitname) {
-        User user = this.userService.findUserByNickName(targetName);
-
-        if (user == null) {
-            MessageUtil.sendMessage(player, "&cNie odnaleziono usera:");
-            return;
-        }
-
+    void execute(@Context Player player, @Arg User user, @Arg String kitname) {
         user.getKits().forEach(kitData -> {
             if (kitData.getName().equals(kitname)) {
                 user.getKits().remove(kitData);
-                MessageUtil.sendMessage(player, "&aUsunięto czas oczekiwania na kit " + targetName + " dla: " + targetName);
+                MessageUtil.sendMessage(player, "&aUsunięto czas oczekiwania na kit " + kitname + " dla: " + user.getNickName());
             }
         });
     }

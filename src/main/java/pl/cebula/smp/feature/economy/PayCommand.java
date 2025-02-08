@@ -5,6 +5,7 @@ import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
@@ -19,28 +20,16 @@ public class PayCommand {
     }
 
     @Execute
-    void execute(@Context Player player, @Arg Player target, @Arg double payout) {
-
-        if (target == null) {
-            MessageUtil.sendMessage(player, "&cGracz nie jest online.");
-            return;
-        }
-
+    void execute(@Context Player player, @Arg User targetUser, @Arg double payout) {
         if (payout <= 0) {
             MessageUtil.sendMessage(player, "&cKwota musi być większa niż zero.");
             return;
         }
 
         User user = this.userService.findUserByNickName(player.getName());
-        User targetUser = this.userService.findUserByNickName(target.getName());
 
         if (user == null) {
             MessageUtil.sendMessage(player, "&cNie znaleziono Twojego konta.");
-            return;
-        }
-
-        if (targetUser == null) {
-            MessageUtil.sendMessage(player, "&cNie znaleziono konta dla gracza " + target.getName() + ".");
             return;
         }
 
@@ -49,7 +38,7 @@ public class PayCommand {
             return;
         }
 
-        if (target.getName().equals(player.getName())) {
+        if (targetUser.getNickName().equals(player.getName())) {
             MessageUtil.sendMessage(player, "&cNie możesz wysłać monet sam sobie.");
             return;
         }
@@ -60,8 +49,12 @@ public class PayCommand {
         this.userService.saveUser(user);
         this.userService.saveUser(targetUser);
 
-        MessageUtil.sendMessage(player, "&aPrzelew na kwotę " + payout + " do gracza " + target.getName() + " zakończony sukcesem.");
-        MessageUtil.sendMessage(target, "&aOtrzymałeś przelew w wysokości " + payout + " od gracza " + player.getName() + ".");
+        MessageUtil.sendMessage(player, "&aPrzelew na kwotę " + payout + " do gracza " + user.getNickName() + " zakończony sukcesem.");
+
+        Player player1 = Bukkit.getPlayer(user.getNickName());
+        if (player1 != null) {
+            MessageUtil.sendMessage(player1, "&aOtrzymałeś przelew w wysokości " + payout + " od gracza " + player.getName() + ".");
+        }
     }
 }
 

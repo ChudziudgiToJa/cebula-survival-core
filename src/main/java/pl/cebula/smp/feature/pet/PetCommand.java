@@ -43,12 +43,7 @@ public class PetCommand {
 
     @Execute
     @Permission("gencash.pet.command.admin.other")
-    public void openOtherUserInventory(@Context Player player, @Arg String string) {
-        User user = this.userService.findUserByNickName(string);
-        if (user == null) {
-            MessageUtil.sendMessage(player, "&cNie znaleziono usera w bazie danych");
-            return;
-        }
+    public void openOtherUserInventory(@Context Player player, @Arg User user) {
         this.petInventory.showPetInventory(this.survivalPlugin,player, user);
     }
 

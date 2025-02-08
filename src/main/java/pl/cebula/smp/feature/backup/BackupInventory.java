@@ -9,6 +9,7 @@ import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.*;
 
+import java.beans.EventHandler;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -88,7 +89,7 @@ public class BackupInventory {
         User user = this.userService.findUserByNickName(target.getName());
 
         Integer[] glassBlueSlots = new Integer[]{
-                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53, 49
+                1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 53, 49
         };
 
         Arrays.stream(glassBlueSlots).forEach(slot -> inventory.setItem(slot,
@@ -124,11 +125,27 @@ public class BackupInventory {
                         .build()
         );
 
+        inventory.setItem(45,
+                new ItemBuilder(Material.REDSTONE)
+                        .setName("&cUsuń zapis ekwipunku")
+                        .setLore(
+                                "",
+                                "&aKliknij aby usunąc.")
+                        .build()
+        );
+
         simpleInventory.click(event -> {
             event.setCancelled(true);
 
             if (event.getSlot() == 45) {
                 show(player, target);
+                return;
+            }
+
+            if (event.getSlot() == 45) {
+                user.getBackups().remove(backup);
+                show(player, target);
+                return;
             }
 
             if (event.getSlot() == 53) {
@@ -143,6 +160,7 @@ public class BackupInventory {
                 MessageUtil.sendTitle(player, "", "&abackup dla " + target.getName() + " z dnia: &f" + backup.getInstantFormat(), 20, 50, 20);
                 MessageUtil.sendTitle(target, "", "&aotrzymałeś/aś backup z dnia: &f" + backup.getInstantFormat(), 20,50,20);
                 player.closeInventory();
+                return;
             }
         });
 

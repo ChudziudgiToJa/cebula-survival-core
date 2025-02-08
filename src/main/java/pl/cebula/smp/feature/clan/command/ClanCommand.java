@@ -286,31 +286,23 @@ public class ClanCommand {
 
 
     @Execute(name = "info")
-    void infoOther(@Context Player player, @OptionalArg String string) {
-        if (string == null || string.isBlank() || string.isEmpty()) {
+    void infoOther(@Context Player player, @OptionalArg Clan targetClan) {
+        Clan clan = this.clanService.findClanByMember(player.getName());
+        if (clan == null) {
+            MessageUtil.sendMessage(player, "&cNie masz klanu");
+            return;
+        }
 
-            Clan clan = this.clanService.findClanByMember(player.getName());
-
-            if (clan == null) {
-                MessageUtil.sendMessage(player, "&cNie masz klanu.");
-                return;
-            }
+        if (targetClan.equals(clan)) {
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
             MessageUtil.sendMessage(player, "&fkordy: &7 x" + String.format("%.2f",clan.getClanLocation().getX()) + " z" + String.format("%.2f",clan.getLocation().getZ()));
             MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
             MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
             return;
         }
-
-        Clan targetClan = this.clanService.findClanByTag(string.toLowerCase());
-
-        if (targetClan == null) {
-            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
-            return;
-        }
-        MessageUtil.sendMessage(player, "&fklan: &a&l" + targetClan.getTag());
-        MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + targetClan.getOwnerName());
-        MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(targetClan.getMemberArrayList()));
+        MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
+        MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
+        MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
     }
 
     @Execute(name = "admin war")
@@ -329,38 +321,15 @@ public class ClanCommand {
 
     @Execute(name = "admin delete")
     @Permission("cebulasmp.command.clan.admin")
-    void adminDelete(@Context CommandSender player, @Arg String tag) {
-        Clan clan = this.clanService.findClanByTag(tag);
-
-        if (clan == null) {
-            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
-            return;
-        }
-
+    void adminDelete(@Context CommandSender player, @Arg Clan clan) {
         this.clanService.removeClan(clan);
-        MessageUtil.sendMessage(player, "&aUsunięto klan &f" + tag);
+        MessageUtil.sendMessage(player, "&aUsunięto klan &f" + clan.getTag());
     }
 
     @Execute(name = "admin teleport")
     @Permission("cebulasmp.command.clan.teleport")
-    void clanTeleport(@Context Player player, @Arg String string) {
-        Clan targetClan = this.clanService.findClanByTag(string);
-
-        if (targetClan == null) {
-            MessageUtil.sendMessage(player, "&cNie ma takiego klanu.");
-            return;
-        }
-
-        player.teleport(targetClan.getClanLocation());
-        MessageUtil.sendMessage(player, "&aPrzeteleportowano do klanu &f" + targetClan.getTag());
-    }
-
-    @Execute(name = "admin lista")
-    @Permission("cebulasmp.command.clan.lista")
-    void clanList(@Context Player player) {
-        MessageUtil.sendMessage(player, "&fLista klanów: &8->");
-        this.clanService.getAllClans().forEach(clan -> {
-            MessageUtil.sendMessage(player, clan.getTag());
-        });
+    void clanTeleport(@Context Player player, @Arg Clan clan) {
+        player.teleport(clan.getClanLocation());
+        MessageUtil.sendMessage(player, "&aPrzeteleportowano do klanu &f" + clan.getTag());
     }
 }
