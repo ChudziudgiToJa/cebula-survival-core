@@ -26,7 +26,7 @@ public class ClanCommandArgument extends ArgumentResolver<CommandSender, Clan> {
         Clan clan = this.clanService.findClanByTag(argument);
 
         if (clan == null) {
-            return ParseResult.failure("Nie ma takiego Usera");
+            return ParseResult.failure("Nie znaleziono takiego klanu.");
         }
 
         return ParseResult.success(clan);

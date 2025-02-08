@@ -26,7 +26,7 @@ public class UserCommandArgument extends ArgumentResolver<CommandSender, User> {
         User user = this.userService.findUserByNickName(argument);
 
         if (user == null) {
-            return ParseResult.failure("Nie ma takiego Usera");
+            return ParseResult.failure("Nie znaleziono takiego gracza.");
         }
 
         return ParseResult.success(user);
