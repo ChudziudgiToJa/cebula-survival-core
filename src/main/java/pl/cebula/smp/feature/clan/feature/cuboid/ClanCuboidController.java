@@ -3,20 +3,23 @@ package pl.cebula.smp.feature.clan.feature.cuboid;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.ClanConfiguration;
 import pl.cebula.smp.feature.clan.Clan;
+import pl.cebula.smp.feature.clan.manager.ClanManager;
 import pl.cebula.smp.feature.clan.service.ClanService;
 import pl.cebula.smp.util.MessageUtil;
+
+import java.util.List;
 
 public class ClanCuboidController implements Listener {
 
@@ -124,4 +127,27 @@ public class ClanCuboidController implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        handlePistonMovement(event.getBlocks(), event.getDirection(), event);
+    }
+
+    @EventHandler
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        handlePistonMovement(event.getBlocks(), event.getDirection(), event);
+    }
+
+    private void handlePistonMovement(List<Block> blocks, BlockFace direction, Cancellable event) {
+        for (Block block : blocks) {
+            Location newLocation = block.getRelative(direction).getLocation();
+            Clan toClan = this.clanService.findClanByLocation(newLocation);
+
+            if (toClan != null && ClanManager.isNearClanHeart(newLocation, toClan.getClanLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
 }

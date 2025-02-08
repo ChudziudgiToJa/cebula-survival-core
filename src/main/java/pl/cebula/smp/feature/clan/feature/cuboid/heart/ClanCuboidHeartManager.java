@@ -83,7 +83,7 @@ public class ClanCuboidHeartManager {
         targetClan.getMemberArrayList().stream()
                 .map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
-                .forEach(target -> MessageUtil.sendMessage(target, "&4⚠ &4&lUWAGA &cktoś atakuje twoje serce klanu!"));
+                .forEach(target -> MessageUtil.sendActionbar(target, "&4⚠ &4&lUWAGA &cktoś atakuje twoje serce klanu!"));
 
         MessageUtil.sendTitle(player, "", "&fżycie klanu &c&l" + targetClan.getTag() + " &d" + targetClan.getCuboidHearthValue(), 10, 20, 10);
     }
@@ -110,7 +110,7 @@ public class ClanCuboidHeartManager {
         DHAPI.removeHologram(targetClan.getTag());
         clanService.removeClan(targetClan);
 
-        targetClan.setCuboidHearthValue(targetClan.getCuboidHearthValue() + 50);
+        clan1.setCuboidHearthValue(clan1.getCuboidHearthValue() + 200);
 
         Location clanHeart = new Location(player.getWorld(), targetClan.getLocation().getX(), targetClan.getLocation().getY(), targetClan.getLocation().getZ());
         player.getWorld().playSound(clanHeart, Sound.ITEM_GOAT_HORN_SOUND_0, 1, 1);
