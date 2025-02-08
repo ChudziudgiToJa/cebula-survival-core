@@ -286,14 +286,9 @@ public class ClanCommand {
 
 
     @Execute(name = "info")
-    void infoOther(@Context Player player, @OptionalArg Clan targetClan) {
-        Clan clan = this.clanService.findClanByMember(player.getName());
-        if (clan == null) {
-            MessageUtil.sendMessage(player, "&cNie masz klanu");
-            return;
-        }
+    void infoOther(@Context Player player, @OptionalArg Clan clan) {
 
-        if (targetClan.equals(clan)) {
+        if (clan.getOwnerName().equals(player.getName()) || clan.getMemberArrayList().contains(player.getName())) {
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
             MessageUtil.sendMessage(player, "&fkordy: &7 x" + String.format("%.2f",clan.getClanLocation().getX()) + " z" + String.format("%.2f",clan.getLocation().getZ()));
             MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
