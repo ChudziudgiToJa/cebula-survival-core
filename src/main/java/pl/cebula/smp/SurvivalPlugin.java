@@ -204,7 +204,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         ShopInventory shopInventory = new ShopInventory(this, npcShopInventory);
 
         // job Menu
-        JobInventory jobInventory = new JobInventory(this, this.userService);
+        JobInventory jobInventory = new JobInventory(this, this.userService, this.pluginConfiguration);
 
         // kit
         KitInventory kitInventory = new KitInventory(this, this.kitConfiguration, this.userService);
@@ -262,7 +262,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new HelpCommand(this, helpInventory),
                         new TrashCommand(this),
                         new EconomyCommand(this.userService),
-                        new JobCommand(jobInventory),
+                        new JobCommand(jobInventory, this.pluginConfiguration),
                         new KitCommand(kitInventory, this.kitConfiguration, this.userService),
                         new BackupCommand(backupInventory, this.userService),
                         new VplnCommand(this.userService),
@@ -296,7 +296,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         Stream.of(
                 new JoinQuitListener(this.userService),
                 new NpcShopController(this.npcShopConfiguration, npcShopInventory),
-                new JobController(this.userService, this.random),
+                new JobController(this.userService, this.random, this.pluginConfiguration),
                 new BackupController(this.userService),
                 new BlockerController(this.pluginConfiguration),
                 new DailyVplnController(this.userService, this.pluginConfiguration, this.dailyVplnManager),

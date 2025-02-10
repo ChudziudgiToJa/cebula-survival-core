@@ -286,8 +286,7 @@ public class ClanCommand {
 
 
     @Execute(name = "info")
-    void infoOther(@Context Player player, @OptionalArg Clan clan) {
-
+    void infoOther(@Context Player player, @Arg Clan clan) {
         if (clan.getOwnerName().equals(player.getName()) || clan.getMemberArrayList().contains(player.getName())) {
             MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
             MessageUtil.sendMessage(player, "&fkordy: &7 x" + String.format("%.2f",clan.getClanLocation().getX()) + " z" + String.format("%.2f",clan.getLocation().getZ()));
@@ -298,6 +297,7 @@ public class ClanCommand {
         MessageUtil.sendMessage(player, "&fklan: &a&l" + clan.getTag());
         MessageUtil.sendMessage(player, "&fzałożyciel: &a&l" + clan.getOwnerName());
         MessageUtil.sendMessage(player, "&fLista graczy w klanie&8: &7" + ClanManager.formatPlayerStatus(clan.getMemberArrayList()));
+        return;
     }
 
     @Execute(name = "admin war")
@@ -316,9 +316,8 @@ public class ClanCommand {
 
     @Execute(name = "admin delete")
     @Permission("cebulasmp.command.clan.admin")
-    void adminDelete(@Context CommandSender player, @Arg Clan clan) {
-        this.clanService.removeClan(clan);
-        MessageUtil.sendMessage(player, "&aUsunięto klan &f" + clan.getTag());
+    void adminDelete(@Context Player player, @Arg Clan clan) {
+        this.clanDeleteInventory.showDeleteInventory(player, clan);
     }
 
     @Execute(name = "admin teleport")
