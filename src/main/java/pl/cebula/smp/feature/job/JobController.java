@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 
 import java.util.HashMap;
@@ -81,8 +82,8 @@ public class JobController implements Listener {
                 MessageUtil.sendTitle(killer, "", "&2+&a10 monet", 20, 50, 20);
             }
             for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.KILLER)) {
-                if (random.nextDouble() < jobDropChance.getCahnce()) {
-                    HashMap<Integer, ItemStack> leftover = killer.getInventory().addItem(jobDropChance.getItemStack());
+                if (random.nextDouble() <= jobDropChance.getChance()) {
+                    HashMap<Integer, ItemStack> leftover = killer.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
                     leftover.values().forEach(remaining ->
                             killer.getWorld().dropItemNaturally(killer.getLocation(), remaining)
                     );
@@ -111,8 +112,8 @@ public class JobController implements Listener {
                 MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20, 50, 20);
             }
             for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.MINER)) {
-                if (random.nextDouble() < jobDropChance.getCahnce()) {
-                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(jobDropChance.getItemStack());
+                if (random.nextDouble() <= jobDropChance.getChance()) {
+                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
                     leftover.values().forEach(remaining ->
                             player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                     );
@@ -138,8 +139,8 @@ public class JobController implements Listener {
                     MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20, 50, 20);
                 }
                 for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.LUMBERJACK)) {
-                    if (random.nextDouble() < jobDropChance.getCahnce()) {
-                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(jobDropChance.getItemStack());
+                    if (random.nextDouble() <= jobDropChance.getChance()) {
+                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
                         leftover.values().forEach(remaining ->
                                 player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                         );
@@ -167,8 +168,8 @@ public class JobController implements Listener {
                     MessageUtil.sendTitle(player, "", "&2+&a10 monet", 20, 50, 20);
                 }
                 for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.FARMER)) {
-                    if (random.nextDouble() < jobDropChance.getCahnce()) {
-                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(jobDropChance.getItemStack());
+                    if (random.nextDouble() <= jobDropChance.getChance()) {
+                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
                         leftover.values().forEach(remaining ->
                                 player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                         );
@@ -192,13 +193,12 @@ public class JobController implements Listener {
             MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20, 50, 20);
         }
         for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.FISHER)) {
-            if (random.nextDouble() < jobDropChance.getCahnce()) {
-                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(jobDropChance.getItemStack());
+            if (random.nextDouble() <= jobDropChance.getChance()) {
+                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
                 leftover.values().forEach(remaining ->
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );
             }
         }
     }
-
 }

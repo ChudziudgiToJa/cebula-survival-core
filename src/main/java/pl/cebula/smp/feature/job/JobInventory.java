@@ -6,15 +6,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.feature.user.User;
 import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.ItemBuilder;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 import pl.cebula.smp.util.SimpleInventory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class JobInventory {
 
@@ -29,7 +33,7 @@ public class JobInventory {
     }
 
     public void show(final Player player) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9*6, MessageUtil.smallText("&fprace:"));
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&fprace:"));
         Inventory inventory = simpleInventory.getInventory();
         User user = this.userService.findUserByNickName(player.getName());
 
@@ -69,7 +73,6 @@ public class JobInventory {
             }
 
             if (event.getClick().equals(ClickType.LEFT)) {
-
                 if (user.getJobType().equals(selectedJob)) {
                     return;
                 }
@@ -85,17 +88,17 @@ public class JobInventory {
             }
 
             if (event.getClick().equals(ClickType.RIGHT)) {
-                show(player, selectedJob);
+                if (selectedJob.equals(JobType.CLEAR)) return;
+                showDrop(player, selectedJob);
             }
         });
 
         player.openInventory(inventory);
     }
 
-    public void show(final Player player, JobType jobType) {
-        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9*6, MessageUtil.smallText("&fDrop z pracy: " + jobType.getPolishName()));
+    public void showDrop(final Player player, JobType jobType) {
+        SimpleInventory simpleInventory = new SimpleInventory(this.survivalPlugin, 9 * 6, MessageUtil.smallText("&fDrop z pracy: " + jobType.getPolishName()));
         Inventory inventory = simpleInventory.getInventory();
-        User user = this.userService.findUserByNickName(player.getName());
 
         Integer[] glassBlueSlots = new Integer[]{
                 1, 3, 5, 7, 9, 17, 27, 35, 47, 51, 2, 4, 6, 18, 26, 36, 44, 46, 48, 50, 52, 0, 8, 45, 53
@@ -107,30 +110,42 @@ public class JobInventory {
                         .build()));
 
 
-        for (JobDropChance itemStack : this.pluginConfiguration.jobSettings.jobItems.get(jobType)){
-            inventory.addItem(new ItemBuilder(itemStack.getItemStack().getType())
-                            .setLore("","&7szansa na drop: &a" + itemStack.getCahnce())
-                    .build());
+        for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(jobType)) {
+            ItemStack jobDropChanceItemStack = ItemStackSerializable.readItemStack(jobDropChance.getItemStackString());
+            if (jobDropChanceItemStack == null) {
+                return;
+            }
+
+            ItemMeta itemMeta = jobDropChanceItemStack.getItemMeta();
+            if (itemMeta == null) {
+                return;
+            }
+
+            List<String> lore = itemMeta.hasLore() ? new ArrayList<>(itemMeta.getLore()) : new ArrayList<>();
+            lore.add("");
+            lore.add(MessageUtil.smallText("&7szansa na drop: &a" + jobDropChance.getChance()));
+            itemMeta.setLore(lore);
+            jobDropChanceItemStack.setItemMeta(itemMeta);
+            inventory.addItem(jobDropChanceItemStack);
         }
 
         inventory.setItem(49, new ItemBuilder(Material.BARRIER)
-                        .setName("&4cofnij")
+                .setName("&4cofnij")
                 .build()
         );
 
         simpleInventory.click(event -> {
             event.setCancelled(true);
+            if (event.getCurrentItem() == null) return;
+            if (!event.getCurrentItem().hasItemMeta()) return;
 
             if (event.getSlot() == 49) {
                 this.show(player);
-                return;
             }
         });
 
         player.openInventory(inventory);
     }
-
-
 
 
     public ItemStack itemStack(User user, JobType jobType, Material material) {

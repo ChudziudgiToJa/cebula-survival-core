@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.cebula.smp.SurvivalPlugin;
 import pl.cebula.smp.configuration.implementation.PluginConfiguration;
+import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 
 @Command(name = "praca")
@@ -44,7 +45,7 @@ public class JobCommand {
             return;
         }
 
-        this.pluginConfiguration.jobSettings.addItem(jobType, new JobDropChance(itemStack, chance));
+        this.pluginConfiguration.jobSettings.addItem(jobType, new JobDropChance(ItemStackSerializable.write(itemStack), chance));
         this.pluginConfiguration.save();
         MessageUtil.sendMessage(player, "&aDodano przedmiot do listy dropu dla pracy: " + jobType);
     }

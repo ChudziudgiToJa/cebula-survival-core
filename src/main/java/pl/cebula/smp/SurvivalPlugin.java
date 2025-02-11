@@ -59,6 +59,7 @@ import pl.cebula.smp.feature.crafting.CraftingInventory;
 import pl.cebula.smp.feature.crafting.CraftingManager;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnController;
 import pl.cebula.smp.feature.dailyvpln.DailyVplnManager;
+import pl.cebula.smp.feature.disco.*;
 import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.feature.economy.MoneyCommand;
@@ -111,6 +112,9 @@ import pl.cebula.smp.feature.user.task.UsersSaveTask;
 import pl.cebula.smp.feature.vanish.VanishCommand;
 import pl.cebula.smp.feature.vanish.VanishController;
 import pl.cebula.smp.feature.vanish.VanishHandler;
+import pl.cebula.smp.feature.voucher.VoucherCommand;
+import pl.cebula.smp.feature.voucher.VoucherController;
+import pl.cebula.smp.feature.voucher.VoucherInventory;
 
 import java.io.File;
 import java.util.Random;
@@ -125,6 +129,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private final MongoDatabaseService mongoDatabaseService = new MongoDatabaseService();
     private final UserRepository userRepository = new UserRepository();
     private final ClanRepository clanRepository = new ClanRepository();
+    private final DiscoRepository discoRepository = new DiscoRepository();
     private final ItemShopManager itemShopManager = new ItemShopManager();
     private final ClanInviteService clanInviteService = new ClanInviteService(this);
     private final AfkZoneManager afkZoneManager = new AfkZoneManager();
@@ -142,9 +147,11 @@ public final class SurvivalPlugin extends JavaPlugin {
     private CraftingConfiguration craftingConfiguration;
     private NetherConfiguration netherConfiguration;
     private PetConfiguration petconfiguration;
+    private VoucherConfiguration voucherConfiguration;
     private BorderCollectionConfiguration borderCollectionConfiguration;
     private UserService userService;
     private ClanService clanService;
+    private DiscoService discoService;
     private ProtocolManager protocolManager;
     private ClanWarManager clanWarManager;
     private NetherManager netherManager;
@@ -155,6 +162,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.userService = new UserService(this.userRepository);
         this.clanService = new ClanService(this.clanRepository);
+        this.discoService = new DiscoService(this.discoRepository);
 
         Bukkit.getServicesManager().register(Economy.class, new EconomyHolder(this.userService), this, ServicePriority.Highest);
 
@@ -190,6 +198,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
         this.netherConfiguration = configService.create(NetherConfiguration.class, new File(dataFolder, "nether.yml"));
         this.borderCollectionConfiguration = configService.create(BorderCollectionConfiguration.class, new File(dataFolder, "border.yml"));
+        this.voucherConfiguration = configService.create(VoucherConfiguration.class, new File(dataFolder, "voucher.yml"));
 
 
         // topki
@@ -244,12 +253,20 @@ public final class SurvivalPlugin extends JavaPlugin {
         //Nether
         this.netherManager = new NetherManager(this.netherConfiguration);
 
+        // Voucher
+        VoucherInventory voucherInventory = new VoucherInventory(this, this.voucherConfiguration);
+
+        //Disco
+        DiscoInventory discoInventory = new DiscoInventory(this);
+
         BorderCollectionInventory borderCollectionInventory = new BorderCollectionInventory(this, this.borderCollectionConfiguration, this.userService);
         Bukkit.getWorlds().getFirst().getWorldBorder().setSize(this.borderCollectionConfiguration.getWorldSize());
 
         // load data
         this.userRepository.findAll().forEach(this.userService::addUser);
         this.clanRepository.findAll().forEach(this.clanService::addClan);
+        this.discoRepository.findAll().forEach(this.discoService::add);
+
 
         // load commands
         this.liteCommands = LiteCommandsBukkit.builder()
@@ -281,7 +298,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new ShopCommand(shopInventory),
                         new RandomTeleportCommand(this.pluginConfiguration),
                         new LiveCommand(),
-                        new UserCommand(this.userService)
+                        new UserCommand(this.userService),
+                        new VoucherCommand(this.voucherConfiguration, voucherInventory),
+                        new DiscoCommand(this.discoService, discoInventory)
 
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
@@ -316,7 +335,9 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new NetherController(this.netherConfiguration, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
                 new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
-                new EquipItemController()
+                new EquipItemController(),
+                new VoucherController(this.voucherConfiguration),
+                new DiscoController(this.discoService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
         // load Tasks
         new UsersSaveTask(this, this.userService);
@@ -325,7 +346,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
         new AfkZoneTask(this, afkZoneManager, this.lootCaseConfiguration, userService);
-        new ClanArmorTask(this, this.clanService);
+        new ClanArmorTask(this, this.clanService, this.discoService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
         new ClanCuboidAlertTask(this.clanService, this, this.userService);
@@ -335,6 +356,8 @@ public final class SurvivalPlugin extends JavaPlugin {
         new NetherTask(this, this.netherConfiguration);
         new ClanCuboidBorderParticleTask(this.clanService, this);
         new MobChunkLimitTask(this);
+        new DiscoTask(this, this.discoService, this.random);
+        new DiscoSaveTask(this, this.discoService);
     }
 
     @Override
