@@ -71,11 +71,9 @@ public class JobController implements Listener {
         if (event.isCancelled()) {
             return;
         }
-
         if (event.getEntity().getKiller() == null) return;
         Player killer = event.getEntity().getKiller();
         User user = this.userService.findUserByNickName(killer.getName());
-
         if (user.getJobType() == JobType.KILLER) {
             if (random.nextDouble() < 0.20) {
                 user.addMoney(10);
@@ -91,21 +89,17 @@ public class JobController implements Listener {
             }
         }
     }
-
     @EventHandler
     public void onBlockBreakOre(BlockBreakEvent event) {
         if (event.isCancelled()) {
             return;
         }
-
         Player player = event.getPlayer();
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
-
         if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             return;
         }
-
         if (user.getJobType() == JobType.MINER) {
             if (ore.contains(blockType) && random.nextDouble() < 0.20) {
                 user.addMoney(15);
@@ -121,17 +115,14 @@ public class JobController implements Listener {
             }
         }
     }
-
     @EventHandler
     public void onBlockBreakLog(BlockBreakEvent event) {
         if (event.isCancelled()) {
             return;
         }
-
         Player player = event.getPlayer();
         Material blockType = event.getBlock().getType();
         User user = this.userService.findUserByNickName(player.getName());
-
         if (user.getJobType() == JobType.LUMBERJACK) {
             if (log.contains(blockType)) {
                 if (random.nextDouble() < 0.10) {
@@ -149,13 +140,11 @@ public class JobController implements Listener {
             }
         }
     }
-
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) {
             return;
         }
-
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Material material = block.getType();
@@ -178,16 +167,13 @@ public class JobController implements Listener {
             }
         }
     }
-
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         if (event.isCancelled() || event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
             return;
         }
-
         Player player = event.getPlayer();
         User user = this.userService.findUserByNickName(player.getName());
-
         if (user.getJobType() == JobType.FISHER && random.nextDouble() < 0.20) {
             user.addMoney(20);
             MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20, 50, 20);
