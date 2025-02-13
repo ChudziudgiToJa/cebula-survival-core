@@ -64,7 +64,6 @@ import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.economy.PayCommand;
-import pl.cebula.smp.feature.equipItem.EquipItemController;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
@@ -76,10 +75,7 @@ import pl.cebula.smp.feature.job.JobInventory;
 import pl.cebula.smp.feature.killcounter.KillCounterController;
 import pl.cebula.smp.feature.kit.KitCommand;
 import pl.cebula.smp.feature.kit.KitInventory;
-import pl.cebula.smp.feature.lootcase.LootCaseCommand;
-import pl.cebula.smp.feature.lootcase.LootCaseController;
-import pl.cebula.smp.feature.lootcase.LootCaseHandler;
-import pl.cebula.smp.feature.lootcase.LootCaseInventory;
+import pl.cebula.smp.feature.lootcase.*;
 import pl.cebula.smp.feature.nether.NetherCommand;
 import pl.cebula.smp.feature.nether.NetherController;
 import pl.cebula.smp.feature.nether.NetherManager;
@@ -306,6 +302,7 @@ public final class SurvivalPlugin extends JavaPlugin {
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
                 .argument(User.class, new UserCommandArgument(this.userService))
                 .argument(Clan.class, new ClanCommandArgument(this.clanService))
+                .argument(LootCase.class, new LootCaseCommandArgument(this.lootCaseConfiguration))
                 .invalidUsage(
                         new InvalidCommandHandle()
                 )
@@ -335,7 +332,6 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new NetherController(this.netherConfiguration, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
                 new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
-                new EquipItemController(),
                 new VoucherController(this.voucherConfiguration),
                 new DiscoController(this.discoService)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
@@ -356,7 +352,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new NetherTask(this, this.netherConfiguration);
         new ClanCuboidBorderParticleTask(this.clanService, this);
         new MobChunkLimitTask(this);
-        new DiscoTask(this, this.discoService, this.random);
+        new DiscoTask(this, this.discoService, this.random, this.clanService);
         new DiscoSaveTask(this, this.discoService);
     }
 

@@ -24,105 +24,63 @@ public class LootCaseCommand {
         this.lootCaseConfiguration = lootCaseConfiguration;
     }
 
-
-    @Execute
-    void execute(@Context Player player) {
-        MessageUtil.sendMessage(player, "Lista casów: ");
-        for (LootCase lootCase : this.lootCaseConfiguration.lootCases) {
-            MessageUtil.sendMessage(player, lootCase.getName());
-        }
-    }
-
     @Execute(name = "klucz")
-    void execute(@Context CommandSender sender, @Arg Player player, @Arg String string, @Arg int i) {
-        boolean found = false;
-        for (LootCase lootCase : this.lootCaseConfiguration.lootCases) {
-            if (lootCase.getName().equalsIgnoreCase(string)) {
-                ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
-                if (itemStack == null) return;
-                itemStack.setAmount(i);
-                player.getInventory().addItem(itemStack);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            MessageUtil.sendMessage(player, "Nie znaleziono skrzyni o nazwie: " + string);
-        }
+    void execute(@Context CommandSender sender, @Arg Player player, @Arg LootCase lootCase, @Arg int i) {
+        ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
+        if (itemStack == null) return;
+        itemStack.setAmount(i);
+        player.getInventory().addItem(itemStack);
     }
 
     @Execute(name = "kluczeall")
-    void execute(@Context Player player, @Arg String string, @Arg Integer i) {
+    void execute(@Context Player player, @Arg LootCase lootCase, @Arg("ilość") Integer i) {
         if (i == null || i <= 0) {
             MessageUtil.sendMessage(player, "Podaj poprawną liczbę kluczy większą od 0.");
             return;
         }
-
-        boolean found = false;
-        for (LootCase lootCase : this.lootCaseConfiguration.lootCases) {
-            if (lootCase.getName().equalsIgnoreCase(string)) {
-                ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
-                if (itemStack == null) return;
-                itemStack.setAmount(i);
-                Bukkit.getOnlinePlayers().forEach(player1 -> player1.getInventory().addItem(itemStack));
-                MessageUtil.sendMessage(player, "Dodano " + i + " kluczy dla skrzyni: " + lootCase.getName() + " wszystkim graczom.");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            MessageUtil.sendMessage(player, "Nie znaleziono skrzyni o nazwie: " + string);
-        }
+        ItemStack itemStack = ItemStackSerializable.readItemStack(lootCase.getKeyItemStack());
+        if (itemStack == null) return;
+        itemStack.setAmount(i);
+        Bukkit.getOnlinePlayers().forEach(player1 -> player1.getInventory().addItem(itemStack));
+        MessageUtil.sendMessage(player, "Dodano " + i + " kluczy dla skrzyni: " + lootCase.getName() + " wszystkim graczom.");
     }
 
     @Permission("cebula.case.additem.admin")
     @Execute(name = "additem")
-    void execute(@Context Player sender, @Arg String lootCasename,@Arg double chance) {
-        this.lootCaseConfiguration.lootCases.forEach(lootCase -> {
-            if (lootCase.getName().equals(lootCasename)) {
-                if (sender.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
-                    MessageUtil.sendMessage(sender.getPlayer(), "&cMusisz coś trzymać w łapce");
-                    return;
-                }
-                lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
-                this.lootCaseConfiguration.save();
-                MessageUtil.sendMessage(sender.getPlayer(), "&aDodanp item do " + lootCasename);
-            }
-        });
+    void execute(@Context Player sender, @Arg("skrzynia") LootCase lootCase, @Arg("szansa") double chance) {
+        if (sender.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+            MessageUtil.sendMessage(sender, "&cMusisz coś trzymać w łapce");
+            return;
+        }
+        lootCase.getDropItems().add(new LootCaseChance(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()), chance));
+        this.lootCaseConfiguration.save();
+        MessageUtil.sendMessage(sender, "&aDodanp item do " + lootCase.getName());
     }
 
     @Permission("cebula.case.removeitem.admin")
     @Execute(name = "removeitem")
-    void executeRemoveItem(@Context Player sender, @Arg String lootCasename, @Arg int i) {
-        int index = i -1;
-        this.lootCaseConfiguration.lootCases.forEach(lootCase -> {
-            if (lootCase.getName().equals(lootCasename)) {
+    void executeRemoveItem(@Context Player sender, @Arg("skrzynia") LootCase lootCase, @Arg int i) {
+        int index = i - 1;
+        if (lootCase.getDropItems().isEmpty()) {
+            MessageUtil.sendMessage(sender, "&cLista przedmiotów w tej skrzynce jest pusta.");
+            return;
+        }
 
-                if (lootCase.getDropItems().isEmpty()) {
-                    MessageUtil.sendMessage(sender, "&cLista przedmiotów w tej skrzynce jest pusta.");
-                    return;
-                }
+        if (index < 0 || index >= lootCase.getDropItems().size()) {
+            MessageUtil.sendMessage(sender, "&cNieprawidłowy indeks. Lista zawiera " + lootCase.getDropItems().size() + " element(y/ów).");
+            return;
+        }
 
-                if (index < 0 || index >= lootCase.getDropItems().size()) {
-                    MessageUtil.sendMessage(sender, "&cNieprawidłowy indeks. Lista zawiera " + lootCase.getDropItems().size() + " element(y/ów).");
-                    return;
-                }
-
-                lootCase.getDropItems().remove(index);
-                this.lootCaseConfiguration.save();
-                MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy dropów skrzynki: " + lootCase.getName());
-            }
-        });
+        lootCase.getDropItems().remove(index);
+        this.lootCaseConfiguration.save();
+        MessageUtil.sendMessage(sender, "&aUsunięto przedmiot z pozycji " + index + " z listy dropów skrzynki: " + lootCase.getName());
     }
 
     @Permission("cebula.case.additem.admin")
     @Execute(name = "setkey")
-    void execute(@Context Player sender, @Arg String lootCasename) {
-        this.lootCaseConfiguration.lootCases.forEach(lootCase -> {
-            if (lootCase.getName().equals(lootCasename)) {
-                lootCase.setKeyItemStack(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
-                this.lootCaseConfiguration.save();
-            }
-        });
+    void execute(@Context Player sender, @Arg("skrzynia") LootCase lootCase) {
+        lootCase.setKeyItemStack(ItemStackSerializable.write(sender.getInventory().getItemInMainHand()));
+        this.lootCaseConfiguration.save();
+        MessageUtil.sendMessage(sender, "&aUstawiono klucz dla: " + lootCase.getName());
     }
 }

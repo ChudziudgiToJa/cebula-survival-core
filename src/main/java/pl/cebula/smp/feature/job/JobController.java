@@ -1,9 +1,7 @@
 package pl.cebula.smp.feature.job;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +15,7 @@ import pl.cebula.smp.feature.user.UserService;
 import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class JobController implements Listener {
 
@@ -79,16 +74,17 @@ public class JobController implements Listener {
                 user.addMoney(10);
                 MessageUtil.sendTitle(killer, "", "&2+&a10 monet", 20, 50, 20);
             }
-            for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.KILLER)) {
-                if (random.nextDouble() <= jobDropChance.getChance()) {
-                    HashMap<Integer, ItemStack> leftover = killer.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
-                    leftover.values().forEach(remaining ->
-                            killer.getWorld().dropItemNaturally(killer.getLocation(), remaining)
-                    );
-                }
+            if (random.nextDouble() < 0.01) {
+                JobDropChance jobDropChance = JobChanceManager.pickRandomItem(this.pluginConfiguration.jobSettings.jobItems.get(JobType.KILLER));
+
+                HashMap<Integer, ItemStack> leftover = killer.getInventory().addItem(Objects.requireNonNull(ItemStackSerializable.readItemStack(jobDropChance.getItemStackString())));
+                leftover.values().forEach(remaining ->
+                        killer.getWorld().dropItemNaturally(killer.getLocation(), remaining)
+                );
             }
         }
     }
+
     @EventHandler
     public void onBlockBreakOre(BlockBreakEvent event) {
         if (event.isCancelled()) {
@@ -101,20 +97,24 @@ public class JobController implements Listener {
             return;
         }
         if (user.getJobType() == JobType.MINER) {
-            if (ore.contains(blockType) && random.nextDouble() < 0.20) {
-                user.addMoney(15);
-                MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20, 50, 20);
-            }
-            for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.MINER)) {
-                if (random.nextDouble() <= jobDropChance.getChance()) {
-                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
+            if (ore.contains(blockType)) {
+                if (random.nextDouble() < 0.20) {
+                    user.addMoney(15);
+                    MessageUtil.sendTitle(player, "", "&2+&a15 monet", 20, 50, 20);
+                }
+                if (random.nextDouble() < 0.01) {
+                    JobDropChance jobDropChance = JobChanceManager.pickRandomItem(this.pluginConfiguration.jobSettings.jobItems.get(JobType.MINER));
+
+                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(Objects.requireNonNull(ItemStackSerializable.readItemStack(jobDropChance.getItemStackString())));
                     leftover.values().forEach(remaining ->
                             player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                     );
+                    leftover.clear();
                 }
             }
         }
     }
+
     @EventHandler
     public void onBlockBreakLog(BlockBreakEvent event) {
         if (event.isCancelled()) {
@@ -129,44 +129,18 @@ public class JobController implements Listener {
                     user.addMoney(5);
                     MessageUtil.sendTitle(player, "", "&2+&a5 monet", 20, 50, 20);
                 }
-                for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.LUMBERJACK)) {
-                    if (random.nextDouble() <= jobDropChance.getChance()) {
-                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
-                        leftover.values().forEach(remaining ->
-                                player.getWorld().dropItemNaturally(player.getLocation(), remaining)
-                        );
-                    }
+                if (random.nextDouble() < 0.01) {
+                    JobDropChance jobDropChance = JobChanceManager.pickRandomItem(this.pluginConfiguration.jobSettings.jobItems.get(JobType.LUMBERJACK));
+
+                    HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(Objects.requireNonNull(ItemStackSerializable.readItemStack(jobDropChance.getItemStackString())));
+                    leftover.values().forEach(remaining ->
+                            player.getWorld().dropItemNaturally(player.getLocation(), remaining)
+                    );
                 }
             }
         }
     }
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        Player player = event.getPlayer();
-        Block block = event.getBlock();
-        Material material = block.getType();
-        User user = this.userService.findUserByNickName(player.getName());
-        if (user.getJobType() == JobType.FARMER && cropMaxAge.containsKey(material)) {
-            if (block.getBlockData() instanceof Ageable ageable) {
-                int maxAge = cropMaxAge.get(material);
-                if (ageable.getAge() == maxAge) {
-                    user.addMoney(10);
-                    MessageUtil.sendTitle(player, "", "&2+&a10 monet", 20, 50, 20);
-                }
-                for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.FARMER)) {
-                    if (random.nextDouble() <= jobDropChance.getChance()) {
-                        HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
-                        leftover.values().forEach(remaining ->
-                                player.getWorld().dropItemNaturally(player.getLocation(), remaining)
-                        );
-                    }
-                }
-            }
-        }
-    }
+
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         if (event.isCancelled() || event.getState() != PlayerFishEvent.State.CAUGHT_FISH) {
@@ -174,13 +148,15 @@ public class JobController implements Listener {
         }
         Player player = event.getPlayer();
         User user = this.userService.findUserByNickName(player.getName());
-        if (user.getJobType() == JobType.FISHER && random.nextDouble() < 0.20) {
-            user.addMoney(20);
-            MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20, 50, 20);
-        }
-        for (JobDropChance jobDropChance : this.pluginConfiguration.jobSettings.jobItems.get(JobType.FISHER)) {
-            if (random.nextDouble() <= jobDropChance.getChance()) {
-                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemStackSerializable.readItemStackList(jobDropChance.getItemStackString()));
+        if (user.getJobType() == JobType.FISHER) {
+            if (random.nextDouble() < 0.20) {
+                user.addMoney(20);
+                MessageUtil.sendTitle(player, "", "&2+&a20 monet", 20, 50, 20);
+            }
+            if (random.nextDouble() < 0.01) {
+                JobDropChance jobDropChance = JobChanceManager.pickRandomItem(this.pluginConfiguration.jobSettings.jobItems.get(JobType.FISHER));
+
+                HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(Objects.requireNonNull(ItemStackSerializable.readItemStack(jobDropChance.getItemStackString())));
                 leftover.values().forEach(remaining ->
                         player.getWorld().dropItemNaturally(player.getLocation(), remaining)
                 );

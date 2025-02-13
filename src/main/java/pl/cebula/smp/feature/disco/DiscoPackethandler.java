@@ -128,10 +128,10 @@ public class DiscoPackethandler {
 
         List<Pair<EnumWrappers.ItemSlot, ItemStack>> list = new ArrayList<>();
 
-        list.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, target.getInventory().getHelmet()));
-        list.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, target.getInventory().getChestplate()));
-        list.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, target.getInventory().getLeggings()));
-        list.add(new Pair<>(EnumWrappers.ItemSlot.FEET, target.getInventory().getBoots()));
+        list.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, player.getInventory().getHelmet()));
+        list.add(new Pair<>(EnumWrappers.ItemSlot.CHEST, player.getInventory().getChestplate()));
+        list.add(new Pair<>(EnumWrappers.ItemSlot.LEGS, player.getInventory().getLeggings()));
+        list.add(new Pair<>(EnumWrappers.ItemSlot.FEET, player.getInventory().getBoots()));
 
         packet.getSlotStackPairLists().write(0, list);
         protocolManager.sendServerPacket(target, packet);

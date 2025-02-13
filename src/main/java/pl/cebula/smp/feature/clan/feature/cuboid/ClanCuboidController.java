@@ -112,6 +112,7 @@ public class ClanCuboidController implements Listener {
 
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
+        if (!this.clanConfiguration.isWar()) return;
         Location explosionLocation = event.getLocation();
         int radius = 2;
         for (int x = -radius; x <= radius; x++) {
@@ -119,9 +120,11 @@ public class ClanCuboidController implements Listener {
                 for (int z = -radius; z <= radius; z++) {
                     Block affectedBlock = explosionLocation.getBlock().getRelative(x, y, z);
                     if (this.clanConfiguration.getBlockBreakList().contains(affectedBlock.getType())) {
-                        if (Math.random() < 0.4) {
+                        if (Math.random() < 0.5) {
                             affectedBlock.breakNaturally();
                         }
+                    } else {
+                        affectedBlock.breakNaturally();
                     }
                 }
             }

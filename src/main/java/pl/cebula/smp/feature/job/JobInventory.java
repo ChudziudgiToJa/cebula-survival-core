@@ -50,7 +50,6 @@ public class JobInventory {
         inventory.addItem(itemStack(user, JobType.LUMBERJACK, Material.STONE_AXE));
         inventory.addItem(itemStack(user, JobType.FISHER, Material.FISHING_ROD));
         inventory.addItem(itemStack(user, JobType.MINER, Material.DIAMOND_PICKAXE));
-        inventory.addItem(itemStack(user, JobType.FARMER, Material.GOLDEN_HOE));
         inventory.setItem(49, itemStack(user, JobType.CLEAR, Material.BARRIER));
 
         simpleInventory.click(event -> {

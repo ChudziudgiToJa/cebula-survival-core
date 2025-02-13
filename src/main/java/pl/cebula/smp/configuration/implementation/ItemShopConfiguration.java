@@ -200,6 +200,36 @@ public class ItemShopConfiguration extends OkaeriConfig {
                     List.of(
                             "eco {PLAYER} ADD 6000.0"
                     )
+            ),
+            new ItemShop(
+                    new ItemBuilder(Material.COOKIE)
+                            .setName("&5&lDISCO &aZBROJA &8(&f7dni&8)")
+                            .setLore(
+                                    "",
+                                    "&7Cena&8: &f6.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    6.99,
+                    List.of(
+                            "lp user {PLAYER} permission settemp cebulasmp.disco true 7d"
+                    )
+            ),
+            new ItemShop(
+                    new ItemBuilder(Material.COOKIE)
+                            .setName("&5&lDISCO &aZBROJA &8(&f30dni&8)")
+                            .setLore(
+                                    "",
+                                    "&7Cena&8: &f13.99 &avpln",
+                                    "",
+                                    "&aKliknij aby kupić usługę."
+                            )
+                            .build(),
+                    13.99,
+                    List.of(
+                            "lp user {PLAYER} permission settemp cebulasmp.disco true 30d"
+                    )
             )
     );
 }

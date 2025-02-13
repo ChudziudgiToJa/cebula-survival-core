@@ -34,7 +34,8 @@ public class VoucherController implements Listener {
 
         for (Voucher voucher : this.voucherConfiguration.voucherArrayList) {
             ItemStack voucherItemStack = ItemStackSerializable.readItemStack(voucher.getItemStackString());
-            if (voucherItemStack == null) return;
+            if (voucherItemStack == null) continue;
+            if (!item.equals(voucherItemStack)) continue;
 
             if (item.getAmount() > 1) {
                 item.setAmount(item.getAmount() - 1);
