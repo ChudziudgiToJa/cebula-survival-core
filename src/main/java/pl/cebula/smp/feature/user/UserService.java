@@ -33,12 +33,19 @@ public class UserService {
         userRepository.update(user, user.getId(), UpdateType.CREATE);
     }
 
+    public void saveAllUsers() {
+        this.userConcurrentHashMap.forEach((s, clan) -> {
+                    saveUser(clan);
+                }
+        );
+    }
+
     public void saveUser(User user){
         userRepository.update(user, user.getId(), UpdateType.UPDATE);
     }
 
     public void removeUser(User user) {
-        this.userConcurrentHashMap.remove(user.getId());
+        this.userConcurrentHashMap.remove(UUID.fromString(user.getId()));
     }
 
     public User findUserByNickName(String nickName){
@@ -51,9 +58,5 @@ public class UserService {
 
     public User findUserByUUID(UUID uuid){
         return this.userConcurrentHashMap.get(uuid);
-    }
-
-    public Map<UUID, User> getUsersByNickname() {
-        return this.userConcurrentHashMap;
     }
 }

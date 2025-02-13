@@ -5,7 +5,6 @@ import dev.rollczi.litecommands.annotations.command.Command;
 import dev.rollczi.litecommands.annotations.context.Context;
 import dev.rollczi.litecommands.annotations.execute.Execute;
 import dev.rollczi.litecommands.annotations.permission.Permission;
-import dev.rollczi.litecommands.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.cebula.smp.feature.user.User;

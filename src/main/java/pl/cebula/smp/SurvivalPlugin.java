@@ -362,6 +362,10 @@ public final class SurvivalPlugin extends JavaPlugin {
         if (this.liteCommands != null) {
             this.liteCommands.unregister();
         }
+        this.userService.saveAllUsers();
+        this.discoService.saveAll();
+        this.clanService.saveAllClans();
+        this.mongoDatabaseService.getMongoClient().close();
     }
 
 }

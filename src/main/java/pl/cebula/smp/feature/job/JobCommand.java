@@ -13,6 +13,8 @@ import pl.cebula.smp.configuration.implementation.PluginConfiguration;
 import pl.cebula.smp.util.ItemStackSerializable;
 import pl.cebula.smp.util.MessageUtil;
 
+import java.util.List;
+
 @Command(name = "praca")
 public class JobCommand {
 
@@ -53,15 +55,21 @@ public class JobCommand {
     @Execute(name = "removeItem")
     @Permission("cebulasmp.job.admin")
     void adminRemoveItem(@Context Player player, @Arg("Typ pracy") JobType jobType, @Arg("numer itemka") int i) {
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
-
         if (jobType == JobType.CLEAR) {
             MessageUtil.sendMessage(player, "&cNie możesz edytować bezrobotnego.");
             return;
         }
 
-        this.pluginConfiguration.jobSettings.removeItem(jobType,  i);
+        List<JobDropChance> dropList = this.pluginConfiguration.jobSettings.jobItems.get(jobType);
+
+        if (i < 0 || i >= dropList.size()) {
+            MessageUtil.sendMessage(player, "&cNieprawidłowy numer itemu. Wybierz wartość od 0 do " + (dropList.size() - 1));
+            return;
+        }
+
+        this.pluginConfiguration.jobSettings.removeItem(jobType, i);
         this.pluginConfiguration.save();
         MessageUtil.sendMessage(player, "&aUsunięto z: " + jobType + " numer itemu: " + i);
     }
+
 }
