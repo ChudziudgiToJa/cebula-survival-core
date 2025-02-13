@@ -43,6 +43,7 @@ public class DiscoTask extends BukkitRunnable {
             Clan playerClan = this.clanService.findClanByMember(player.getName());
             onlinePlayers.stream()
                     .filter(nearbyPlayer -> !nearbyPlayer.equals(player))
+                    .filter(nearbyPlayer -> nearbyPlayer.getWorld().equals(player.getWorld()))
                     .filter(nearbyPlayer -> nearbyPlayer.getLocation().distance(player.getLocation()) <= 30)
                     .filter(nearbyPlayer -> {
                         Clan nearbyPlayerClan = this.clanService.findClanByMember(nearbyPlayer.getName());

@@ -342,7 +342,7 @@ public final class SurvivalPlugin extends JavaPlugin {
         new SpentTimeTask(this, this.userService);
         new AbyssTask(this);
         new AfkZoneTask(this, afkZoneManager, this.lootCaseConfiguration, userService);
-        new ClanArmorTask(this, this.clanService, this.discoService);
+        new ClanArmorTask(this, this.clanService);
         new PetMoveTask(this, this.userService);
         new PetPotionEffectTask(this.userService, this);
         new ClanCuboidAlertTask(this.clanService, this, this.userService);

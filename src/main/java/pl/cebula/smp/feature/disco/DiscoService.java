@@ -32,8 +32,8 @@ public class DiscoService {
         discoRepository.update(disco, disco.getId(), UpdateType.CREATE);
     }
 
-    public void save(Disco clan) {
-        discoRepository.update(clan, clan.getId(), UpdateType.UPDATE);
+    public void save(Disco disco) {
+        discoRepository.update(disco, disco.getId(), UpdateType.UPDATE);
     }
 
     public void remove(Disco clan) {
