@@ -64,6 +64,10 @@ import pl.cebula.smp.feature.economy.EconomyCommand;
 import pl.cebula.smp.feature.economy.EconomyHolder;
 import pl.cebula.smp.feature.economy.MoneyCommand;
 import pl.cebula.smp.feature.economy.PayCommand;
+import pl.cebula.smp.feature.end.EndCommand;
+import pl.cebula.smp.feature.end.EndController;
+import pl.cebula.smp.feature.end.EndManager;
+import pl.cebula.smp.feature.end.EndTask;
 import pl.cebula.smp.feature.help.HelpCommand;
 import pl.cebula.smp.feature.help.HelpInventory;
 import pl.cebula.smp.feature.itemshop.ItemShopCommand;
@@ -141,7 +145,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private ItemShopConfiguration itemShopConfiguration;
     private NpcShopConfiguration npcShopConfiguration;
     private CraftingConfiguration craftingConfiguration;
-    private NetherConfiguration netherConfiguration;
+    private WorldsSettings worldsSettings;
     private PetConfiguration petconfiguration;
     private VoucherConfiguration voucherConfiguration;
     private BorderCollectionConfiguration borderCollectionConfiguration;
@@ -151,6 +155,7 @@ public final class SurvivalPlugin extends JavaPlugin {
     private ProtocolManager protocolManager;
     private ClanWarManager clanWarManager;
     private NetherManager netherManager;
+    private EndManager endManager;
     private TopManager topManager;
     private LiteCommands<CommandSender> liteCommands;
 
@@ -178,7 +183,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         instance = this;
 
         //load placeholderApi
-        new Placeholder(this.userService, this.clanService).register();
         this.eternalCoreApi = EternalCoreApiProvider.provide();
 
         //load configs files
@@ -192,10 +196,11 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.craftingConfiguration = configService.create(CraftingConfiguration.class, new File(dataFolder, "crafting.yml"));
         this.petconfiguration = configService.create(PetConfiguration.class, new File(dataFolder, "pet.yml"));
         this.clanConfiguration = configService.create(ClanConfiguration.class, new File(dataFolder, "klan.yml"));
-        this.netherConfiguration = configService.create(NetherConfiguration.class, new File(dataFolder, "nether.yml"));
+        this.worldsSettings = configService.create(WorldsSettings.class, new File(dataFolder, "nether.yml"));
         this.borderCollectionConfiguration = configService.create(BorderCollectionConfiguration.class, new File(dataFolder, "border.yml"));
         this.voucherConfiguration = configService.create(VoucherConfiguration.class, new File(dataFolder, "voucher.yml"));
 
+        new Placeholder(this.userService, this.clanService, this.worldsSettings).register();
 
         // topki
 
@@ -247,7 +252,10 @@ public final class SurvivalPlugin extends JavaPlugin {
         CraftingInventory craftingInventory = new CraftingInventory(this, this.craftingConfiguration);
 
         //Nether
-        this.netherManager = new NetherManager(this.netherConfiguration);
+        this.netherManager = new NetherManager(this.worldsSettings);
+
+        //End
+        this.endManager = new EndManager(this.worldsSettings);
 
         // Voucher
         VoucherInventory voucherInventory = new VoucherInventory(this, this.voucherConfiguration);
@@ -289,14 +297,15 @@ public final class SurvivalPlugin extends JavaPlugin {
                         new PetCommand(this.petconfiguration, petInventory, this.userService, this),
                         new CraftingCommand(craftingInventory),
                         new DiscordCommand(this.pluginConfiguration),
-                        new NetherCommand(this.netherManager, this.netherConfiguration),
+                        new NetherCommand(this.netherManager, this.worldsSettings),
                         new ReloadConfigurationCommand(configService),
                         new ShopCommand(shopInventory),
                         new RandomTeleportCommand(this.pluginConfiguration),
                         new LiveCommand(),
                         new UserCommand(this.userService),
                         new VoucherCommand(this.voucherConfiguration, voucherInventory),
-                        new DiscoCommand(this.discoService, discoInventory)
+                        new DiscoCommand(this.discoService, discoInventory),
+                        new EndCommand(this.endManager, this.worldsSettings)
 
                 )
                 .message(LiteMessages.MISSING_PERMISSIONS, permissions -> "&4ɴɪᴇ ᴘᴏꜱɪᴀᴅᴀꜱᴢ ᴡʏᴍᴀɢᴀɴᴇᴊ ᴘᴇʀᴍɪꜱᴊɪ&c: " + permissions.asJoinedText())
@@ -329,11 +338,12 @@ public final class SurvivalPlugin extends JavaPlugin {
                 new ClanCuboidBossBarController(this.clanService, this),
                 new ClanWarController(this.clanConfiguration, this.clanWarManager),
                 new ClanCuboidCommandBlocker(this.clanService, this.clanConfiguration),
-                new NetherController(this.netherConfiguration, this.netherManager),
+                new NetherController(this.worldsSettings, this.netherManager),
                 new BorderCollectionController(this.borderCollectionConfiguration, borderCollectionInventory),
                 new RandomTeleportController(this.pluginConfiguration, this.eternalCoreApi),
                 new VoucherController(this.voucherConfiguration),
-                new DiscoController(this.discoService)
+                new DiscoController(this.discoService),
+                new EndController(this.worldsSettings, this.endManager)
         ).forEach(listener -> server.getPluginManager().registerEvents(listener, this));
         // load Tasks
         new UsersSaveTask(this, this.userService);
@@ -349,11 +359,12 @@ public final class SurvivalPlugin extends JavaPlugin {
         new ClanCuboidBossBarTak(this.clanService, this);
         new ClanCuboidHeartHologramTask(this, this.clanService);
         new PetRemoveBuggyPetsTask(this, this.userService);
-        new NetherTask(this, this.netherConfiguration);
+        new NetherTask(this, this.worldsSettings);
         new ClanCuboidBorderParticleTask(this.clanService, this);
         new MobChunkLimitTask(this);
         new DiscoTask(this, this.discoService, this.random, this.clanService);
         new DiscoSaveTask(this, this.discoService);
+        new EndTask(this, this.worldsSettings);
     }
 
     @Override
@@ -365,7 +376,6 @@ public final class SurvivalPlugin extends JavaPlugin {
         this.userService.saveAllUsers();
         this.discoService.saveAll();
         this.clanService.saveAllClans();
-        this.mongoDatabaseService.getMongoClient().close();
     }
 
 }

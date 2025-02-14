@@ -4,6 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import pl.cebula.smp.configuration.implementation.WorldsSettings;
 import pl.cebula.smp.feature.abyss.AbyssManager;
 import pl.cebula.smp.feature.clan.Clan;
 import pl.cebula.smp.feature.clan.service.ClanService;
@@ -19,10 +20,12 @@ public class Placeholder extends PlaceholderExpansion implements Relational {
 
     private final UserService userService;
     private final ClanService clanService;
+    private final WorldsSettings worldsSettings;
 
-    public Placeholder(UserService userService, ClanService clanService) {
+    public Placeholder(UserService userService, ClanService clanService, WorldsSettings worldsSettings) {
         this.userService = userService;
         this.clanService = clanService;
+        this.worldsSettings = worldsSettings;
     }
 
     @Override
@@ -87,6 +90,9 @@ public class Placeholder extends PlaceholderExpansion implements Relational {
                 return MessageUtil.smallText(clanMember.getTag() + " &8(&7" + clanMember.getOwnerName()+ "&8)");
             }
             return MessageUtil.smallText("&cbrak &7/klan");
+        }
+        if(params.startsWith("end")) {
+            return MessageUtil.smallTextToColor(this.worldsSettings.netherJoinStatus ? "&awłączony" : "&cwyłączony");
         }
         return "";
     }

@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.nether;
+package pl.cebula.smp.feature.end;
 
 import dev.rollczi.litecommands.annotations.argument.Arg;
 import dev.rollczi.litecommands.annotations.command.Command;
@@ -13,52 +13,52 @@ import pl.cebula.smp.configuration.implementation.WorldsSettings;
 import pl.cebula.smp.util.MessageUtil;
 
 
-@Command(name = "nether")
-@Permission("cebulasmp.nether.admin")
-public class NetherCommand {
+@Command(name = "end")
+@Permission("cebulasmp.end.admin")
+public class EndCommand {
 
-    private final NetherManager netherManager;
+    private final EndManager endManager;
     private final WorldsSettings worldsSettings;
 
-    public NetherCommand(NetherManager netherManager, WorldsSettings worldsSettings) {
-        this.netherManager = netherManager;
+    public EndCommand(EndManager endManager, WorldsSettings worldsSettings) {
+        this.endManager = endManager;
         this.worldsSettings = worldsSettings;
     }
 
     @Execute(name = "status")
-    @Permission("cebulasmp.nether.admin")
+    @Permission("cebulasmp.end.admin")
     void toggleNetherStatus(@Context CommandSender player, @Arg boolean b) {
-        this.worldsSettings.netherJoinStatus = b;
+        this.worldsSettings.endJoinStatus = b;
         this.worldsSettings.save();
-        this.netherManager.toggleNetherBossBar();
-        MessageUtil.sendMessage(player, "&fUstawiono nether na: " + (b ? "&awłączony" : "&cwyłączony"));
+        this.endManager.toggleNetherBossBar();
+        MessageUtil.sendMessage(player, "&fUstawiono end na: " + (b ? "&awłączony" : "&cwyłączony"));
     }
 
     @Execute(name = "tp")
-    @Permission("cebulasmp.nether.admin")
+    @Permission("cebulasmp.end.admin")
     void tpNether(@Context Player player, @OptionalArg Player target) {
         if (this.worldsSettings.netherSpawnLocation == null) {
             MessageUtil.sendMessage(player, "&cLokalizacja spawnu w nether nie jest ustawiona");
             return;
         }
-        Location netherSpawnLocation = this.worldsSettings.getNetherSpawnLocation();
+        Location netherSpawnLocation = this.worldsSettings.getEndSpawnLocation();
         Player toTeleport = target != null ? target : player;
         toTeleport.teleport(netherSpawnLocation);
-        MessageUtil.sendMessage(toTeleport, "Zostałeś teleportowany do spawn Nether!");
+        MessageUtil.sendMessage(toTeleport, "Zostałeś teleportowany do spawn end!");
         if (target != null && !target.equals(player)) {
-            MessageUtil.sendMessage(player, "Teleportowano gracza " + target.getName() + " do spawn Nether.");
+            MessageUtil.sendMessage(player, "Teleportowano gracza " + target.getName() + " do spawn end.");
         }
     }
 
     @Execute(name = "setspawn")
-    @Permission("cebulasmp.nether.admin")
+    @Permission("cebulasmp.end.admin")
     void setNetherSpawn(@Context Player player) {
-        if (!player.getWorld().getName().equalsIgnoreCase("world_nether")) {
-            MessageUtil.sendMessage(player, "&cMusisz być w świecie Nether, aby ustawić spawn Nether!");
+        if (!player.getWorld().getName().equalsIgnoreCase("world_end")) {
+            MessageUtil.sendMessage(player, "&cMusisz być w świecie end, aby ustawić spawn end!");
             return;
         }
-        this.worldsSettings.setNetherSpawnLocation(player.getLocation());
+        this.worldsSettings.setEndSpawnLocation(player.getLocation());
         this.worldsSettings.save();
-        MessageUtil.sendMessage(player, "&aSpawn Nether został ustawiony na twoją aktualną lokalizację!");
+        MessageUtil.sendMessage(player, "&aSpawn end został ustawiony na twoją aktualną lokalizację!");
     }
 }

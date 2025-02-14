@@ -40,7 +40,7 @@ public class PluginConfiguration extends OkaeriConfig {
     }
 
     public class JobSettings extends OkaeriConfig {
-        public final Map<JobType, List<JobDropChance>> jobItems = new EnumMap<>(JobType.class);
+        public Map<JobType, List<JobDropChance>> jobItems = new EnumMap<>(JobType.class);
 
         public JobSettings() {
             if (jobItems.isEmpty()) {

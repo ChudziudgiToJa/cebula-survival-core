@@ -1,4 +1,4 @@
-package pl.cebula.smp.feature.nether;
+package pl.cebula.smp.feature.end;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -8,39 +8,39 @@ import org.bukkit.entity.Player;
 import pl.cebula.smp.configuration.implementation.WorldsSettings;
 import pl.cebula.smp.util.MessageUtil;
 
-public class NetherManager {
+public class EndManager {
 
     private final WorldsSettings worldsSettings;
 
     private final BossBar bossBar =  Bukkit.createBossBar(
-            MessageUtil.smallTextToColor("&cNether jest &awłączony"),
+            MessageUtil.smallTextToColor("&dEnd jest &awłączony"),
             BarColor.RED,
             BarStyle.SOLID
     );
 
-    public NetherManager(WorldsSettings worldsSettings) {
+    public EndManager(WorldsSettings worldsSettings) {
         this.worldsSettings = worldsSettings;
     }
 
     public void toggleNetherBossBar() {
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (this.worldsSettings.netherJoinStatus) {
-                NetherBossBarManager.addBossBar(player.getUniqueId(), this.bossBar);
+            if (this.worldsSettings.endJoinStatus) {
+                EndBossBarManager.addBossBar(player.getUniqueId(), this.bossBar);
                 this.bossBar.addPlayer(player);
             } else {
-                NetherBossBarManager.removeBossBar(player.getUniqueId());
+                EndBossBarManager.removeBossBar(player.getUniqueId());
                 this.bossBar.removePlayer(player);
             }
         });
     }
 
     public void removeBossBar(Player player) {
-        NetherBossBarManager.removeBossBar(player.getUniqueId());
+        EndBossBarManager.removeBossBar(player.getUniqueId());
         this.bossBar.removePlayer(player);
     }
 
     public void addBossBar(Player player) {
-        NetherBossBarManager.addBossBar(player.getUniqueId(), this.bossBar);
+        EndBossBarManager.addBossBar(player.getUniqueId(), this.bossBar);
         this.bossBar.addPlayer(player);
     }
 }

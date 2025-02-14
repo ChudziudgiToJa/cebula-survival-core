@@ -8,23 +8,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
-import pl.cebula.smp.configuration.implementation.NetherConfiguration;
+import pl.cebula.smp.configuration.implementation.WorldsSettings;
 import pl.cebula.smp.util.MessageUtil;
 
 public class NetherController implements Listener {
 
-    private final NetherConfiguration netherConfiguration;
+    private final WorldsSettings worldsSettings;
     private final NetherManager netherManager;
 
 
-    public NetherController(NetherConfiguration netherConfiguration, NetherManager netherManager) {
-        this.netherConfiguration = netherConfiguration;
+    public NetherController(WorldsSettings worldsSettings, NetherManager netherManager) {
+        this.worldsSettings = worldsSettings;
         this.netherManager = netherManager;
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (this.netherConfiguration.NetherJoinStatus) {
+        if (this.worldsSettings.netherJoinStatus) {
             netherManager.addBossBar(event.getPlayer());
         }
     }
@@ -32,7 +32,7 @@ public class NetherController implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        if (this.netherConfiguration.NetherJoinStatus) {
+        if (this.worldsSettings.netherJoinStatus) {
             netherManager.removeBossBar(event.getPlayer());
         }
     }
@@ -44,17 +44,17 @@ public class NetherController implements Listener {
         if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) return;
         event.setCancelled(true);
 
-        if (!this.netherConfiguration.NetherJoinStatus && !player.hasPermission("cebulasmp.nether.admin")) {
+        if (!this.worldsSettings.netherJoinStatus && !player.hasPermission("cebulasmp.nether.admin")) {
             MessageUtil.sendTitle(player, "", "&cNether aktualnie jest wyłączony", 20, 50, 20);
             return;
         }
 
         if (player.getWorld().equals(Bukkit.getWorlds().getFirst())) {
-            if (this.netherConfiguration.netherSpawnLocation == null) {
+            if (this.worldsSettings.netherSpawnLocation == null) {
                 MessageUtil.sendMessage(player, "&cLokalizacja spawnu w nether nie jest ustawiona");
                 return;
             }
-            player.teleport(this.netherConfiguration.netherSpawnLocation);
+            player.teleport(this.worldsSettings.netherSpawnLocation);
         } else {
             player.teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());
         }
@@ -84,7 +84,7 @@ public class NetherController implements Listener {
         String command = event.getMessage().split(" ")[0].substring(1).toLowerCase();
         if (player.hasPermission("cebulasmp.nether.admin")) return;
         if (player.getWorld().equals(Bukkit.getWorlds().get(1))) {
-            if (this.netherConfiguration.blockedCommandsOnNether.contains(command)) {
+            if (this.worldsSettings.blockedCommandsOnNether.contains(command)) {
                 event.setCancelled(true);
                 MessageUtil.sendTitle(player, "", "&ckomenda jest zablokowana w netherze.", 20, 50, 20);
             }

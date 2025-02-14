@@ -11,14 +11,13 @@ repositories {
 
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://maven.nostal.ink/repository/maven-snapshots/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
     maven("https://repo.stellardrift.ca/repository/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://repo.eternalcode.pl/releases")
     maven("https://maven.enginehub.org/repo/")
     maven("https://jitpack.io")
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://oss.sonatype.org/content/groups/public/")
     maven("https://storehouse.okaeri.eu/repository/maven-public/")
@@ -31,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("cn.dreeam.leaf:leaf-api:1.21.4-R0.1-SNAPSHOT")
 
     val eternalcodeVersion = "1.1.3"
     implementation("com.eternalcode:multification-bukkit:${eternalcodeVersion}")
