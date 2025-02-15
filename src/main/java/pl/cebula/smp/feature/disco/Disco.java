@@ -13,14 +13,14 @@ public class Disco implements Serializable, Identifiable<String> {
     private String owner;
     private DiscoType discoType;
 
-    public Disco(String owner, DiscoType discoType) {
+    public Disco(String owner) {
         this.owner = owner;
-        this.discoType = discoType;
+        this.discoType = DiscoType.CLEAR;
     }
 
     @Override
     public String getId() {
-        return owner;
+        return this.owner;
     }
 
 

@@ -21,7 +21,7 @@ public class TopCitizenTask implements Runnable {
 
     public TopCitizenTask(final SurvivalPlugin survivalPlugin, TopManager topManager) {
         this.topManager = topManager;
-        Bukkit.getScheduler().runTaskTimer(survivalPlugin, this, 30 * 20, 30 * 20);
+        Bukkit.getScheduler().runTaskTimer(survivalPlugin, this, 0, 20*60);
     }
 
     @Override
@@ -66,8 +66,6 @@ public class TopCitizenTask implements Runnable {
             npc.getOrAddTrait(HologramTrait.class).setLine(0, MessageUtil.colored(entry != null ? "&2• &7" + pointsDisplay + labelSubtitle + " &2•" : "&3• &7 0" + labelSubtitle + " &3•"));
             npc.getOrAddTrait(HologramTrait.class).setLine(1, MessageUtil.colored(entry != null ? entry.getNickName() : MessageUtil.smallText("brak")));
             npc.getOrAddTrait(HologramTrait.class).setLine(2, MessageUtil.colored("&f&l⬇ &a&l" + topSymbol + " &lᴛᴏᴘᴋᴀ " + labelTitle + " &f&l⬇"));
-
-            npc.getOrAddTrait(SkinTrait.class).setSkinName(entry != null ? entry.getNickName() : "Crosshair6");
         }
     }
 }

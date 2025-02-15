@@ -21,7 +21,7 @@ public class DiscoTask extends BukkitRunnable {
         this.discoService = discoService;
         this.random = random;
         this.clanService = clanService;
-        this.runTaskTimerAsynchronously(survivalPlugin, 20 * 30, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 0, 6);
     }
 
     @Override

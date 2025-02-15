@@ -9,7 +9,7 @@ public class DiscoSaveTask extends BukkitRunnable {
 
     public DiscoSaveTask(SurvivalPlugin survivalPlugin, DiscoService discoService) {
         this.discoService = discoService;
-        this.runTaskTimerAsynchronously(survivalPlugin, 20*20, 0);
+        this.runTaskTimerAsynchronously(survivalPlugin, 20*5, 5);
     }
 
     @Override

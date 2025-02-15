@@ -30,7 +30,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("cn.dreeam.leaf:leaf-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("cn.dreeam.leaf:leaf-api:1.21.3-R0.1-SNAPSHOT")
 
     val eternalcodeVersion = "1.1.3"
     implementation("com.eternalcode:multification-bukkit:${eternalcodeVersion}")
