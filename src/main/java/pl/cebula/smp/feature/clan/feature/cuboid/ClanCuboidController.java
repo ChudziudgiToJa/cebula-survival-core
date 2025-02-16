@@ -4,7 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -112,13 +115,22 @@ public class ClanCuboidController implements Listener {
 
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
-        if (!this.clanConfiguration.isWar()) return;
+        if (event.isCancelled()) return;
+        Entity entity = event.getEntity();
+        if (!(entity instanceof TNTPrimed) && !(entity instanceof Creeper)) {
+            return;
+        }
+
         Location explosionLocation = event.getLocation();
         int radius = 2;
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
                     Block affectedBlock = explosionLocation.getBlock().getRelative(x, y, z);
+                    if (this.clanService.isLocationOnClanCuboid(affectedBlock.getLocation()) && !this.clanConfiguration.isWar()) {
+                        event.setCancelled(true);
+                        return;
+                    }
                     if (this.clanConfiguration.getBlockBreakList().contains(affectedBlock.getType())) {
                         if (Math.random() < 0.5) {
                             affectedBlock.breakNaturally();

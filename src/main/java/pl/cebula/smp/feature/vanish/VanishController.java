@@ -1,6 +1,7 @@
 package pl.cebula.smp.feature.vanish;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import io.papermc.paper.event.player.PlayerPickItemEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,6 +51,15 @@ public class VanishController implements Listener {
         } else {
             joiningPlayer.setMetadata("vanished", new FixedMetadataValue(survivalPlugin, false));
         }
+    }
+
+
+    @EventHandler
+    public void onPickUp(PlayerPickItemEvent event) {
+        User user = this.userService.findUserByUUID(event.getPlayer().getUniqueId());
+        if (user == null) return;
+        if (!user.isVanish()) return;
+        event.setCancelled(true);
     }
 
     @EventHandler
