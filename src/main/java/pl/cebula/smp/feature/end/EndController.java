@@ -54,7 +54,7 @@ public class EndController implements Listener {
             return;
         }
 
-        if (player.getWorld().getName().equals("world_the_end")) {
+        if (player.getWorld().equals(Bukkit.getWorlds().getFirst())) {
             if (this.worldsSettings.endSpawnLocation == null) {
                 MessageUtil.sendMessage(player, "&cLokalizacja spawnu w endu nie jest ustawiona");
                 return;

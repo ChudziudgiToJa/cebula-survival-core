@@ -53,15 +53,12 @@ public class ClanCuboidAlertTask extends BukkitRunnable {
                         .filter(memberName -> !memberName.equals(playerName))
                         .map(Bukkit::getPlayer)
                         .filter(Objects::nonNull)
-                        .forEach(clanMember -> {
-                            if (clan.getOwnerName().equals(playerName)) return;
-                            MessageUtil.sendActionbar(clanMember, "&c" + playerName + " wchodzi na teren twojego klanu!");
-                        });
+                        .filter(clanMember -> !clan.getOwnerName().equals(clanMember.getName()))
+                        .forEach(clanMember -> MessageUtil.sendActionbar(clanMember, "&c" + playerName + " wchodzi na teren twojego klanu!"));
             }
             else if (!isInClanTerritory && wasInClanTerritory) {
                 playerClanStatusMap.put(player.getUniqueId(), false);
             }
         }
     }
-
 }

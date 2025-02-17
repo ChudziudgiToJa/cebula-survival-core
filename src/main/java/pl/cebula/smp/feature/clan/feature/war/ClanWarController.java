@@ -38,10 +38,4 @@ public class ClanWarController implements Listener {
             this.clanWarManager.removeBossBar(event.getPlayer());
         }
     }
-
-    @EventHandler
-    public void onExplosion(EntityExplodeEvent event) {
-        if (clanConfiguration.isWar()) return;
-        event.setCancelled(true);
-    }
 }
