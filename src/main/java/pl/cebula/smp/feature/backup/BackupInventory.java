@@ -126,6 +126,12 @@ public class BackupInventory {
         );
 
         inventory.setItem(45,
+                new ItemBuilder(Material.BARRIER)
+                        .setName("&4wyjdz")
+                        .build()
+        );
+
+        inventory.setItem(46,
                 new ItemBuilder(Material.REDSTONE)
                         .setName("&cUsuń zapis ekwipunku")
                         .setLore(
@@ -142,7 +148,7 @@ public class BackupInventory {
                 return;
             }
 
-            if (event.getSlot() == 45) {
+            if (event.getSlot() == 46) {
                 user.getBackups().remove(backup);
                 show(player, target);
                 return;
